@@ -62,40 +62,59 @@
         .leaflet-popup-tip { background: #18181b; border: 1px solid #84cc16; }
         .leaflet-container a.leaflet-popup-close-button { color: #f4f4f5; }
         
-        #app-container { display: flex; height: 100vh; width: 100vw; }
-        #sidebar { width: 400px; min-width: 400px; height: 100vh; overflow-y: auto; z-index: 50; display: flex; flex-direction: column; }
-        #map-container { flex-grow: 1; height: 100vh; position: relative; z-index: 10; cursor: crosshair; }
-
-        @media (max-width: 768px) {
-            #app-container { flex-direction: column-reverse; }
-            #sidebar { width: 100%; height: 50vh; min-width: 100%; }
-            #map-container { height: 50vh; }
+        #app-container { display: flex; height: 100vh; width: 100vw; position: relative; }
+        
+        /* Menü Animasyonu */
+        #sidebar { 
+            width: 400px; 
+            max-width: 100%;
+            height: 100vh; 
+            overflow-y: auto; 
+            z-index: 1000; 
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        #sidebar.open {
+            transform: translateX(0);
         }
 
-        /* Modal Background Blur */
+        #map-container { flex-grow: 1; height: 100vh; position: relative; z-index: 10; cursor: crosshair; width: 100vw; }
+
         .modal-overlay {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        /* Checkbox Stili */
+        .custom-checkbox input:checked + div {
+            background-color: #84cc16;
+            border-color: #84cc16;
+            color: #09090b;
         }
     </style>
 </head>
 <body class="antialiased font-sans">
+
+    <!-- Menü Açma Butonu (Sol Üst) -->
+    <button onclick="window.toggleSidebar()" class="absolute top-4 left-4 z-[500] w-12 h-12 bg-charcoal border border-neon text-neon hover:bg-neon hover:text-obsidian rounded-xl shadow-lg flex items-center justify-center text-xl transition-all">
+        <i class="fa-solid fa-bars"></i>
+    </button>
 
     <div id="app-container">
         
         <!-- SIDEBAR -->
         <aside id="sidebar" class="glass-panel p-6 shadow-2xl flex flex-col gap-6">
             
-            <!-- Logo & Başlık -->
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-4">
+            <!-- Logo & Kapat Butonu -->
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mt-2">
                 <div>
                     <h1 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-neon to-cyan">DropZone</h1>
-                    <p class="text-zinc-400 text-sm italic flex items-center gap-2">
-                        Discover. Ride. Share. 
-                        <span class="bg-neon text-obsidian text-[10px] font-bold px-1.5 py-0.5 rounded animate-pulse">LIVE</span>
-                    </p>
+                    <p class="text-zinc-400 text-sm italic">Discover. Ride. Share.</p>
                 </div>
-                <i class="fa-solid fa-bicycle text-neon text-3xl"></i>
+                <button onclick="window.toggleSidebar()" class="text-zinc-400 hover:text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- AUTH SECTION -->
@@ -103,7 +122,7 @@
                 <i class="fa-solid fa-circle-notch fa-spin text-neon text-2xl"></i>
             </div>
 
-            <!-- Kategori Filtreleme (Yeni Özellik) -->
+            <!-- Kategori Filtreleme -->
             <div class="flex flex-col gap-2">
                 <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Filtrele</h2>
                 <div class="flex flex-wrap gap-2" id="filter-buttons">
@@ -111,26 +130,17 @@
                     <button data-filter="Urban" class="filter-btn bg-zinc-800 text-zinc-300 hover:text-neon px-3 py-1 rounded-full text-xs font-bold transition-colors">Urban</button>
                     <button data-filter="Freeride" class="filter-btn bg-zinc-800 text-zinc-300 hover:text-neon px-3 py-1 rounded-full text-xs font-bold transition-colors">Freeride</button>
                     <button data-filter="DirtJump" class="filter-btn bg-zinc-800 text-zinc-300 hover:text-neon px-3 py-1 rounded-full text-xs font-bold transition-colors">Dirt Jump</button>
-                    <button data-filter="Skatepark" class="filter-btn bg-zinc-800 text-zinc-300 hover:text-neon px-3 py-1 rounded-full text-xs font-bold transition-colors">Skatepark</button>
                 </div>
             </div>
 
-            <!-- Stats Chart -->
-            <div class="bg-charcoal p-4 rounded-2xl border border-zinc-800">
-                <h2 class="text-sm font-bold text-zinc-400 mb-2 uppercase tracking-wider">Topluluk İstatistikleri</h2>
-                <div class="relative h-32 w-full">
-                    <canvas id="statsChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Spot List -->
+            <!-- Spot Listesi -->
             <div class="flex-grow flex flex-col gap-3">
                 <h2 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex justify-between items-center">
                     <span>Spot Listesi</span>
                     <span id="spot-count" class="bg-zinc-800 text-neon py-0.5 px-2 rounded-full text-xs shadow-[0_0_8px_rgba(132,204,22,0.5)]">0</span>
                 </h2>
                 <div id="spot-list" class="flex flex-col gap-3 pb-4">
-                    <!-- Dinamik veriler buraya dolacak -->
+                    <!-- Dinamik veriler -->
                 </div>
             </div>
         </aside>
@@ -139,11 +149,8 @@
         <main id="map-container">
             <div id="map" class="w-full h-full"></div>
             
-            <!-- Map Uyarı Gözlemcisi -->
             <div class="absolute top-4 right-4 z-[400] glass-panel px-4 py-2 rounded-full flex gap-4 text-sm font-semibold pointer-events-none">
                 <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-neon"></i> Aktif</span>
-                <span class="flex items-center gap-2"><i class="fa-solid fa-triangle-exclamation text-warning"></i> Dikkat</span>
-                <span class="flex items-center gap-2"><i class="fa-solid fa-skull-crossbones text-danger"></i> Yıkılmış</span>
             </div>
 
             <!-- Floating Action Buttons (Sağ Alt) -->
@@ -159,48 +166,70 @@
     </div>
 
     <!-- ADD SPOT MODAL -->
-    <div id="add-spot-modal" class="hidden fixed inset-0 z-[1000] modal-overlay flex items-center justify-center p-4">
-        <div class="bg-charcoal w-full max-w-md p-6 rounded-2xl border border-zinc-700 shadow-2xl relative transform transition-all">
+    <div id="add-spot-modal" class="hidden fixed inset-0 z-[2000] modal-overlay flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-charcoal w-full max-w-lg p-6 rounded-2xl border border-zinc-700 shadow-2xl relative my-8">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             
-            <h2 class="text-xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
+            <h2 class="text-xl font-bold text-zinc-100 mb-2 flex items-center gap-2">
                 <i class="fa-solid fa-location-dot text-neon"></i> Yeni Spot Kaydet
             </h2>
-            <p class="text-xs text-zinc-400 mb-4">Haritaya tıklayarak koordinatları otomatik alabilirsin.</p>
+            <p class="text-xs text-cyan mb-4" id="route-instruction">Haritaya tıklayarak koordinatları belirle.</p>
             
             <form id="add-spot-form" class="flex flex-col gap-4">
                 <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Spot Adı</label>
-                    <input type="text" id="spot-name" required placeholder="örn: Kalamış Sahil Merdivenleri" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
-                </div>
-                
-                <div>
                     <label class="block text-xs text-zinc-400 mb-1">Kategori</label>
                     <select id="spot-category" required class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
-                        <option value="" disabled selected>Kategori Seç...</option>
-                        <option value="Urban">Urban MTB / Street</option>
-                        <option value="Freeride">Freeride / Downhill</option>
+                        <option value="Urban" selected>Urban</option>
+                        <option value="Freeride">Freeride (Rota Çizimi)</option>
                         <option value="DirtJump">Dirt Jump</option>
-                        <option value="Skatepark">Skatepark / BMX</option>
                     </select>
                 </div>
 
-                <div class="flex gap-3">
-                    <div class="w-1/2">
-                        <label class="block text-xs text-zinc-400 mb-1">Enlem (Lat)</label>
-                        <input type="number" id="spot-lat" step="any" required placeholder="Lat" class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100" readonly>
-                    </div>
-                    <div class="w-1/2">
-                        <label class="block text-xs text-zinc-400 mb-1">Boylam (Lng)</label>
-                        <input type="number" id="spot-lng" step="any" required placeholder="Lng" class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100" readonly>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Spot Adı</label>
+                    <input type="text" id="spot-name" required placeholder="örn: Kalamış Merdivenleri" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
+                </div>
+
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-2">Tür Seçimi (Birden fazla seçebilirsin)</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <label class="custom-checkbox cursor-pointer">
+                            <input type="checkbox" value="Merdiven" class="type-checkbox hidden">
+                            <div class="px-3 py-2 border border-zinc-700 rounded-lg text-sm text-center text-zinc-400 transition-colors font-semibold">Merdiven</div>
+                        </label>
+                        <label class="custom-checkbox cursor-pointer">
+                            <input type="checkbox" value="Drop" class="type-checkbox hidden">
+                            <div class="px-3 py-2 border border-zinc-700 rounded-lg text-sm text-center text-zinc-400 transition-colors font-semibold">Drop</div>
+                        </label>
+                        <label class="custom-checkbox cursor-pointer">
+                            <input type="checkbox" value="Transfer" class="type-checkbox hidden">
+                            <div class="px-3 py-2 border border-zinc-700 rounded-lg text-sm text-center text-zinc-400 transition-colors font-semibold">Transfer</div>
+                        </label>
+                        <label class="custom-checkbox cursor-pointer">
+                            <input type="checkbox" value="Air" class="type-checkbox hidden">
+                            <div class="px-3 py-2 border border-zinc-700 rounded-lg text-sm text-center text-zinc-400 transition-colors font-semibold">Air</div>
+                        </label>
                     </div>
                 </div>
 
-                <button type="button" id="btn-get-location" class="text-xs text-cyan hover:text-neon text-left transition-colors flex items-center gap-2">
-                    <i class="fa-solid fa-crosshairs"></i> GPS Konumumu Kullan
-                </button>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Açıklama / Detaylar</label>
+                    <textarea id="spot-desc" rows="2" placeholder="Spot hakkında bilmemiz gerekenler..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100"></textarea>
+                </div>
 
-                <button type="submit" class="w-full mt-2 bg-neon hover:bg-neonHover text-obsidian font-bold rounded-lg text-sm px-5 py-3 transition-all transform hover:scale-[1.02]">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1">Fotoğraf URL'si (Opsiyonel)</label>
+                    <input type="url" id="spot-photo" placeholder="https://resimlinki.com/foto.jpg" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
+                </div>
+
+                <!-- Koordinat Gösterimi (Salt Okunur) -->
+                <div class="bg-obsidian p-3 rounded-lg border border-zinc-700">
+                    <p class="text-xs text-zinc-400 mb-1">Seçilen Konumlar: <span id="coord-count" class="text-neon font-bold">0</span></p>
+                    <p id="coord-display" class="text-[10px] text-zinc-500 break-all h-8 overflow-hidden">Haritadan nokta seçilmedi.</p>
+                    <button type="button" onclick="window.clearFormRoute()" class="text-[10px] text-danger mt-1 hover:underline">Koordinatları Temizle</button>
+                </div>
+
+                <button type="submit" class="w-full mt-2 bg-neon hover:bg-neonHover text-obsidian font-bold rounded-lg text-sm px-5 py-3 transition-all">
                     Spotu Kaydet
                 </button>
             </form>
@@ -208,33 +237,76 @@
     </div>
 
     <!-- SETTINGS MODAL -->
-    <div id="settings-modal" class="hidden fixed inset-0 z-[1000] modal-overlay flex items-center justify-center p-4">
+    <div id="settings-modal" class="hidden fixed inset-0 z-[2000] modal-overlay flex items-center justify-center p-4">
         <div class="bg-charcoal w-full max-w-sm p-6 rounded-2xl border border-zinc-700 shadow-2xl relative">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
-            
-            <h2 class="text-xl font-bold text-zinc-100 mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-gear text-zinc-400"></i> Ayarlar
-            </h2>
-            
+            <h2 class="text-xl font-bold text-zinc-100 mb-6 flex items-center gap-2"><i class="fa-solid fa-gear text-zinc-400"></i> Ayarlar</h2>
             <div class="flex flex-col gap-4">
                 <div>
-                    <label class="block text-sm font-bold text-zinc-300 mb-2">Harita Stili</label>
+                    <label class="block text-sm font-bold text-zinc-300 mb-2">Harita Teması</label>
                     <div class="grid grid-cols-2 gap-2">
                         <button onclick="window.changeMapStyle('dark')" id="btn-map-dark" class="bg-obsidian border-2 border-neon text-white py-2 rounded-lg text-sm font-bold transition-all">Karanlık (Dark)</button>
                         <button onclick="window.changeMapStyle('satellite')" id="btn-map-sat" class="bg-obsidian border-2 border-zinc-700 text-zinc-400 hover:text-white py-2 rounded-lg text-sm font-bold transition-all">Uydu (Satellite)</button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SPOT DETAY (İNCELE) MODAL -->
+    <div id="spot-detail-modal" class="hidden fixed inset-0 z-[2000] modal-overlay flex justify-center p-4 overflow-y-auto">
+        <div class="bg-charcoal w-full max-w-2xl mt-12 mb-auto rounded-2xl border border-zinc-700 shadow-2xl overflow-hidden relative flex flex-col max-h-[85vh]">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 z-10 text-white bg-black/50 hover:bg-neon hover:text-black w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            
+            <!-- Fotoğraf Alanı -->
+            <div id="detail-photo-container" class="w-full h-64 bg-obsidian flex items-center justify-center border-b border-zinc-800">
+                <i class="fa-solid fa-image text-4xl text-zinc-700"></i>
+            </div>
+            
+            <div class="p-6 overflow-y-auto flex-grow custom-scroll">
+                <div class="flex justify-between items-start mb-2">
+                    <h2 id="detail-name" class="text-2xl font-black text-white">Spot Adı</h2>
+                    <span id="detail-category" class="bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full text-xs font-bold">Kategori</span>
+                </div>
                 
-                <div class="mt-4 pt-4 border-t border-zinc-800">
-                    <p class="text-xs text-zinc-500 text-center">DropZone MVP v2.0 <br> Powered by Firebase & Leaflet</p>
+                <p class="text-xs text-zinc-500 mb-4 border-b border-zinc-800 pb-4">
+                    <i class="fa-solid fa-user-astronaut"></i> Ekleyen: <span id="detail-user" class="text-zinc-300">Kim</span>
+                </p>
+                
+                <div id="detail-types" class="flex flex-wrap gap-2 mb-4">
+                    <!-- Türler -->
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-2">Açıklama</h3>
+                    <p id="detail-desc" class="text-sm text-zinc-300 bg-obsidian p-4 rounded-xl border border-zinc-800">Açıklama yok.</p>
+                </div>
+                
+                <div id="admin-spot-actions" class="hidden mb-6 flex gap-2">
+                    <button id="btn-admin-delete-spot" class="bg-danger/20 text-danger border border-danger/50 px-4 py-2 rounded-lg text-sm font-bold hover:bg-danger hover:text-white transition-colors">
+                        <i class="fa-solid fa-trash"></i> Spotu Sil (Admin)
+                    </button>
+                </div>
+
+                <!-- Yorumlar Bölümü -->
+                <div>
+                    <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 border-b border-zinc-800 pb-2">Yorumlar</h3>
+                    <div id="detail-comments-list" class="flex flex-col gap-3 mb-4">
+                        <!-- Yorumlar buraya -->
+                    </div>
+                    
+                    <div id="add-comment-section" class="flex gap-2">
+                        <input type="text" id="comment-input" placeholder="Yorum yaz..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
+                        <button onclick="window.submitComment()" class="bg-neon hover:bg-neonHover text-obsidian px-4 rounded-lg font-bold transition-colors">Gönder</button>
+                    </div>
+                    <p id="comment-login-warning" class="text-xs text-warning hidden">Yorum yazmak için giriş yapmalısın.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Leaflet JS & Chart.js -->
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- FIREBASE MODULE -->
     <script type="module">
@@ -242,7 +314,6 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        // Senin Firebase Ayarların
         const firebaseConfig = {
             apiKey: "AIzaSyCsCXNl2WeTPrY3P1C9c_KXLLwugkuDtkY",
             authDomain: "dropzone-1997f.firebaseapp.com",
@@ -258,26 +329,26 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
+        const ADMIN_EMAIL = "delidereliler@gmail.com";
         let currentUser = null;
+        let isAdmin = false;
         let spotsData = []; 
         let activeFilter = 'all';
+        let currentDetailSpotId = null;
+
+        // Form Rota Mantığı (Freeride için Array, diğerleri için tekli)
+        let formCoords = []; 
+        let tempPolylines = []; // Haritada formu doldururken çizeceğimiz çizgiler
 
         // ==========================================
-        // HARİTA KURULUMU & STİLLER
+        // HARİTA KURULUMU
         // ==========================================
         const map = L.map('map', { zoomControl: false }).setView([41.0082, 28.9784], 10);
-        L.control.zoom({ position: 'topleft' }).addTo(map);
+        L.control.zoom({ position: 'topright' }).addTo(map);
 
-        const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OSM & CARTO', subdomains: 'abcd', maxZoom: 20
-        });
-
-        const satTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '&copy; Esri', maxZoom: 19
-        });
-
-        let currentTileLayer = darkTiles;
-        currentTileLayer.addTo(map);
+        const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' });
+        const satTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: '&copy; Esri' });
+        let currentTileLayer = darkTiles.addTo(map);
 
         window.changeMapStyle = (style) => {
             map.removeLayer(currentTileLayer);
@@ -298,85 +369,103 @@
         };
 
         let markersLayer = L.layerGroup().addTo(map);
+        let routesLayer = L.layerGroup().addTo(map);
+
+        // Sidebar Toggle
+        window.toggleSidebar = () => {
+            document.getElementById('sidebar').classList.toggle('open');
+        };
 
         // İkonlar
-        const getIconColor = (status) => status === 'warning' ? '#f59e0b' : status === 'destroyed' ? '#ef4444' : '#84cc16';
         const getCategoryIcon = (cat) => {
             if(cat === 'Freeride') return 'fa-mountain';
             if(cat === 'DirtJump') return 'fa-wave-square';
-            if(cat === 'Skatepark') return 'fa-person-skating';
             return 'fa-building'; 
         };
 
-        const createCustomMarker = (spot) => {
-            const color = getIconColor(spot.status);
+        const createCustomMarker = (cat) => {
             return L.divIcon({
-                html: `<div style="background-color: #18181b; border: 2px solid ${color}; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px ${color}80; transform: scale(0.9); transition: transform 0.2s;">
-                           <i class="fa-solid ${getCategoryIcon(spot.category)}" style="color: ${color}; font-size: 16px;"></i>
+                html: `<div style="background-color: #18181b; border: 2px solid #84cc16; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px #84cc1680;">
+                           <i class="fa-solid ${getCategoryIcon(cat)}" style="color: #84cc16; font-size: 14px;"></i>
                        </div>`,
-                className: 'custom-leaflet-marker',
-                iconSize: [36, 36], iconAnchor: [18, 18], popupAnchor: [0, -18]
+                className: 'custom-leaflet-marker', iconSize: [32, 32], iconAnchor: [16, 16], popupAnchor: [0, -16]
             });
         };
 
         // ==========================================
-        // HARİTAYA TIKLAMA İLE SPOT EKLEME
+        // FORMA HARİTADAN NOKTA EKLEME
         // ==========================================
-        map.on('click', (e) => {
-            if (!currentUser) {
-                alert("Kanka haritaya spot fırlatmak için önce giriş yapman lazım!");
-                return;
+        document.getElementById('spot-category').addEventListener('change', (e) => {
+            const cat = e.target.value;
+            const instruction = document.getElementById('route-instruction');
+            if(cat === 'Freeride') {
+                instruction.innerText = "Freeride seçtin! Haritaya sırayla tıklayarak rotanı çiz.";
+            } else {
+                instruction.innerText = "Haritaya tıklayarak spotun konumunu belirle.";
+                // Freeride'dan çıktıysa formCoords'u teke düşür
+                if(formCoords.length > 1) {
+                    formCoords = [formCoords[0]];
+                    updateCoordUI();
+                }
             }
-            document.getElementById('spot-lat').value = e.latlng.lat.toFixed(6);
-            document.getElementById('spot-lng').value = e.latlng.lng.toFixed(6);
-            window.openAddSpotModal(true); // true = haritadan tıklandı, kordinat var
         });
 
+        window.clearFormRoute = () => {
+            formCoords = [];
+            tempPolylines.forEach(p => map.removeLayer(p));
+            tempPolylines = [];
+            updateCoordUI();
+        };
 
-        // ==========================================
-        // GRAFİK & UI RENDER
-        // ==========================================
-        let statsChartInstance = null;
-        const renderChart = (spots) => {
-            const counts = { 'Urban': 0, 'Freeride': 0, 'DirtJump': 0, 'Skatepark': 0 };
-            spots.forEach(s => { if(counts[s.category] !== undefined) counts[s.category]++; });
-
-            const data = {
-                labels: Object.keys(counts),
-                datasets: [{
-                    data: Object.values(counts),
-                    backgroundColor: ['#06b6d4', '#84cc16', '#f59e0b', '#ef4444'],
-                    borderWidth: 0, hoverOffset: 4
-                }]
-            };
-
-            if(statsChartInstance) {
-                statsChartInstance.data = data;
-                statsChartInstance.update();
+        const updateCoordUI = () => {
+            document.getElementById('coord-count').innerText = formCoords.length;
+            if(formCoords.length === 0) {
+                document.getElementById('coord-display').innerText = "Haritadan nokta seçilmedi.";
             } else {
-                const ctx = document.getElementById('statsChart').getContext('2d');
-                statsChartInstance = new Chart(ctx, {
-                    type: 'doughnut', data: data,
-                    options: {
-                        responsive: true, maintainAspectRatio: false, cutout: '70%',
-                        plugins: { legend: { position: 'right', labels: { color: '#a1a1aa', font: { size: 10 } } } }
-                    }
-                });
+                document.getElementById('coord-display').innerText = formCoords.map(c => `[${c.lat}, ${c.lng}]`).join(', ');
             }
         };
 
-        // Auth
-        const authSection = document.getElementById('auth-section');
+        map.on('click', (e) => {
+            if (!document.getElementById('add-spot-modal').classList.contains('hidden')) {
+                const cat = document.getElementById('spot-category').value;
+                const point = { lat: parseFloat(e.latlng.lat.toFixed(5)), lng: parseFloat(e.latlng.lng.toFixed(5)) };
+                
+                if (cat === 'Freeride') {
+                    formCoords.push(point);
+                    if(formCoords.length > 1) {
+                        const line = L.polyline([formCoords[formCoords.length-2], point], {color: '#84cc16', weight: 4, dashArray: '5, 10'}).addTo(map);
+                        tempPolylines.push(line);
+                    }
+                } else {
+                    formCoords = [point]; // Sadece tek nokta
+                }
+                updateCoordUI();
+            } else if (currentUser) {
+                // Modal kapalıyken tıklandıysa formu aç
+                window.openAddSpotModal();
+                formCoords = [{ lat: parseFloat(e.latlng.lat.toFixed(5)), lng: parseFloat(e.latlng.lng.toFixed(5)) }];
+                updateCoordUI();
+            } else {
+                alert("Kanka spot eklemek için giriş yapman lazım!");
+            }
+        });
 
+        // ==========================================
+        // AUTH İŞLEMLERİ
+        // ==========================================
+        const authSection = document.getElementById('auth-section');
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
+            isAdmin = user && user.email === ADMIN_EMAIL;
+            
             if (user) {
                 authSection.innerHTML = `
                     <div class="flex items-center gap-3 w-full justify-between">
                         <div class="flex items-center gap-3">
                             <img src="${user.photoURL}" alt="Profil" class="w-10 h-10 rounded-full border-2 border-neon">
                             <div class="text-left">
-                                <p class="text-sm font-bold text-white">${user.displayName}</p>
+                                <p class="text-sm font-bold text-white">${user.displayName} ${isAdmin ? '<span class="text-[10px] bg-danger px-1 rounded text-white ml-1">ADMIN</span>' : ''}</p>
                                 <p class="text-xs text-zinc-400">Onaylı Rider</p>
                             </div>
                         </div>
@@ -387,210 +476,253 @@
                 `;
             } else {
                 authSection.innerHTML = `
-                    <p class="text-sm text-zinc-400 mb-3">Sisteme spot eklemek veya beğeni atmak için giriş yap.</p>
+                    <p class="text-sm text-zinc-400 mb-3">Sisteme spot eklemek için giriş yap.</p>
                     <button onclick="window.loginWithGoogle()" class="w-full bg-white text-obsidian hover:bg-zinc-200 font-bold rounded-lg text-sm px-5 py-2.5 transition-all flex items-center justify-center gap-2">
                         <i class="fa-brands fa-google"></i> Google ile Giriş Yap
                     </button>
                 `;
             }
-            renderSpotsToDOM(); 
+            if(currentDetailSpotId) window.openSpotDetail(currentDetailSpotId); // Yorum yetkilerini güncelle
         });
 
+        window.loginWithGoogle = async () => { try { await signInWithPopup(auth, provider); } catch(e){ alert("Giriş Hatası."); } };
+        window.logout = async () => { await signOut(auth); };
+
         // Modallar
-        window.openAddSpotModal = (hasCoords = false) => {
-            if (!currentUser) { alert("Giriş yapmadan spot ekleyemezsin kanka."); return; }
-            if(!hasCoords) {
-                document.getElementById('spot-lat').value = '';
-                document.getElementById('spot-lng').value = '';
-            }
-            document.getElementById('add-spot-modal').classList.remove('hidden');
-        };
-        window.openSettingsModal = () => document.getElementById('settings-modal').classList.remove('hidden');
+        window.openAddSpotModal = () => { document.getElementById('add-spot-modal').classList.remove('hidden'); };
+        window.openSettingsModal = () => { document.getElementById('settings-modal').classList.remove('hidden'); };
         window.closeModals = () => {
             document.getElementById('add-spot-modal').classList.add('hidden');
             document.getElementById('settings-modal').classList.add('hidden');
+            document.getElementById('spot-detail-modal').classList.add('hidden');
+            window.clearFormRoute();
         };
 
-        window.loginWithGoogle = async () => { try { await signInWithPopup(auth, provider); } catch(e){ alert("Hata oluştu."); } };
-        window.logout = async () => { await signOut(auth); };
-        window.flyToSpot = (lat, lng) => { map.flyTo([lat, lng], 17, { animate: true, duration: 1.5 }); window.closeModals(); };
-
-        // 1 Hesap = 1 Beğeni Mantığı (ArrayUnion / ArrayRemove)
-        window.toggleLikeSpot = async (id, likedByArrayStr) => {
-            if (!currentUser) { alert("Beğenmek için giriş yapmalısın."); return; }
-            
-            const likedBy = JSON.parse(decodeURIComponent(likedByArrayStr));
-            const hasLiked = likedBy.includes(currentUser.uid);
-            const spotRef = doc(db, 'spots', id);
-
-            try {
-                if (hasLiked) {
-                    await updateDoc(spotRef, { likedBy: arrayRemove(currentUser.uid) });
-                } else {
-                    await updateDoc(spotRef, { likedBy: arrayUnion(currentUser.uid) });
-                }
-            } catch (error) { console.error("Beğeni hatası:", error); }
-        };
-
-        window.deleteSpot = async (id) => {
-            if(confirm('Kendi eklediğin bu spotu harbiden siliyoruz, emin misin?')) {
-                await deleteDoc(doc(db, 'spots', id));
-            }
-        };
-
-        // Kategori Filtresi
+        // Filtreleme
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.filter-btn').forEach(b => {
-                    b.classList.replace('bg-neon', 'bg-zinc-800');
-                    b.classList.replace('text-obsidian', 'text-zinc-300');
+                    b.classList.replace('bg-neon', 'bg-zinc-800'); b.classList.replace('text-obsidian', 'text-zinc-300');
                 });
-                e.target.classList.replace('bg-zinc-800', 'bg-neon');
-                e.target.classList.replace('text-zinc-300', 'text-obsidian');
+                e.target.classList.replace('bg-zinc-800', 'bg-neon'); e.target.classList.replace('text-zinc-300', 'text-obsidian');
                 activeFilter = e.target.getAttribute('data-filter');
                 renderSpotsToDOM();
             });
         });
 
-        // Spotları Ekrana Basan Fonksiyon 
+        // ==========================================
+        // SPOT RENDER & DETAY MANTIĞI
+        // ==========================================
         const renderSpotsToDOM = () => {
             const listContainer = document.getElementById('spot-list');
             listContainer.innerHTML = '';
             markersLayer.clearLayers();
+            routesLayer.clearLayers();
 
-            // Filtreleme
-            const filteredSpots = activeFilter === 'all' 
-                ? spotsData 
-                : spotsData.filter(s => s.category === activeFilter);
-
+            const filteredSpots = activeFilter === 'all' ? spotsData : spotsData.filter(s => s.category === activeFilter);
             document.getElementById('spot-count').innerText = filteredSpots.length;
 
             filteredSpots.forEach((spot) => {
-                const isOwner = currentUser && currentUser.uid === spot.userId;
-                const likedByArray = spot.likedBy || [];
-                const likeCount = likedByArray.length;
-                const hasLiked = currentUser && likedByArray.includes(currentUser.uid);
-                
-                // Beğeni Butonu Stili
-                const likeIconClass = hasLiked ? "fa-solid text-neon" : "fa-regular text-zinc-400";
-                const likeTextClass = hasLiked ? "text-neon" : "text-zinc-400";
-                
-                // Diziyi string'e çevirip fonksiyona yollamak zorundayız
-                const likedByStr = encodeURIComponent(JSON.stringify(likedByArray));
+                const isFreeride = spot.category === 'Freeride' && spot.route && spot.route.length > 0;
+                const mainPoint = isFreeride ? spot.route[0] : spot.coords;
 
-                const deleteButtonHTML = isOwner 
-                    ? `<button onclick="window.deleteSpot('${spot.id}')" class="text-xs text-zinc-500 hover:text-danger transition-colors bg-zinc-800/50 px-2 py-1 rounded"><i class="fa-solid fa-trash"></i> Sil</button>` 
-                    : '';
+                if (!mainPoint) return;
 
-                // Popup İçeriği
+                // Rota Çizimi (Freeride ise)
+                if(isFreeride && spot.route.length > 1) {
+                    const latlngs = spot.route.map(p => [p.lat, p.lng]);
+                    L.polyline(latlngs, {color: '#84cc16', weight: 4, opacity: 0.8}).addTo(routesLayer);
+                }
+
+                // Popup (Sadece Yönlendirme ve İnceleme)
+                const gmapsLink = `https://www.google.com/maps/dir/?api=1&destination=${mainPoint.lat},${mainPoint.lng}`;
                 const popupContent = `
-                    <div class="p-2 min-w-[200px]">
+                    <div class="p-2 min-w-[200px] text-center">
                         <h3 class="font-bold text-lg text-white mb-1">${spot.name}</h3>
-                        <p class="text-zinc-400 text-xs mb-3"><i class="fa-solid ${getCategoryIcon(spot.category)}"></i> ${spot.category}</p>
-                        <p class="text-zinc-500 text-[10px] mb-3 border-b border-zinc-700 pb-2 flex items-center gap-1">
-                            <i class="fa-solid fa-user-astronaut"></i> Ekleyen: <span class="text-zinc-300">${spot.userName || 'Anonim'}</span>
-                        </p>
-                        <div class="flex justify-between items-center pt-1">
-                            <button onclick="window.toggleLikeSpot('${spot.id}', '${likedByStr}')" class="${likeTextClass} hover:text-neon transition flex items-center gap-1 font-bold">
-                                <i class="${likeIconClass} fa-heart"></i> ${likeCount}
+                        <p class="text-zinc-400 text-xs mb-4"><i class="fa-solid ${getCategoryIcon(spot.category)}"></i> ${spot.category}</p>
+                        <div class="flex flex-col gap-2">
+                            <a href="${gmapsLink}" target="_blank" class="block w-full bg-cyan hover:bg-cyan/80 text-obsidian font-bold py-2 rounded text-sm transition">
+                                <i class="fa-solid fa-route"></i> Spota Git
+                            </a>
+                            <button onclick="window.openSpotDetail('${spot.id}')" class="block w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded text-sm transition">
+                                <i class="fa-solid fa-magnifying-glass"></i> Spotu İncele
                             </button>
-                            <span class="text-[10px] font-bold px-2 py-1 rounded bg-zinc-800 text-${spot.status === 'active' ? 'neon' : spot.status === 'warning' ? 'warning' : 'danger'} uppercase tracking-wider">
-                                ${spot.status}
-                            </span>
                         </div>
                     </div>
                 `;
 
-                // Marker Ekle
-                const marker = L.marker([spot.lat, spot.lng], { icon: createCustomMarker(spot) });
+                const marker = L.marker([mainPoint.lat, mainPoint.lng], { icon: createCustomMarker(spot.category) });
                 marker.bindPopup(popupContent);
                 markersLayer.addLayer(marker);
 
                 // Listeye Ekle
                 const el = document.createElement('div');
-                el.className = 'bg-obsidian border border-zinc-800 rounded-xl p-3 flex flex-col gap-2 hover:border-zinc-700 transition-colors cursor-pointer group relative';
+                el.className = 'bg-obsidian border border-zinc-800 rounded-xl p-3 flex flex-col gap-2 hover:border-zinc-700 transition-colors cursor-pointer group';
                 el.innerHTML = `
-                    <div class="flex justify-between items-start" onclick="window.flyToSpot(${spot.lat}, ${spot.lng})">
-                        <div class="pr-8">
-                            <h4 class="font-bold text-sm text-zinc-100 group-hover:text-cyan transition-colors truncate">${spot.name}</h4>
-                            <span class="text-[10px] text-zinc-500 block mt-0.5"><i class="fa-solid fa-user-astronaut text-zinc-600"></i> ${spot.userName || 'Anonim'}</span>
+                    <div class="flex justify-between items-start" onclick="map.flyTo([${mainPoint.lat}, ${mainPoint.lng}], 16)">
+                        <div>
+                            <h4 class="font-bold text-sm text-zinc-100 group-hover:text-cyan transition-colors">${spot.name}</h4>
+                            <span class="text-[10px] text-zinc-500 block"><i class="fa-solid fa-user-astronaut"></i> ${spot.userName || 'Anonim'}</span>
                         </div>
-                        <div class="bg-charcoal px-2 py-1 rounded text-xs border border-zinc-700 flex items-center gap-1 absolute right-3 top-3">
-                            <i class="${hasLiked ? 'fa-solid text-neon' : 'fa-regular text-zinc-400'} fa-heart"></i> <span class="text-zinc-300">${likeCount}</span>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center mt-1">
-                        <span class="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded">${spot.category}</span>
-                        ${deleteButtonHTML}
+                        <span class="text-[10px] bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded border border-zinc-700">${spot.category}</span>
                     </div>
                 `;
                 listContainer.appendChild(el);
             });
-
-            // Grafiği tüm verilere göre çiziyoruz (filtreye göre değil)
-            renderChart(spotsData);
         };
 
-        // Real-Time Veri Dinleme
+        // Spot Detay Açma
+        window.openSpotDetail = (id) => {
+            currentDetailSpotId = id;
+            const spot = spotsData.find(s => s.id === id);
+            if(!spot) return;
+
+            document.getElementById('detail-name').innerText = spot.name;
+            document.getElementById('detail-category').innerText = spot.category;
+            document.getElementById('detail-user').innerText = spot.userName;
+            document.getElementById('detail-desc').innerText = spot.desc || "Bu spot için açıklama girilmemiş.";
+
+            // Foto
+            const photoCont = document.getElementById('detail-photo-container');
+            if(spot.photoUrl) {
+                photoCont.innerHTML = `<img src="${spot.photoUrl}" class="w-full h-full object-cover">`;
+            } else {
+                photoCont.innerHTML = `<div class="flex flex-col items-center"><i class="fa-solid fa-image text-4xl text-zinc-700 mb-2"></i><span class="text-zinc-600 text-xs">Fotoğraf Yok</span></div>`;
+            }
+
+            // Türler
+            const typesCont = document.getElementById('detail-types');
+            typesCont.innerHTML = (spot.types || []).map(t => `<span class="bg-zinc-800 border border-zinc-700 text-neon px-2 py-1 rounded text-[10px] font-bold">${t}</span>`).join('');
+
+            // Admin Yetkisi
+            const adminActions = document.getElementById('admin-spot-actions');
+            if(isAdmin) {
+                adminActions.classList.remove('hidden');
+                document.getElementById('btn-admin-delete-spot').onclick = () => window.adminDeleteSpot(id);
+            } else {
+                adminActions.classList.add('hidden');
+            }
+
+            // Yorumlar
+            const commentsCont = document.getElementById('detail-comments-list');
+            const comments = spot.comments || [];
+            if(comments.length === 0) {
+                commentsCont.innerHTML = `<p class="text-xs text-zinc-500 italic">Henüz yorum yok, ilk sen ateşle.</p>`;
+            } else {
+                commentsCont.innerHTML = comments.map(c => `
+                    <div class="bg-obsidian p-3 rounded-lg border border-zinc-800 relative">
+                        <p class="text-xs font-bold text-cyan mb-1">${c.userName} <span class="text-[10px] text-zinc-600 font-normal ml-2">${new Date(c.date).toLocaleDateString()}</span></p>
+                        <p class="text-sm text-zinc-300">${c.text}</p>
+                        ${isAdmin ? `<button onclick="window.adminDeleteComment('${spot.id}', '${c.id}')" class="absolute top-2 right-2 text-danger hover:text-white text-xs"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            // Yorum Formu Görünürlüğü
+            if(currentUser) {
+                document.getElementById('add-comment-section').classList.remove('hidden');
+                document.getElementById('comment-login-warning').classList.add('hidden');
+            } else {
+                document.getElementById('add-comment-section').classList.add('hidden');
+                document.getElementById('comment-login-warning').classList.remove('hidden');
+            }
+
+            document.getElementById('spot-detail-modal').classList.remove('hidden');
+        };
+
+        // Yorum Gönderme
+        window.submitComment = async () => {
+            if(!currentUser || !currentDetailSpotId) return;
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if(text === '') return;
+
+            const newComment = {
+                id: Date.now().toString(),
+                userId: currentUser.uid,
+                userName: currentUser.displayName,
+                text: text,
+                date: Date.now()
+            };
+
+            try {
+                const spotRef = doc(db, 'spots', currentDetailSpotId);
+                await updateDoc(spotRef, { comments: arrayUnion(newComment) });
+                input.value = '';
+            } catch(e) { console.error(e); alert("Yorum atılamadı."); }
+        };
+
+        // Admin İşlemleri
+        window.adminDeleteSpot = async (id) => {
+            if(confirm("ADMİN: Bu spotu komple siliyorsun emin misin?")) {
+                await deleteDoc(doc(db, 'spots', id));
+                window.closeModals();
+            }
+        };
+
+        window.adminDeleteComment = async (spotId, commentId) => {
+            if(confirm("ADMİN: Yorumu siliyorsun?")) {
+                const spot = spotsData.find(s => s.id === spotId);
+                const commentToDel = spot.comments.find(c => c.id === commentId);
+                if(commentToDel) {
+                    await updateDoc(doc(db, 'spots', spotId), { comments: arrayRemove(commentToDel) });
+                }
+            }
+        };
+
+        // Veri Dinleme
         const q = query(collection(db, "spots"), orderBy("createdAt", "desc"));
         onSnapshot(q, (snapshot) => {
             spotsData = [];
-            snapshot.forEach((doc) => {
-                spotsData.push({ id: doc.id, ...doc.data() });
-            });
+            snapshot.forEach((doc) => { spotsData.push({ id: doc.id, ...doc.data() }); });
             renderSpotsToDOM();
+            if(!document.getElementById('spot-detail-modal').classList.contains('hidden') && currentDetailSpotId) {
+                window.openSpotDetail(currentDetailSpotId); // Açık olan modalı güncelle
+            }
         });
 
-        // Spot Ekleme Submit
+        // Spot Kaydetme (Submit)
         document.getElementById('add-spot-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
+            if (formCoords.length === 0) { alert("Haritadan nokta seç kanka!"); return; }
 
             const submitBtn = e.target.querySelector('button[type="submit"]');
             submitBtn.innerText = 'Kaydediliyor...';
             submitBtn.disabled = true;
 
+            const category = document.getElementById('spot-category').value;
+            const checkedTypes = Array.from(document.querySelectorAll('.type-checkbox:checked')).map(cb => cb.value);
+
             try {
                 const newSpot = {
                     name: document.getElementById('spot-name').value,
-                    category: document.getElementById('spot-category').value,
-                    lat: parseFloat(document.getElementById('spot-lat').value),
-                    lng: parseFloat(document.getElementById('spot-lng').value),
-                    likedBy: [], // Array olarak başlatıyoruz
+                    category: category,
+                    types: checkedTypes,
+                    desc: document.getElementById('spot-desc').value,
+                    photoUrl: document.getElementById('spot-photo').value,
                     status: 'active',
                     createdAt: Date.now(),
                     userId: currentUser.uid, 
-                    userName: currentUser.displayName 
+                    userName: currentUser.displayName,
+                    comments: []
                 };
+
+                // Freeride ise array, değilse tek koordinat objesi kaydet
+                if(category === 'Freeride') {
+                    newSpot.route = formCoords;
+                } else {
+                    newSpot.coords = formCoords[0];
+                }
 
                 await addDoc(collection(db, "spots"), newSpot);
                 e.target.reset();
                 window.closeModals();
-                map.flyTo([newSpot.lat, newSpot.lng], 16);
             } catch (error) {
-                console.error("Spot eklenirken hata:", error);
-                alert("Sistemsel bir sorun çıktı kanka.");
+                console.error("Hata:", error); alert("Sorun çıktı.");
             } finally {
                 submitBtn.innerText = 'Spotu Kaydet';
                 submitBtn.disabled = false;
-            }
-        });
-
-        // GPS Konum
-        document.getElementById('btn-get-location').addEventListener('click', () => {
-            if ("geolocation" in navigator) {
-                document.getElementById('btn-get-location').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Konum Aranıyor...';
-                navigator.geolocation.getCurrentPosition(position => {
-                    document.getElementById('spot-lat').value = position.coords.latitude.toFixed(6);
-                    document.getElementById('spot-lng').value = position.coords.longitude.toFixed(6);
-                    document.getElementById('btn-get-location').innerHTML = '<i class="fa-solid fa-check text-neon"></i> Konum Bulundu';
-                    setTimeout(() => { document.getElementById('btn-get-location').innerHTML = '<i class="fa-solid fa-crosshairs"></i> GPS Konumumu Kullan'; }, 2000);
-                }, error => {
-                    alert("Konum alınamadı: " + error.message);
-                    document.getElementById('btn-get-location').innerHTML = '<i class="fa-solid fa-crosshairs"></i> GPS Konumumu Kullan';
-                });
-            } else {
-                alert("Tarayıcın konumu desteklemiyor.");
             }
         });
 
