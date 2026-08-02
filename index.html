@@ -140,6 +140,12 @@
         <main id="map-container">
             <div id="map" class="w-full h-full"></div>
             
+            <!-- ADMIN DURUM RAPORLARI BUTONU (Sağ Üst, Gizli Başlar) -->
+            <button id="btn-admin-reports" onclick="window.openAdminReportsModal()" class="hidden absolute top-4 right-[100px] z-[400] glass-panel px-4 py-2 rounded-full flex gap-2 items-center text-sm font-semibold text-danger hover:bg-danger hover:text-white transition-colors">
+                <i class="fa-solid fa-shield-halved"></i> Raporlar 
+                <span id="pending-report-count" class="bg-danger text-white text-[10px] px-1.5 py-0.5 rounded-full hidden">0</span>
+            </button>
+
             <div class="absolute top-4 right-4 z-[400] glass-panel px-4 py-2 rounded-full flex gap-4 text-sm font-semibold pointer-events-none">
                 <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-neon"></i> Güncel</span>
             </div>
@@ -264,7 +270,7 @@
                     <label class="block text-xs text-zinc-400 mb-1">Sürüş Tarzı</label>
                     <select id="profile-stance" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100">
                         <option value="Karışık / Her Şey">Karışık / Her Şey</option>
-                        <option value="Goofy (Sağ Ayak Önde)">Şehir</option>
+                        <option value="Goofy (Sağ Ayak Önde)">Urban</option>
                         <option value="Regular (Sol Ayak Önde)">Dağ</option>
                     </select>
                 </div>
@@ -322,6 +328,17 @@
         </div>
     </div>
 
+    <!-- ADMIN REPORTS MODAL -->
+    <div id="admin-reports-modal" class="hidden fixed inset-0 z-[3000] modal-overlay flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-charcoal w-full max-w-md p-6 rounded-2xl border border-danger shadow-2xl relative my-8 max-h-[85vh] flex flex-col">
+            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <h2 class="text-xl font-bold text-danger mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Onay Bekleyen Raporlar</h2>
+            <div id="admin-reports-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2">
+                <!-- Admin raporları buraya akacak -->
+            </div>
+        </div>
+    </div>
+
     <!-- SPOT DETAY (İNCELE) MODAL -->
     <div id="spot-detail-modal" class="hidden fixed inset-0 z-[2000] modal-overlay flex justify-center p-4 overflow-y-auto">
         <div class="bg-charcoal w-full max-w-2xl mt-12 mb-auto rounded-2xl border border-zinc-700 shadow-2xl overflow-hidden relative flex flex-col max-h-[85vh]">
@@ -361,6 +378,26 @@
                     </div>
                 </div>
                 
+                <!-- DURUM RAPORLARI ALANI -->
+                <div class="mb-6 border-t border-zinc-800 pt-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-sm font-bold text-warning uppercase tracking-wider"><i class="fa-solid fa-triangle-exclamation"></i> Anlık Durum</h3>
+                        <button onclick="document.getElementById('report-form-section').classList.toggle('hidden')" class="text-xs text-warning hover:text-white transition-colors bg-warning/10 px-2 py-1 rounded"><i class="fa-solid fa-plus"></i> Bildir</button>
+                    </div>
+                    <div id="detail-active-reports" class="flex flex-wrap gap-2 mb-3"></div>
+
+                    <!-- Durum Bildirme Formu -->
+                    <div id="report-form-section" class="hidden flex flex-col gap-2 bg-obsidian p-3 rounded-xl border border-zinc-800 mt-2">
+                        <select id="report-type" class="bg-charcoal border border-zinc-700 text-xs rounded focus:ring-warning block w-full p-2 text-zinc-100">
+                            <option value="Güvenlik / Zabıta 👮">Güvenlik / Zabıta 👮</option>
+                            <option value="Zemin Islak / Bozuk 💧">Zemin Islak / Bozuk 💧</option>
+                            <option value="Tadilat / Yıkım 🚧">Tadilat / Yıkım 🚧</option>
+                        </select>
+                        <input type="url" id="report-photo" placeholder="Kanıt Fotoğrafı URL (Zorunlu)" required class="bg-charcoal border border-zinc-700 text-xs rounded focus:ring-warning block w-full p-2 text-zinc-100">
+                        <button onclick="window.submitReport()" class="bg-warning text-obsidian text-xs font-bold px-3 py-2 rounded mt-1 transition-colors hover:bg-yellow-400">Gönder (Onaya Gider)</button>
+                    </div>
+                </div>
+
                 <div id="admin-spot-actions" class="hidden mb-6 flex gap-2">
                     <button id="btn-admin-delete-spot" class="bg-danger/20 text-danger border border-danger/50 px-4 py-2 rounded-lg text-sm font-bold hover:bg-danger hover:text-white transition-colors"><i class="fa-solid fa-trash"></i> Spotu Sil (Admin)</button>
                 </div>
@@ -550,6 +587,13 @@
                         <button onclick="event.stopPropagation(); window.logout();" class="text-xs text-zinc-500 hover:text-danger transition-colors p-2" title="Çıkış Yap"><i class="fa-solid fa-right-from-bracket text-lg"></i></button>
                     </div>
                 `;
+
+                if(isAdmin) {
+                    document.getElementById('btn-admin-reports').classList.remove('hidden');
+                } else {
+                    document.getElementById('btn-admin-reports').classList.add('hidden');
+                }
+
             } else {
                 currentUserData = { favorites: [] };
                 authSection.innerHTML = `
@@ -558,10 +602,12 @@
                         <i class="fa-brands fa-google"></i> Google ile Giriş Yap
                     </button>
                 `;
+                document.getElementById('btn-admin-reports').classList.add('hidden');
             }
             renderSpotsToDOM();
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
             if(currentDetailSpotId) window.openSpotDetail(currentDetailSpotId); 
+            updateAdminReportBadge();
         });
 
         window.loginWithGoogle = async () => { try { await signInWithPopup(auth, provider); } catch(e){ alert("Giriş Hatası."); } };
@@ -585,6 +631,7 @@
         window.closeModals = () => {
             document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
             window.cancelEditDesc(); window.cancelReply();
+            document.getElementById('report-form-section').classList.add('hidden');
         };
 
         // PWA KURULUM
@@ -721,6 +768,106 @@
             if(spot) document.getElementById('detail-distance').innerText = formatDistance(spot.distance);
         };
 
+        // ==========================================
+        // DURUM RAPORU MANTIĞI & ADMİN PANELİ
+        // ==========================================
+        window.submitReport = async () => {
+            if(!currentUser || !currentDetailSpotId) return;
+            if(checkSpam()) return;
+            
+            const type = document.getElementById('report-type').value;
+            const photoUrl = document.getElementById('report-photo').value.trim();
+            
+            if(!photoUrl) { alert("Kanıt fotoğrafı linki zorunlu kanka!"); return; }
+
+            const newReport = {
+                id: Date.now().toString(),
+                type: type,
+                photoUrl: photoUrl,
+                userId: currentUser.uid,
+                userName: currentUser.displayName,
+                date: Date.now(),
+                status: 'pending' // Admin onayı bekliyor
+            };
+
+            try {
+                await updateDoc(doc(db, 'spots', currentDetailSpotId), {
+                    reports: arrayUnion(newReport)
+                });
+                document.getElementById('report-photo').value = '';
+                document.getElementById('report-form-section').classList.add('hidden');
+                alert("Durum raporun admin onayına gönderildi, sağ ol kanka!");
+            } catch(e) { alert("Rapor gönderilemedi."); }
+        };
+
+        window.openAdminReportsModal = () => {
+            if(!isAdmin) return;
+            const list = document.getElementById('admin-reports-list');
+            list.innerHTML = '';
+            let pendingCount = 0;
+            
+            spotsData.forEach(spot => {
+                const pendingReports = (spot.reports || []).filter(r => r.status === 'pending');
+                pendingReports.forEach(r => {
+                    pendingCount++;
+                    list.innerHTML += `
+                        <div class="bg-obsidian p-3 rounded-lg border border-zinc-700">
+                            <p class="text-sm font-bold text-white">${spot.name}</p>
+                            <p class="text-xs text-warning font-bold"><i class="fa-solid fa-triangle-exclamation"></i> ${r.type}</p>
+                            <p class="text-[10px] text-zinc-400 mt-1">Ekleyen: ${r.userName} • ${new Date(r.date).toLocaleString()}</p>
+                            <img src="${r.photoUrl}" class="w-full h-32 object-cover mt-2 rounded border border-zinc-800 cursor-pointer" onclick="window.open('${r.photoUrl}')">
+                            <div class="flex gap-2 mt-3">
+                                <button onclick="window.approveReport('${spot.id}', '${r.id}')" class="bg-neon text-obsidian px-3 py-1.5 rounded text-xs font-bold w-1/2 hover:bg-neonHover transition-colors">Onayla</button>
+                                <button onclick="window.rejectReport('${spot.id}', '${r.id}')" class="bg-danger text-white px-3 py-1.5 rounded text-xs font-bold w-1/2 hover:bg-red-600 transition-colors">Reddet (Sil)</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            if(pendingCount === 0) {
+                list.innerHTML = '<p class="text-xs text-zinc-500 text-center mt-4">Bekleyen rapor yok, ortalık sakin kanka.</p>';
+            }
+            document.getElementById('admin-reports-modal').classList.remove('hidden');
+        };
+
+        window.approveReport = async (spotId, reportId) => {
+            const spot = spotsData.find(s => s.id === spotId);
+            const report = spot.reports.find(r => r.id === reportId);
+            if(!report) return;
+
+            const updatedReports = spot.reports.map(r => r.id === reportId ? { ...r, status: 'approved' } : r);
+            try {
+                await updateDoc(doc(db, 'spots', spotId), { reports: updatedReports });
+            } catch(e) { console.error(e); }
+        };
+
+        window.rejectReport = async (spotId, reportId) => {
+            if(!confirm("Bu raporu çöpe atıyorsun emin misin?")) return;
+            const spot = spotsData.find(s => s.id === spotId);
+            const report = spot.reports.find(r => r.id === reportId);
+            if(report) {
+                try {
+                    await updateDoc(doc(db, 'spots', spotId), { reports: arrayRemove(report) });
+                } catch(e) { console.error(e); }
+            }
+        };
+
+        const updateAdminReportBadge = () => {
+            if(!isAdmin) return;
+            let pendingCount = 0;
+            spotsData.forEach(s => {
+                (s.reports || []).forEach(r => { if(r.status === 'pending') pendingCount++; });
+            });
+            const badge = document.getElementById('pending-report-count');
+            if(pendingCount > 0) {
+                badge.innerText = pendingCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        };
+
         window.openSpotDetail = (id) => {
             currentDetailSpotId = id; const spot = spotsData.find(s => s.id === id); if(!spot) return;
 
@@ -748,7 +895,22 @@
             if(isAdmin) document.getElementById('btn-admin-delete-spot').onclick = () => window.adminDeleteSpot(id);
 
             window.cancelEditDesc(); window.cancelReply();
+            document.getElementById('report-form-section').classList.add('hidden');
             document.getElementById('btn-edit-desc').onclick = () => { document.getElementById('desc-view-mode').classList.add('hidden'); document.getElementById('desc-edit-mode').classList.remove('hidden'); document.getElementById('detail-desc-input').value = spot.desc || ""; };
+
+            // Aktif (Onaylanmış) Raporları Göster
+            const approvedReports = (spot.reports || []).filter(r => r.status === 'approved');
+            const reportsCont = document.getElementById('detail-active-reports');
+            if(approvedReports.length > 0) {
+                reportsCont.innerHTML = approvedReports.map(r => `
+                    <div class="bg-warning/10 border border-warning/30 text-warning px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1.5 cursor-pointer hover:bg-warning/20 transition-colors" onclick="window.open('${r.photoUrl}')" title="Kanıtı Gör">
+                        <i class="fa-solid fa-triangle-exclamation"></i> ${r.type} <span class="opacity-70 font-normal ml-1">${new Date(r.date).toLocaleDateString()}</span>
+                        ${isAdmin ? `<button onclick="event.stopPropagation(); window.rejectReport('${spot.id}', '${r.id}')" class="ml-2 text-danger hover:text-white"><i class="fa-solid fa-xmark"></i></button>` : ''}
+                    </div>
+                `).join('');
+            } else {
+                reportsCont.innerHTML = '<span class="text-xs text-zinc-500 italic">Şu anlık sıkıntı yok gibi duruyor.</span>';
+            }
 
             renderComments(spot.comments || []);
             document.getElementById('add-comment-section').classList.toggle('hidden', !currentUser);
@@ -848,6 +1010,9 @@
         onSnapshot(q, (snapshot) => {
             spotsData = []; snapshot.forEach((doc) => { spotsData.push({ id: doc.id, ...doc.data() }); });
             renderSpotsToDOM();
+            updateAdminReportBadge();
+            
+            if(!document.getElementById('admin-reports-modal').classList.contains('hidden')) window.openAdminReportsModal();
             if(!document.getElementById('spot-detail-modal').classList.contains('hidden') && currentDetailSpotId) window.openSpotDetail(currentDetailSpotId); 
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
         });
@@ -884,7 +1049,8 @@
                     name: document.getElementById('spot-name').value,
                     category: category, types: checkedTypes, desc: document.getElementById('spot-desc').value,
                     photoUrl: document.getElementById('spot-photo').value, locationText: locText,
-                    status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: currentUser.displayName, comments: [],
+                    status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: currentUser.displayName, 
+                    comments: [], reports: [], // Rapor array'i başlatıldı
                     coords: {lat, lng}
                 };
 
