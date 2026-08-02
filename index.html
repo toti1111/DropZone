@@ -152,7 +152,7 @@
 
             <!-- Floating Action Buttons (Sağ Alt) -->
             <div class="absolute bottom-6 right-6 z-[400] flex flex-col gap-3">
-                <button onclick="window.locateMe()" class="w-12 h-12 bg-charcoal border border-zinc-700 hover:border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-110" title="Beni Bul">
+                <button onclick="window.locateMe()" class="w-12 h-12 bg-charcoal border border-zinc-700 hover:border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-110" title="Konumumu Bul">
                     <i class="fa-solid fa-location-crosshairs"></i>
                 </button>
                 <button onclick="window.openFavoritesModal()" class="w-12 h-12 bg-charcoal border border-zinc-700 hover:border-warning text-warning rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-110" title="Favorilerim">
@@ -176,7 +176,7 @@
             <h2 class="text-xl font-bold text-zinc-100 mb-2 flex items-center gap-2">
                 <i class="fa-solid fa-location-dot text-neon"></i> Yeni Spot Kaydet
             </h2>
-            <p class="text-xs text-cyan mb-4" id="route-instruction">Haritaya tıklayarak koordinatları belirle.</p>
+            <p class="text-xs text-cyan mb-4" id="route-instruction">Haritaya tıklayarak koordinatları belirleyin.</p>
             
             <form id="add-spot-form" class="flex flex-col gap-4">
                 <div>
@@ -194,7 +194,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs text-zinc-400 mb-2">Tür Seçimi (Birden fazla seçebilirsin)</label>
+                    <label class="block text-xs text-zinc-400 mb-2">Tür Seçimi (Birden fazla seçebilirsiniz)</label>
                     <div class="grid grid-cols-2 gap-2">
                         <label class="custom-checkbox cursor-pointer">
                             <input type="checkbox" value="Merdiven" class="type-checkbox hidden">
@@ -228,7 +228,7 @@
 
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Açıklama / Detaylar</label>
-                    <textarea id="spot-desc" rows="2" placeholder="Spot hakkında bilmemiz gerekenler..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100"></textarea>
+                    <textarea id="spot-desc" rows="2" placeholder="Spot hakkında bilmemiz gereken detaylar..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100"></textarea>
                 </div>
 
                 <div>
@@ -254,7 +254,7 @@
                     <div class="w-24 h-24 rounded-full border-2 border-neon relative overflow-hidden group">
                         <img id="profile-img-preview" src="" class="w-full h-full object-cover">
                     </div>
-                    <p class="text-[10px] text-zinc-500 text-center">Profil fotoğrafın Google hesabından alınır.</p>
+                    <p class="text-[10px] text-zinc-500 text-center">Profil fotoğrafınız Google hesabınızdan alınır.</p>
                 </div>
 
                 <div>
@@ -270,14 +270,14 @@
                     <label class="block text-xs text-zinc-400 mb-1">Sürüş Tarzı</label>
                     <select id="profile-stance" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100">
                         <option value="Karışık / Her Şey">Karışık / Her Şey</option>
-                        <option value="Goofy (Sağ Ayak Önde)">Urban</option>
-                        <option value="Regular (Sol Ayak Önde)">Dağ</option>
+                        <option value="Goofy (Sağ Ayak Önde)">Goofy (Sağ Ayak Önde)</option>
+                        <option value="Regular (Sol Ayak Önde)">Regular (Sol Ayak Önde)</option>
                     </select>
                 </div>
 
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Biyografi (Hakkında)</label>
-                    <textarea id="profile-bio" rows="3" placeholder="Bisiklet, kaykay, hayat..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100"></textarea>
+                    <textarea id="profile-bio" rows="3" placeholder="Kendinizden bahsedin..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100"></textarea>
                 </div>
 
                 <button type="submit" class="w-full mt-2 bg-neon hover:bg-neonHover text-obsidian font-bold rounded-lg text-sm px-5 py-3 transition-all">
@@ -304,7 +304,7 @@
                     <button id="btn-install-pwa" class="hidden w-full bg-cyan text-obsidian font-bold py-3 rounded-lg text-sm hover:bg-cyan/80 transition-colors flex items-center justify-center gap-2">
                         <i class="fa-solid fa-download"></i> Uygulama Olarak Yükle
                     </button>
-                    <p id="pwa-instruction" class="text-[10px] text-zinc-500 text-center mt-2">Cihaz desteklemiyorsa tarayıcı menüsünden "Ana Ekrana Ekle" yapabilirsin.</p>
+                    <p id="pwa-instruction" class="text-[10px] text-zinc-500 text-center mt-2">Cihazınız desteklemiyorsa tarayıcı menüsünden "Ana Ekrana Ekle" seçeneğini kullanabilirsiniz.</p>
                 </div>
             </div>
         </div>
@@ -379,7 +379,7 @@
                 </div>
                 
                 <!-- DURUM RAPORLARI ALANI -->
-                <div class="mb-6 border-t border-zinc-800 pt-4">
+                <div id="detail-report-section" class="mb-6 border-t border-zinc-800 pt-4 rounded-xl transition-all duration-300">
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="text-sm font-bold text-warning uppercase tracking-wider"><i class="fa-solid fa-triangle-exclamation"></i> Anlık Durum</h3>
                         <button onclick="document.getElementById('report-form-section').classList.toggle('hidden')" class="text-xs text-warning hover:text-white transition-colors bg-warning/10 px-2 py-1 rounded"><i class="fa-solid fa-plus"></i> Bildir</button>
@@ -409,13 +409,13 @@
                     
                     <div id="add-comment-section" class="flex flex-col gap-2">
                         <div id="reply-indicator" class="hidden flex justify-between items-center bg-cyan/10 border border-cyan/30 text-cyan text-xs px-3 py-1.5 rounded-lg">
-                            <span>Yanıtlıyorsun: <strong id="reply-to-name">@username</strong></span>
+                            <span>Yanıtlıyorsunuz: <strong id="reply-to-name">@username</strong></span>
                             <button onclick="window.cancelReply()" class="hover:text-white"><i class="fa-solid fa-xmark"></i></button>
                         </div>
-                        <input type="text" id="comment-input" placeholder="Yorum yazıp Enter'a bas..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100">
-                        <p class="text-[10px] text-zinc-500">Ana yorum hakkın haftalık 5 adettir. Cevap yazmak sınırsızdır.</p>
+                        <input type="text" id="comment-input" placeholder="Yorum yazıp Enter'a basın..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100">
+                        <p class="text-[10px] text-zinc-500">Ana yorum hakkınız haftalık 5 adettir. Cevap yazmak sınırsızdır.</p>
                     </div>
-                    <p id="comment-login-warning" class="text-xs text-warning hidden">Yorum yazmak için giriş yapmalısın.</p>
+                    <p id="comment-login-warning" class="text-xs text-warning hidden">Yorum yazmak için giriş yapmalısınız.</p>
                 </div>
             </div>
         </div>
@@ -453,7 +453,7 @@
         let replyingToUsername = null;
         
         let lastActionTime = 0;
-        const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { alert("Sakin ol şampiyon, 3 saniye bekle."); return true; } lastActionTime = Date.now(); return false; };
+        const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { alert("Lütfen çok sık işlem yapmayınız, 3 saniye bekleyin."); return true; } lastActionTime = Date.now(); return false; };
 
         // GPS Konum
         let userLocation = null;
@@ -496,9 +496,11 @@
             } catch(e) { return "Bilinmeyen Konum"; }
         }
 
-        // HARİTA KURULUMU
-        const map = L.map('map', { zoomControl: false }).setView([38.4237, 27.1428], 6); 
+        // HARİTA KURULUMU (Mobil tıklama onarımı için closePopupOnClick false yapıldı, sadece kaydırmada kapanacak)
+        const map = L.map('map', { zoomControl: false, closePopupOnClick: false }).setView([38.4237, 27.1428], 6); 
         L.control.zoom({ position: 'topright' }).addTo(map);
+        
+        map.on('movestart', () => { map.closePopup(); });
 
         const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' });
         const satTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: '&copy; Esri' });
@@ -523,14 +525,21 @@
         window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('open');
         window.locateMe = () => {
             if(userLocation) map.flyTo([userLocation.lat, userLocation.lng], 15, {animate: true, duration: 1});
-            else alert("GPS konumun henüz bulunamadı veya izin vermedin.");
+            else alert("GPS konumunuz henüz bulunamadı veya izin vermediniz.");
         };
 
-        const getCategoryIcon = (cat) => cat === 'DirtJump' ? 'fa-wave-square' : 'fa-building'; 
-        const createCustomMarker = (cat) => {
+        const getSpotIcon = (spot) => {
+            if (spot.types && spot.types.includes('Merdiven')) return 'fa-stairs';
+            if (spot.category === 'DirtJump') return 'fa-wave-square';
+            return 'fa-building'; 
+        };
+
+        const createCustomMarker = (spot, hasReport) => {
+            const color = hasReport ? '#ef4444' : '#84cc16';
+            const shadow = hasReport ? 'rgba(239,68,68,0.6)' : 'rgba(132,204,22,0.6)';
             return L.divIcon({
-                html: `<div style="background-color: #84cc16; width: 36px; height: 36px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(132,204,22,0.6); border: 2px solid #fff;">
-                           <i class="fa-solid ${getCategoryIcon(cat)}" style="color: #09090b; font-size: 16px; transform: rotate(45deg);"></i>
+                html: `<div style="background-color: ${color}; width: 36px; height: 36px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px ${shadow}; border: 2px solid #fff;">
+                           <i class="fa-solid ${getSpotIcon(spot)}" style="color: #09090b; font-size: 16px; transform: rotate(45deg);"></i>
                        </div>`,
                 className: 'custom-leaflet-marker', iconSize: [36, 36], iconAnchor: [18, 36], popupAnchor: [0, -36]
             });
@@ -539,7 +548,7 @@
         // FORMA NOKTA EKLEME (Sadece Tıklama)
         map.on('click', (e) => {
             if (!document.getElementById('add-spot-modal').classList.contains('hidden')) return; 
-            if (!currentUser) { alert("Spot eklemek için giriş yapman lazım!"); return; }
+            if (!currentUser) { alert("Spot eklemek için giriş yapmalısınız."); return; }
             if(checkSpam()) return;
             
             document.getElementById('spot-lat').value = parseFloat(e.latlng.lat.toFixed(5));
@@ -551,7 +560,7 @@
 
         // MANUEL KOORDİNAT EKLEME (FAB +)
         window.openManualAddSpotModal = () => {
-            if (!currentUser) { alert("Spot eklemek için giriş yapman lazım!"); return; }
+            if (!currentUser) { alert("Spot eklemek için giriş yapmalısınız."); return; }
             document.getElementById('spot-lat').value = '';
             document.getElementById('spot-lng').value = '';
             document.getElementById('spot-lat').readOnly = false;
@@ -597,7 +606,7 @@
             } else {
                 currentUserData = { favorites: [] };
                 authSection.innerHTML = `
-                    <p class="text-sm text-zinc-400 mb-3">Sisteme girmeden piyasayı şekillendiremezsin.</p>
+                    <p class="text-sm text-zinc-400 mb-3">İşlem yapabilmek için giriş yapmalısınız.</p>
                     <button onclick="window.loginWithGoogle()" class="w-full bg-white text-obsidian hover:bg-zinc-200 font-bold rounded-lg text-sm px-5 py-2.5 transition-all flex items-center justify-center gap-2">
                         <i class="fa-brands fa-google"></i> Google ile Giriş Yap
                     </button>
@@ -616,7 +625,7 @@
         // MODALLAR
         window.openSettingsModal = () => document.getElementById('settings-modal').classList.remove('hidden');
         window.openFavoritesModal = () => {
-            if(!currentUser) { alert("Favoriler için giriş yapman lazım."); return; }
+            if(!currentUser) { alert("Favoriler için giriş yapmalısınız."); return; }
             window.renderFavorites('all');
             document.getElementById('favorites-modal').classList.remove('hidden');
         };
@@ -670,6 +679,7 @@
             filteredSpots.forEach((spot) => {
                 const pt = spot.coords; if(!pt) return;
                 const distText = formatDistance(spot.distance);
+                const hasReport = spot.reports && spot.reports.some(r => r.status === 'approved');
 
                 const gmapsLink = `https://www.google.com/maps/dir/?api=1&destination=${pt.lat},${pt.lng}`;
                 const popupContent = `
@@ -683,7 +693,7 @@
                     </div>
                 `;
 
-                const marker = L.marker([pt.lat, pt.lng], { icon: createCustomMarker(spot.category) });
+                const marker = L.marker([pt.lat, pt.lng], { icon: createCustomMarker(spot, hasReport) });
                 marker.bindPopup(popupContent);
                 markersLayer.addLayer(marker);
 
@@ -726,7 +736,7 @@
             
             favs.sort((a, b) => a.distance - b.distance);
 
-            if(favs.length === 0) { listContainer.innerHTML = '<p class="text-xs text-zinc-500 text-center mt-4">Burası boş kanka.</p>'; return; }
+            if(favs.length === 0) { listContainer.innerHTML = '<p class="text-xs text-zinc-500 text-center mt-4">Henüz favori spotunuz bulunmuyor.</p>'; return; }
 
             favs.forEach(spot => {
                 const el = document.createElement('div');
@@ -744,7 +754,7 @@
         };
 
         window.toggleFavorite = async (spotId) => {
-            if(!currentUser) { alert("Giriş yapman lazım!"); return; }
+            if(!currentUser) { alert("Favorilere eklemek için giriş yapmalısınız."); return; }
             if(checkSpam()) return;
             const isFav = currentUserData.favorites.includes(spotId);
             const userRef = doc(db, 'users', currentUser.uid);
@@ -778,7 +788,7 @@
             const type = document.getElementById('report-type').value;
             const photoUrl = document.getElementById('report-photo').value.trim();
             
-            if(!photoUrl) { alert("Kanıt fotoğrafı linki zorunlu kanka!"); return; }
+            if(!photoUrl) { alert("Kanıt fotoğrafı bağlantısı zorunludur."); return; }
 
             const newReport = {
                 id: Date.now().toString(),
@@ -787,7 +797,7 @@
                 userId: currentUser.uid,
                 userName: currentUser.displayName,
                 date: Date.now(),
-                status: 'pending' // Admin onayı bekliyor
+                status: 'pending' 
             };
 
             try {
@@ -796,7 +806,7 @@
                 });
                 document.getElementById('report-photo').value = '';
                 document.getElementById('report-form-section').classList.add('hidden');
-                alert("Durum raporun admin onayına gönderildi, sağ ol kanka!");
+                alert("Durum raporunuz admin onayına gönderildi.");
             } catch(e) { alert("Rapor gönderilemedi."); }
         };
 
@@ -826,7 +836,7 @@
             });
 
             if(pendingCount === 0) {
-                list.innerHTML = '<p class="text-xs text-zinc-500 text-center mt-4">Bekleyen rapor yok, ortalık sakin kanka.</p>';
+                list.innerHTML = '<p class="text-xs text-zinc-500 text-center mt-4">Bekleyen rapor bulunmuyor.</p>';
             }
             document.getElementById('admin-reports-modal').classList.remove('hidden');
         };
@@ -843,7 +853,7 @@
         };
 
         window.rejectReport = async (spotId, reportId) => {
-            if(!confirm("Bu raporu çöpe atıyorsun emin misin?")) return;
+            if(!confirm("Bu raporu reddetmek (silmek) istediğinize emin misiniz?")) return;
             const spot = spotsData.find(s => s.id === spotId);
             const report = spot.reports.find(r => r.id === reportId);
             if(report) {
@@ -898,10 +908,14 @@
             document.getElementById('report-form-section').classList.add('hidden');
             document.getElementById('btn-edit-desc').onclick = () => { document.getElementById('desc-view-mode').classList.add('hidden'); document.getElementById('desc-edit-mode').classList.remove('hidden'); document.getElementById('detail-desc-input').value = spot.desc || ""; };
 
-            // Aktif (Onaylanmış) Raporları Göster
+            // Aktif (Onaylanmış) Raporları Göster ve Parlama Efekti Uygula
             const approvedReports = (spot.reports || []).filter(r => r.status === 'approved');
             const reportsCont = document.getElementById('detail-active-reports');
+            const reportSection = document.getElementById('detail-report-section');
+
             if(approvedReports.length > 0) {
+                reportSection.classList.add('shadow-[0_0_15px_rgba(239,68,68,0.5)]', 'border-danger', 'border', 'p-3');
+                reportSection.classList.remove('border-t', 'border-zinc-800');
                 reportsCont.innerHTML = approvedReports.map(r => `
                     <div class="bg-warning/10 border border-warning/30 text-warning px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1.5 cursor-pointer hover:bg-warning/20 transition-colors" onclick="window.open('${r.photoUrl}')" title="Kanıtı Gör">
                         <i class="fa-solid fa-triangle-exclamation"></i> ${r.type} <span class="opacity-70 font-normal ml-1">${new Date(r.date).toLocaleDateString()}</span>
@@ -909,7 +923,9 @@
                     </div>
                 `).join('');
             } else {
-                reportsCont.innerHTML = '<span class="text-xs text-zinc-500 italic">Şu anlık sıkıntı yok gibi duruyor.</span>';
+                reportSection.classList.remove('shadow-[0_0_15px_rgba(239,68,68,0.5)]', 'border-danger', 'border', 'p-3');
+                reportSection.classList.add('border-t', 'border-zinc-800');
+                reportsCont.innerHTML = '<span class="text-xs text-zinc-500 italic">Şu anlık aktif bir rapor bulunmuyor.</span>';
             }
 
             renderComments(spot.comments || []);
@@ -982,24 +998,24 @@
                 const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
                 const recentRoots = (spotData.comments || []).filter(c => c.userId === currentUser.uid && !c.replyToId && c.date > oneWeekAgo);
                 if(recentRoots.length >= 5) {
-                    alert("Bu spota bu hafta 5 ana yorum limitini doldurdun.");
+                    alert("Bu spot için haftalık 5 ana yorum limitinizi doldurdunuz.");
                     return;
                 }
             }
 
-            if(!confirm("Yorumu göndermek istediğine emin misin amına koyayım?")) return;
+            if(!confirm("Yorumu göndermek istediğinize emin misiniz?")) return;
 
             const newComment = { id: Date.now().toString(), userId: currentUser.uid, userName: currentUser.displayName, text: text, date: Date.now(), replyToId: replyingToCommentId };
             try {
                 await updateDoc(doc(db, 'spots', currentDetailSpotId), { comments: arrayUnion(newComment) });
                 input.value = ''; window.cancelReply();
                 setTimeout(() => { const list = document.getElementById('detail-comments-list'); list.scrollTop = list.scrollHeight; }, 300);
-            } catch(e) { alert("Yorum atılamadı."); }
+            } catch(e) { alert("Yorum gönderilemedi."); }
         };
 
-        window.adminDeleteSpot = async (id) => { if(confirm("Kökten siliyorsun?")) { await deleteDoc(doc(db, 'spots', id)); window.closeModals(); } };
+        window.adminDeleteSpot = async (id) => { if(confirm("Bu spotu silmek istediğinize emin misiniz?")) { await deleteDoc(doc(db, 'spots', id)); window.closeModals(); } };
         window.adminDeleteComment = async (spotId, commentId) => {
-            if(confirm("Yorum uçurulacak?")) {
+            if(confirm("Bu yorumu silmek istediğinize emin misiniz?")) {
                 const sp = spotsData.find(s => s.id === spotId); const cToDel = sp.comments.find(c => c.id === commentId);
                 if(cToDel) await updateDoc(doc(db, 'spots', spotId), { comments: arrayRemove(cToDel) });
             }
@@ -1027,8 +1043,8 @@
                 currentUserData.bio = document.getElementById('profile-bio').value;
                 await setDoc(doc(db, 'users', currentUser.uid), currentUserData);
                 onAuthStateChanged(auth, (user) => { if(user) currentUser = user; }); 
-                window.closeModals(); alert("Profil jilet gibi oldu!");
-            } catch (error) { alert("Hata."); } finally { btn.innerText = 'Profili Güncelle'; btn.disabled = false; }
+                window.closeModals(); alert("Profiliniz başarıyla güncellendi.");
+            } catch (error) { alert("Bir hata oluştu."); } finally { btn.innerText = 'Profili Güncelle'; btn.disabled = false; }
         });
 
         document.getElementById('add-spot-form').addEventListener('submit', async (e) => {
@@ -1037,7 +1053,7 @@
             
             const lat = parseFloat(document.getElementById('spot-lat').value);
             const lng = parseFloat(document.getElementById('spot-lng').value);
-            if(isNaN(lat) || isNaN(lng)) { alert("Geçerli koordinat gir."); return; }
+            if(isNaN(lat) || isNaN(lng)) { alert("Lütfen geçerli bir koordinat giriniz."); return; }
 
             const btn = e.target.querySelector('button[type="submit"]'); btn.innerText = 'Kaydediliyor...'; btn.disabled = true;
 
@@ -1050,13 +1066,13 @@
                     category: category, types: checkedTypes, desc: document.getElementById('spot-desc').value,
                     photoUrl: document.getElementById('spot-photo').value, locationText: locText,
                     status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: currentUser.displayName, 
-                    comments: [], reports: [], // Rapor array'i başlatıldı
+                    comments: [], reports: [], 
                     coords: {lat, lng}
                 };
 
                 await addDoc(collection(db, "spots"), newSpot);
                 e.target.reset(); window.closeModals();
-            } catch (error) { alert("Sorun çıktı kanka."); } finally { btn.innerText = 'Spotu Kaydet'; btn.disabled = false; }
+            } catch (error) { alert("Bir sorun oluştu, lütfen tekrar deneyin."); } finally { btn.innerText = 'Spotu Kaydet'; btn.disabled = false; }
         });
 
     </script>
