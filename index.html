@@ -480,7 +480,7 @@
         window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('open');
         window.locateMe = () => {
             if(userLocation) map.flyTo([userLocation.lat, userLocation.lng], 15, {animate: true, duration: 1});
-            else alert("GPS konumun henüz bulunamadı veya izin vermedin kanka.");
+            else alert("GPS konumun henüz bulunamadı veya izin vermedin.");
         };
 
         const getCategoryIcon = (cat) => cat === 'DirtJump' ? 'fa-wave-square' : 'fa-building'; 
