@@ -9,15 +9,9 @@
     <meta name="theme-color" content="#09090b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjODRjYzE2IiBkPSJNNDA1LjggMjEwLjFjLTE1LjYgMC0zMC41IDMuNy00NC4xIDEwLjJMMzExIDExN2MtMy40LTEwLjQtMTMuNi0xNy41LTI0LjYtMTcuNWgtMjIuMUMyNTMuMiA4MS4zIDI0MCA2NCAyMjQgNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMyczE0LjMgMzIgMzIgMzJjMTIuOSAwIDI0LTMuNiAzMC4xLTEwaDE3LjZsNDAuMiA5MS4yYy0xOC40IDE1LjUtMzAuMiAzOC44LTMwLjIgNjQuOCAwIDQ2LjkgMzguMSA4NSA4NSA4NXM4NS0zOC4xIDg1LTg1Yy4xLTQ2LjktMzgtODUtODQuOS04NXptMCAxMTljLTIwLjkgMC0zOC0xNy4xLTM4LTM4czE3LjEtMzggMzgtMzggMzggMTcuMSAzOCAzOC0xNy4xIDM4LTM4IDM4em0tMjY1LjktMTYuMmMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhzMjEuNS00OCA0OC00OGMyNC4xIDAgNDQuMyAxNy43IDQ3LjYgNDEuMmw0My43LTEwLjRjLTYuOS00MS00Mi42LTcyLjgtODUuNC03My4yLTQ2LjktLjQtODUuNCAzNy4yLTg1LjQgODQuMnMuNCA4NC4yIDQ3LjMgODQuMmMzNy41IDAgNzEuMi0yMyA4Mi43LTU2bC00NC44LTEyLjRjLTYuMiAyMS0yNS42IDM2LjgtNDcuNyAzNi44eiIvPjwvc3ZnPg==">
-
-    <!-- Leaflet CSS -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjODRjYzE2IiBkPSJNNDA1LjggMjEwLjFjLTE1LjYgMC0zMC41IDMuNy00NC4xIDEwLjJMMzExIDExN2MtMy40LTEwLjQtMTMuNi0xNy41LTI0LjYtMTcuNWgtMjIuMUMyNTMuMiA4MS4zIDI0MCA2NCAyMjQgNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMyczE0LjMgMzIgMzIgMzJjMTIuOSAwIDI0LTMuNiAzMC4xLTEwaDE3LjZsNDAuMiA5MS4yYy0xOC40IDE1LjUtMzAuMiAzOC44LTMwLjIgNjQuOCAwIDQ2LjkgMzguMSA4NSA4NSA4NXM4NS0zOC4xIDg1LTg1Yy4xLTQ2LjktMzgtODUtODQuOS04NXptMCAxMTljLTIwLjkgMC0zOC0xNy4xLTM4LTM4czE3LjEtMzggMzgtMzggMzggMTcuMSAzOCAzOC0xNy4xIDM4LTM4IDM4em0tMjY1LjktMTYuMmMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhzMjEuNS00OCA0OC00OGMyNC4xIDAgNDQuMyAxNy43IDQ3LjYgNDEuMmw0My43LTEwLjRjLTYuOS00MS00Mi42LTcyLjgtODUuNC03My4yLTQ2LjktLjQtODUuNCAzNy4yLTg1LjQgODQuMnMuNCA4NC4yIDQ3LjMgODQuMmMzNy41IDAgNzEuMi0yMyA4Mi43LTU2bC00NC44LTEyLjRjLTYuMiAyMS0yNS42IDM2LjgtNDcuNyAzNi44eiIvPjwvc3ZnPg==", sizes: "512x512", type: "image/svg+xml"}]
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -62,7 +56,6 @@
 
         .custom-checkbox input:checked + div { background-color: #84cc16; border-color: #84cc16; color: #09090b; }
 
-        /* Kullanıcı Konum İkonu (Pulsing) */
         .user-location-marker {
             width: 16px; height: 16px; background-color: #06b6d4; border-radius: 50%;
             border: 3px solid #fff; box-shadow: 0 0 0 rgba(6, 182, 212, 0.4);
@@ -77,7 +70,6 @@
 </head>
 <body class="antialiased font-sans">
 
-    <!-- Dinamik PWA Manifest Ekleme -->
     <script>
         const manifestData = {
             name: "DropZone", short_name: "DropZone", start_url: ".", display: "standalone",
@@ -88,14 +80,12 @@
         document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
     </script>
 
-    <!-- Menü Açma Butonu -->
     <button onclick="window.toggleSidebar()" class="absolute top-4 left-4 z-[500] w-12 h-12 bg-charcoal border border-neon text-neon hover:bg-neon hover:text-obsidian rounded-xl shadow-lg flex items-center justify-center text-xl transition-all">
         <i class="fa-solid fa-bars"></i>
     </button>
 
     <div id="app-container">
         
-        <!-- SIDEBAR -->
         <aside id="sidebar" class="glass-panel p-6 shadow-2xl flex flex-col gap-6">
             <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mt-2">
                 <div>
@@ -105,12 +95,10 @@
                 <button onclick="window.toggleSidebar()" class="text-zinc-400 hover:text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
-            <!-- AUTH SECTION -->
             <div id="auth-section" class="bg-charcoal p-4 rounded-2xl border border-zinc-800 shadow-inner flex flex-col items-center justify-center text-center transition-colors">
                 <i class="fa-solid fa-circle-notch fa-spin text-neon text-2xl"></i>
             </div>
 
-            <!-- Kategori Filtreleme -->
             <div class="flex flex-col gap-2">
                 <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Filtrele</h2>
                 <div class="flex flex-wrap gap-2" id="filter-buttons">
@@ -120,7 +108,6 @@
                 </div>
             </div>
 
-            <!-- Spot Listesi -->
             <div class="flex-grow flex flex-col gap-3">
                 <h2 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex justify-between items-center">
                     <span>Spot Listesi (Yakından Uzağa)</span>
@@ -129,18 +116,15 @@
                 <div id="spot-list" class="flex flex-col gap-3 pb-4"></div>
             </div>
 
-            <!-- Sürüm ve İmza -->
             <div class="mt-auto pt-4 border-t border-zinc-800 text-center flex flex-col gap-1">
                 <span class="text-[10px] text-zinc-500 font-bold tracking-wider">v0.1</span>
                 <span class="text-[10px] text-zinc-600">made by <span class="text-neon">cnr_xdw</span></span>
             </div>
         </aside>
 
-        <!-- MAP AREA -->
         <main id="map-container">
             <div id="map" class="w-full h-full"></div>
             
-            <!-- ADMIN DURUM RAPORLARI BUTONU (Sağ Üst, Gizli Başlar) -->
             <button id="btn-admin-reports" onclick="window.openAdminReportsModal()" class="hidden absolute top-4 right-[100px] z-[400] glass-panel px-4 py-2 rounded-full flex gap-2 items-center text-sm font-semibold text-danger hover:bg-danger hover:text-white transition-colors">
                 <i class="fa-solid fa-shield-halved"></i> Raporlar 
                 <span id="pending-report-count" class="bg-danger text-white text-[10px] px-1.5 py-0.5 rounded-full hidden">0</span>
@@ -150,7 +134,6 @@
                 <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-neon"></i> Güncel</span>
             </div>
 
-            <!-- Floating Action Buttons (Sağ Alt) -->
             <div class="absolute bottom-6 right-6 z-[400] flex flex-col gap-3">
                 <button onclick="window.locateMe()" class="w-12 h-12 bg-charcoal border border-zinc-700 hover:border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-110" title="Konumumu Bul">
                     <i class="fa-solid fa-location-crosshairs"></i>
@@ -322,9 +305,7 @@
                 <button onclick="window.renderFavorites('DirtJump')" id="fav-btn-DirtJump" class="bg-zinc-800 text-zinc-300 hover:text-warning px-3 py-1 rounded-full text-xs font-bold transition-colors whitespace-nowrap">Dirt Jump</button>
             </div>
             
-            <div id="favorites-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2">
-                <!-- Favoriler buraya gelecek -->
-            </div>
+            <div id="favorites-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2"></div>
         </div>
     </div>
 
@@ -333,9 +314,7 @@
         <div class="bg-charcoal w-full max-w-md p-6 rounded-2xl border border-danger shadow-2xl relative my-8 max-h-[85vh] flex flex-col">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             <h2 class="text-xl font-bold text-danger mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Onay Bekleyen Raporlar</h2>
-            <div id="admin-reports-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2">
-                <!-- Admin raporları buraya akacak -->
-            </div>
+            <div id="admin-reports-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2"></div>
         </div>
     </div>
 
@@ -496,7 +475,7 @@
             } catch(e) { return "Bilinmeyen Konum"; }
         }
 
-        // HARİTA KURULUMU (Mobil tıklama onarımı için closePopupOnClick false yapıldı, sadece kaydırmada kapanacak)
+        // HARİTA KURULUMU (Mobil onarımı için closePopupOnClick false yapıldı)
         const map = L.map('map', { zoomControl: false, closePopupOnClick: false }).setView([38.4237, 27.1428], 6); 
         L.control.zoom({ position: 'topright' }).addTo(map);
         
@@ -545,7 +524,6 @@
             });
         };
 
-        // FORMA NOKTA EKLEME (Sadece Tıklama)
         map.on('click', (e) => {
             if (!document.getElementById('add-spot-modal').classList.contains('hidden')) return; 
             if (!currentUser) { alert("Spot eklemek için giriş yapmalısınız."); return; }
@@ -558,7 +536,6 @@
             document.getElementById('add-spot-modal').classList.remove('hidden');
         });
 
-        // MANUEL KOORDİNAT EKLEME (FAB +)
         window.openManualAddSpotModal = () => {
             if (!currentUser) { alert("Spot eklemek için giriş yapmalısınız."); return; }
             document.getElementById('spot-lat').value = '';
@@ -568,7 +545,6 @@
             document.getElementById('add-spot-modal').classList.remove('hidden');
         };
 
-        // AUTH İŞLEMLERİ
         const authSection = document.getElementById('auth-section');
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
@@ -622,7 +598,6 @@
         window.loginWithGoogle = async () => { try { await signInWithPopup(auth, provider); } catch(e){ alert("Giriş Hatası."); } };
         window.logout = async () => { await signOut(auth); };
 
-        // MODALLAR
         window.openSettingsModal = () => document.getElementById('settings-modal').classList.remove('hidden');
         window.openFavoritesModal = () => {
             if(!currentUser) { alert("Favoriler için giriş yapmalısınız."); return; }
@@ -643,7 +618,6 @@
             document.getElementById('report-form-section').classList.add('hidden');
         };
 
-        // PWA KURULUM
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault(); deferredPrompt = e;
@@ -654,7 +628,6 @@
             if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; deferredPrompt = null; document.getElementById('btn-install-pwa').classList.add('hidden'); }
         });
 
-        // FİLTRELEME & LİSTELEME
         document.querySelectorAll('#filter-buttons .filter-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('#filter-buttons .filter-btn').forEach(b => { b.classList.replace('bg-neon', 'bg-zinc-800'); b.classList.replace('text-obsidian', 'text-zinc-300'); });
@@ -670,9 +643,12 @@
 
             let filteredSpots = activeFilter === 'all' ? spotsData : spotsData.filter(s => s.category === activeFilter);
             
-            // Mesafeye göre sırala
             filteredSpots.forEach(s => s.distance = getDistance(userLocation, s.coords));
-            filteredSpots.sort((a, b) => a.distance - b.distance);
+            filteredSpots.sort((a, b) => {
+                let distA = a.distance === Infinity ? 999999 : a.distance;
+                let distB = b.distance === Infinity ? 999999 : b.distance;
+                return distA - distB;
+            });
 
             document.getElementById('spot-count').innerText = filteredSpots.length;
 
@@ -685,7 +661,7 @@
                 const popupContent = `
                     <div class="p-2 min-w-[200px] text-center">
                         <h3 class="font-bold text-lg text-white mb-1">${spot.name}</h3>
-                        <p class="text-zinc-400 text-xs mb-4"><i class="fa-solid ${getCategoryIcon(spot.category)}"></i> ${spot.category}</p>
+                        <p class="text-zinc-400 text-xs mb-4"><i class="fa-solid ${spot.category === 'DirtJump' ? 'fa-wave-square' : (spot.types && spot.types.includes('Merdiven') ? 'fa-stairs' : 'fa-building')}"></i> ${spot.category}</p>
                         <div class="flex flex-col gap-2">
                             <a href="${gmapsLink}" target="_blank" class="block w-full bg-cyan hover:bg-cyan/80 text-obsidian font-bold py-2 rounded text-sm transition"><i class="fa-solid fa-route"></i> Spota Git</a>
                             <button onclick="window.openSpotDetail('${spot.id}')" class="block w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded text-sm transition"><i class="fa-solid fa-magnifying-glass"></i> Spotu İncele</button>
@@ -722,7 +698,6 @@
             map.flyTo([lat, lng], 18, { animate: true, duration: 1.5 });
         };
 
-        // FAVORİLER RENDER
         window.renderFavorites = (filter) => {
             favActiveFilter = filter;
             document.querySelectorAll('#favorites-modal .bg-warning, #favorites-modal .bg-zinc-800').forEach(b => { b.classList.replace('bg-warning', 'bg-zinc-800'); b.classList.replace('text-obsidian', 'text-zinc-300'); });
@@ -731,10 +706,14 @@
             const listContainer = document.getElementById('favorites-list');
             listContainer.innerHTML = '';
             
-            let favs = spotsData.filter(s => currentUserData.favorites.includes(s.id));
+            let favs = spotsData.filter(s => currentUserData.favorites && currentUserData.favorites.includes(s.id));
             if(filter !== 'all') favs = favs.filter(s => s.category === filter);
             
-            favs.sort((a, b) => a.distance - b.distance);
+            favs.sort((a, b) => {
+                let distA = a.distance === Infinity ? 999999 : a.distance;
+                let distB = b.distance === Infinity ? 999999 : b.distance;
+                return distA - distB;
+            });
 
             if(favs.length === 0) { listContainer.innerHTML = '<p class="text-xs text-zinc-500 text-center mt-4">Henüz favori spotunuz bulunmuyor.</p>'; return; }
 
@@ -756,7 +735,7 @@
         window.toggleFavorite = async (spotId) => {
             if(!currentUser) { alert("Favorilere eklemek için giriş yapmalısınız."); return; }
             if(checkSpam()) return;
-            const isFav = currentUserData.favorites.includes(spotId);
+            const isFav = currentUserData.favorites && currentUserData.favorites.includes(spotId);
             const userRef = doc(db, 'users', currentUser.uid);
             try {
                 if(isFav) {
@@ -766,6 +745,7 @@
                     document.getElementById('btn-toggle-favorite').classList.replace('text-warning', 'text-zinc-500');
                 } else {
                     await updateDoc(userRef, { favorites: arrayUnion(spotId) });
+                    if(!currentUserData.favorites) currentUserData.favorites = [];
                     currentUserData.favorites.push(spotId);
                     document.getElementById('btn-toggle-favorite').innerHTML = '<i class="fa-solid fa-star"></i>';
                     document.getElementById('btn-toggle-favorite').classList.replace('text-zinc-500', 'text-warning');
@@ -778,9 +758,6 @@
             if(spot) document.getElementById('detail-distance').innerText = formatDistance(spot.distance);
         };
 
-        // ==========================================
-        // DURUM RAPORU MANTIĞI & ADMİN PANELİ
-        // ==========================================
         window.submitReport = async () => {
             if(!currentUser || !currentDetailSpotId) return;
             if(checkSpam()) return;
@@ -806,7 +783,7 @@
                 });
                 document.getElementById('report-photo').value = '';
                 document.getElementById('report-form-section').classList.add('hidden');
-                alert("Durum raporunuz admin onayına gönderildi.");
+                alert("Durum raporunuz başarıyla admin onayına gönderildi.");
             } catch(e) { alert("Rapor gönderilemedi."); }
         };
 
@@ -888,7 +865,7 @@
             updateDetailDistance();
             
             const btnFav = document.getElementById('btn-toggle-favorite');
-            if(currentUserData.favorites.includes(spot.id)) { btnFav.innerHTML = '<i class="fa-solid fa-star"></i>'; btnFav.classList.replace('text-zinc-500', 'text-warning'); }
+            if(currentUserData.favorites && currentUserData.favorites.includes(spot.id)) { btnFav.innerHTML = '<i class="fa-solid fa-star"></i>'; btnFav.classList.replace('text-zinc-500', 'text-warning'); }
             else { btnFav.innerHTML = '<i class="fa-regular fa-star"></i>'; btnFav.classList.replace('text-warning', 'text-zinc-500'); }
             btnFav.onclick = () => window.toggleFavorite(spot.id);
 
@@ -908,7 +885,6 @@
             document.getElementById('report-form-section').classList.add('hidden');
             document.getElementById('btn-edit-desc').onclick = () => { document.getElementById('desc-view-mode').classList.add('hidden'); document.getElementById('desc-edit-mode').classList.remove('hidden'); document.getElementById('detail-desc-input').value = spot.desc || ""; };
 
-            // Aktif (Onaylanmış) Raporları Göster ve Parlama Efekti Uygula
             const approvedReports = (spot.reports || []).filter(r => r.status === 'approved');
             const reportsCont = document.getElementById('detail-active-reports');
             const reportSection = document.getElementById('detail-report-section');
@@ -941,10 +917,9 @@
             try { await updateDoc(doc(db, 'spots', currentDetailSpotId), { desc: document.getElementById('detail-desc-input').value }); window.cancelEditDesc(); } catch(e) {}
         };
 
-        // YORUM SİSTEMİ (YANITLAR DAHİL)
         const renderComments = (comments) => {
             const cont = document.getElementById('detail-comments-list');
-            if(comments.length === 0) { cont.innerHTML = `<p class="text-xs text-zinc-500 italic">Henüz yorum yok, ilk sen ateşle.</p>`; return; }
+            if(comments.length === 0) { cont.innerHTML = `<p class="text-xs text-zinc-500 italic">Henüz yorum yok, ilk siz yazın.</p>`; return; }
             
             const rootComments = comments.filter(c => !c.replyToId).sort((a,b) => a.date - b.date);
             let html = '';
@@ -1021,7 +996,6 @@
             }
         };
 
-        // Veri Dinleme
         const q = query(collection(db, "spots"), orderBy("createdAt", "desc"));
         onSnapshot(q, (snapshot) => {
             spotsData = []; snapshot.forEach((doc) => { spotsData.push({ id: doc.id, ...doc.data() }); });
@@ -1033,7 +1007,6 @@
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
         });
 
-        // FORMLAR
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
             e.preventDefault(); if(!currentUser) return; if(checkSpam()) return;
             const btn = e.target.querySelector('button[type="submit"]'); btn.innerText = 'Güncelleniyor...'; btn.disabled = true;
