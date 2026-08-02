@@ -9,9 +9,15 @@
     <meta name="theme-color" content="#09090b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjODRjYzE2IiBkPSJNNDA1LjggMjEwLjFjLTE1LjYgMC0zMC41IDMuNy00NC4xIDEwLjJMMzExIDExN2MtMy40LTEwLjQtMTMuNi0xNy41LTI0LjYtMTcuNWgtMjIuMUMyNTMuMiA4MS4zIDI0MCA2NCAyMjQgNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMyczE0LjMgMzIgMzIgMzJjMTIuOSAwIDI0LTMuNiAzMC4xLTEwaDE3LjZsNDAuMiA5MS4yYy0xOC40IDE1LjUtMzAuMiAzOC44LTMwLjIgNjQuOCAwIDQ2LjkgMzguMSA4NSA4NSA4NXM4NS0zOC4xIDg1LTg1Yy4xLTQ2LjktMzgtODUtODQuOS04NXptMCAxMTljLTIwLjkgMC0zOC0xNy4xLTM4LTM4czE3LjEtMzggMzgtMzggMzggMTcuMSAzOCAzOC0xNy4xIDM4LTM4IDM4em0tMjY1LjktMTYuMmMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhzMjEuNS00OCA0OC00OGMyNC4xIDAgNDQuMyAxNy43IDQ3LjYgNDEuMmw0My43LTEwLjRjLTYuOS00MS00Mi42LTcyLjgtODUuNC03My4yLTQ2LjktLjQtODUuNCAzNy4yLTg1LjQgODQuMnMuNCA4NC4yIDQ3LjMgODQuMmMzNy41IDAgNzEuMi0yMyA4Mi43LTU2bC00NC44LTEyLjRjLTYuMiAyMS0yNS42IDM2LjgtNDcuNyAzNi44eiIvPjwvc3ZnPg==", sizes: "512x512", type: "image/svg+xml"}]
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjODRjYzE2IiBkPSJNNDA1LjggMjEwLjFjLTE1LjYgMC0zMC41IDMuNy00NC4xIDEwLjJMMzExIDExN2MtMy40LTEwLjQtMTMuNi0xNy41LTI0LjYtMTcuNWgtMjIuMUMyNTMuMiA4MS4zIDI0MCA2NCAyMjQgNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMyczE0LjMgMzIgMzIgMzJjMTIuOSAwIDI0LTMuNiAzMC4xLTEwaDE3LjZsNDAuMiA5MS4yYy0xOC40IDE1LjUtMzAuMiAzOC44LTMwLjIgNjQuOCAwIDQ2LjkgMzguMSA4NSA4NSA4NXM4NS0zOC4xIDg1LTg1Yy4xLTQ2LjktMzgtODUtODQuOS04NXptMCAxMTljLTIwLjkgMC0zOC0xNy4xLTM4LTM4czE3LjEtMzggMzgtMzggMzggMTcuMSAzOCAzOC0xNy4xIDM4LTM4IDM4em0tMjY1LjktMTYuMmMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhzMjEuNS00OCA0OC00OGMyNC4xIDAgNDQuMyAxNy43IDQ3LjYgNDEuMmw0My43LTEwLjRjLTYuOS00MS00Mi42LTcyLjgtODUuNC03My4yLTQ2LjktLjQtODUuNCAzNy4yLTg1LjQgODQuMnMuNCA4NC4yIDQ3LjMgODQuMmMzNy41IDAgNzEuMi0yMyA4Mi43LTU2bC00NC44LTEyLjRjLTYuMiAyMS0yNS42IDM2LjgtNDcuNyAzNi44eiIvPjwvc3ZnPg==">
+
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -56,6 +62,7 @@
 
         .custom-checkbox input:checked + div { background-color: #84cc16; border-color: #84cc16; color: #09090b; }
 
+        /* Kullanıcı Konum İkonu (Pulsing) */
         .user-location-marker {
             width: 16px; height: 16px; background-color: #06b6d4; border-radius: 50%;
             border: 3px solid #fff; box-shadow: 0 0 0 rgba(6, 182, 212, 0.4);
@@ -70,6 +77,7 @@
 </head>
 <body class="antialiased font-sans">
 
+    <!-- Dinamik PWA Manifest Ekleme -->
     <script>
         const manifestData = {
             name: "DropZone", short_name: "DropZone", start_url: ".", display: "standalone",
@@ -80,12 +88,14 @@
         document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
     </script>
 
+    <!-- Menü Açma Butonu -->
     <button onclick="window.toggleSidebar()" class="absolute top-4 left-4 z-[500] w-12 h-12 bg-charcoal border border-neon text-neon hover:bg-neon hover:text-obsidian rounded-xl shadow-lg flex items-center justify-center text-xl transition-all">
         <i class="fa-solid fa-bars"></i>
     </button>
 
     <div id="app-container">
         
+        <!-- SIDEBAR -->
         <aside id="sidebar" class="glass-panel p-6 shadow-2xl flex flex-col gap-6">
             <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mt-2">
                 <div>
@@ -95,10 +105,12 @@
                 <button onclick="window.toggleSidebar()" class="text-zinc-400 hover:text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
+            <!-- AUTH SECTION -->
             <div id="auth-section" class="bg-charcoal p-4 rounded-2xl border border-zinc-800 shadow-inner flex flex-col items-center justify-center text-center transition-colors">
                 <i class="fa-solid fa-circle-notch fa-spin text-neon text-2xl"></i>
             </div>
 
+            <!-- Kategori Filtreleme -->
             <div class="flex flex-col gap-2">
                 <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Filtrele</h2>
                 <div class="flex flex-wrap gap-2" id="filter-buttons">
@@ -108,6 +120,7 @@
                 </div>
             </div>
 
+            <!-- Spot Listesi -->
             <div class="flex-grow flex flex-col gap-3">
                 <h2 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex justify-between items-center">
                     <span>Spot Listesi (Yakından Uzağa)</span>
@@ -116,15 +129,18 @@
                 <div id="spot-list" class="flex flex-col gap-3 pb-4"></div>
             </div>
 
+            <!-- Sürüm ve İmza -->
             <div class="mt-auto pt-4 border-t border-zinc-800 text-center flex flex-col gap-1">
                 <span class="text-[10px] text-zinc-500 font-bold tracking-wider">v0.1</span>
                 <span class="text-[10px] text-zinc-600">made by <span class="text-neon">cnr_xdw</span></span>
             </div>
         </aside>
 
+        <!-- MAP AREA -->
         <main id="map-container">
             <div id="map" class="w-full h-full"></div>
             
+            <!-- ADMIN DURUM RAPORLARI BUTONU (Sağ Üst, Gizli Başlar) -->
             <button id="btn-admin-reports" onclick="window.openAdminReportsModal()" class="hidden absolute top-4 right-[100px] z-[400] glass-panel px-4 py-2 rounded-full flex gap-2 items-center text-sm font-semibold text-danger hover:bg-danger hover:text-white transition-colors">
                 <i class="fa-solid fa-shield-halved"></i> Raporlar 
                 <span id="pending-report-count" class="bg-danger text-white text-[10px] px-1.5 py-0.5 rounded-full hidden">0</span>
@@ -134,6 +150,7 @@
                 <span class="flex items-center gap-2"><i class="fa-solid fa-circle text-neon"></i> Güncel</span>
             </div>
 
+            <!-- Floating Action Buttons (Sağ Alt) -->
             <div class="absolute bottom-6 right-6 z-[400] flex flex-col gap-3">
                 <button onclick="window.locateMe()" class="w-12 h-12 bg-charcoal border border-zinc-700 hover:border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-110" title="Konumumu Bul">
                     <i class="fa-solid fa-location-crosshairs"></i>
@@ -305,7 +322,9 @@
                 <button onclick="window.renderFavorites('DirtJump')" id="fav-btn-DirtJump" class="bg-zinc-800 text-zinc-300 hover:text-warning px-3 py-1 rounded-full text-xs font-bold transition-colors whitespace-nowrap">Dirt Jump</button>
             </div>
             
-            <div id="favorites-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2"></div>
+            <div id="favorites-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2">
+                <!-- Favoriler buraya gelecek -->
+            </div>
         </div>
     </div>
 
@@ -314,7 +333,9 @@
         <div class="bg-charcoal w-full max-w-md p-6 rounded-2xl border border-danger shadow-2xl relative my-8 max-h-[85vh] flex flex-col">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             <h2 class="text-xl font-bold text-danger mb-4 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Onay Bekleyen Raporlar</h2>
-            <div id="admin-reports-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2"></div>
+            <div id="admin-reports-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2">
+                <!-- Admin raporları buraya akacak -->
+            </div>
         </div>
     </div>
 
@@ -475,14 +496,18 @@
             } catch(e) { return "Bilinmeyen Konum"; }
         }
 
-        // HARİTA KURULUMU (Mobil onarımı için closePopupOnClick false yapıldı)
+        // HARİTA KURULUMU 
         const map = L.map('map', { zoomControl: false, closePopupOnClick: false }).setView([38.4237, 27.1428], 6); 
         L.control.zoom({ position: 'topright' }).addTo(map);
         
         map.on('movestart', () => { map.closePopup(); });
 
-        const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' });
-        const satTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: '&copy; Esri' });
+        // BUG FIX: Harita yüklenmeme sorunu çözümü (invalidateSize)
+        setTimeout(() => { map.invalidateSize(); }, 500);
+        window.addEventListener('resize', () => { map.invalidateSize(); });
+
+        const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM', maxZoom: 19 });
+        const satTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: '&copy; Esri', maxZoom: 19 });
         let currentTileLayer = darkTiles.addTo(map);
 
         window.changeMapStyle = (style) => {
