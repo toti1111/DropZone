@@ -77,7 +77,7 @@
 </head>
 <body class="antialiased font-sans">
 
-    <!-- Dinamik PWA Manifest Ekleme (JS içinden de tetiklenir) -->
+    <!-- Dinamik PWA Manifest Ekleme -->
     <script>
         const manifestData = {
             name: "DropZone", short_name: "DropZone", start_url: ".", display: "standalone",
@@ -93,6 +93,13 @@
         <i class="fa-solid fa-bars"></i>
     </button>
 
+    <!-- ROTA ÇİZİM MODU ÜST BAR -->
+    <div id="drawing-mode-bar" class="hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-[3000] glass-panel px-6 py-3 rounded-full flex items-center gap-4 shadow-[0_0_15px_rgba(132,204,22,0.4)]">
+        <span class="text-sm font-bold text-white"><i class="fa-solid fa-route text-neon"></i> Line Çiziliyor... (<span id="draw-count" class="text-neon">0</span> nokta)</span>
+        <button onclick="window.finishDrawing()" class="bg-neon text-obsidian text-xs font-bold px-4 py-2 rounded-lg hover:bg-neonHover transition-colors">Tamamla</button>
+        <button onclick="window.cancelDrawing()" class="bg-danger/20 border border-danger/50 text-danger text-xs font-bold px-3 py-2 rounded-lg hover:bg-danger hover:text-white transition-colors">İptal</button>
+    </div>
+
     <div id="app-container">
         
         <!-- SIDEBAR -->
@@ -100,7 +107,7 @@
             <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mt-2">
                 <div>
                     <h1 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-neon to-cyan">DropZone</h1>
-                    <p class="text-zinc-400 text-sm italic"></p>
+                    <p class="text-zinc-400 text-sm italic">Discover. Ride. Share.</p>
                 </div>
                 <button onclick="window.toggleSidebar()" class="text-zinc-400 hover:text-white text-2xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -117,6 +124,7 @@
                     <button data-filter="all" class="filter-btn bg-neon text-obsidian px-3 py-1 rounded-full text-xs font-bold transition-colors">Tümü</button>
                     <button data-filter="Urban" class="filter-btn bg-zinc-800 text-zinc-300 hover:text-neon px-3 py-1 rounded-full text-xs font-bold transition-colors">Urban</button>
                     <button data-filter="DirtJump" class="filter-btn bg-zinc-800 text-zinc-300 hover:text-neon px-3 py-1 rounded-full text-xs font-bold transition-colors">Dirt Jump</button>
+                    <button data-filter="DownhillLine" class="filter-btn bg-zinc-800 text-zinc-300 hover:text-neon px-3 py-1 rounded-full text-xs font-bold transition-colors">Line (Rota)</button>
                 </div>
             </div>
 
@@ -149,14 +157,14 @@
                 <button onclick="window.openSettingsModal()" class="w-12 h-12 bg-charcoal border border-zinc-700 hover:border-white text-white rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-110" title="Ayarlar">
                     <i class="fa-solid fa-gear"></i>
                 </button>
-                <button onclick="window.openManualAddSpotModal()" class="w-14 h-14 bg-neon text-obsidian rounded-full shadow-[0_0_15px_rgba(132,204,22,0.6)] flex items-center justify-center text-2xl font-bold transition-all hover:scale-110 hover:bg-neonHover" title="Koordinatla Spot Ekle">
+                <button onclick="window.openManualAddSpotModal()" class="w-14 h-14 bg-neon text-obsidian rounded-full shadow-[0_0_15px_rgba(132,204,22,0.6)] flex items-center justify-center text-2xl font-bold transition-all hover:scale-110 hover:bg-neonHover" title="Spot Ekle">
                     <i class="fa-solid fa-plus"></i>
                 </button>
             </div>
         </main>
     </div>
 
-    <!-- ADD SPOT MODAL (Ortak) -->
+    <!-- ADD SPOT MODAL -->
     <div id="add-spot-modal" class="hidden fixed inset-0 z-[2000] modal-overlay flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-charcoal w-full max-w-lg p-6 rounded-2xl border border-zinc-700 shadow-2xl relative my-8">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
@@ -164,7 +172,7 @@
             <h2 class="text-xl font-bold text-zinc-100 mb-2 flex items-center gap-2">
                 <i class="fa-solid fa-location-dot text-neon"></i> Yeni Spot Kaydet
             </h2>
-            <p class="text-xs text-cyan mb-4" id="route-instruction">Bilgileri doldur ve Başla.</p>
+            <p class="text-xs text-cyan mb-4" id="route-instruction">Bilgileri doldur ve sistemi ateşle.</p>
             
             <form id="add-spot-form" class="flex flex-col gap-4">
                 <div>
@@ -172,17 +180,17 @@
                     <select id="spot-category" required class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
                         <option value="Urban" selected>Urban</option>
                         <option value="DirtJump">Dirt Jump</option>
-                        <option value="Freeride" disabled class="text-zinc-600">Freeride (Çok Yakında)</option>
+                        <option value="DownhillLine">Urban Downhill Line (Rota Çizici)</option>
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-xs text-zinc-400 mb-1">Spot Adı</label>
-                    <input type="text" id="spot-name" required placeholder="örn: Kalamış Merdivenleri" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
+                    <label class="block text-xs text-zinc-400 mb-1">Spot / Line Adı</label>
+                    <input type="text" id="spot-name" required placeholder="örn: Kalamış Merdivenleri veya Arka Sokak Line" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
                 </div>
 
                 <div>
-                    <label class="block text-xs text-zinc-400 mb-2">Tür Seçimi (Birden fazla seçebilirsin)</label>
+                    <label class="block text-xs text-zinc-400 mb-2">İçerdiği Türler (Birden fazla seçebilirsin)</label>
                     <div class="grid grid-cols-2 gap-2">
                         <label class="custom-checkbox cursor-pointer">
                             <input type="checkbox" value="Merdiven" class="type-checkbox hidden">
@@ -203,25 +211,39 @@
                     </div>
                 </div>
 
-                <div class="flex gap-2">
+                <!-- KOORDİNAT / ROTA ALANI DİNAMİK DEĞİŞECEK -->
+                <div id="single-coord-inputs" class="flex gap-2">
                     <div class="w-1/2">
                         <label class="block text-xs text-zinc-400 mb-1">Enlem (Lat)</label>
-                        <input type="number" id="spot-lat" step="any" required class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100 placeholder-zinc-600">
+                        <input type="number" id="spot-lat" step="any" class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100 placeholder-zinc-600">
                     </div>
                     <div class="w-1/2">
                         <label class="block text-xs text-zinc-400 mb-1">Boylam (Lng)</label>
-                        <input type="number" id="spot-lng" step="any" required class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100 placeholder-zinc-600">
+                        <input type="number" id="spot-lng" step="any" class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100 placeholder-zinc-600">
                     </div>
+                </div>
+                
+                <div id="draw-route-btn-container" class="hidden">
+                    <button type="button" onclick="window.startDrawing()" class="w-full bg-cyan/20 border border-cyan hover:bg-cyan hover:text-obsidian text-cyan font-bold rounded-lg text-sm px-5 py-3 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-route"></i> Harita Üzerinde Rota Çiz
+                    </button>
                 </div>
 
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Açıklama / Detaylar</label>
-                    <textarea id="spot-desc" rows="2" placeholder="Spot hakkında bilmemiz gerekenler..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100"></textarea>
+                    <textarea id="spot-desc" rows="2" placeholder="Spot veya rota hakkında bilmemiz gerekenler..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100"></textarea>
                 </div>
 
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Fotoğraf URL'si (Opsiyonel)</label>
                     <input type="url" id="spot-photo" placeholder="https://resimlinki.com/foto.jpg" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
+                </div>
+
+                <!-- Koordinat/Rota Bilgi Gösterimi -->
+                <div class="bg-obsidian p-3 rounded-lg border border-zinc-700">
+                    <p class="text-xs text-zinc-400 mb-1">Kayıtlı Konumlar: <span id="coord-count" class="text-neon font-bold">0</span></p>
+                    <p id="coord-display" class="text-[10px] text-zinc-500 break-all h-8 overflow-hidden">Haritadan nokta/rota seçilmedi.</p>
+                    <button type="button" onclick="window.clearFormRoute()" class="text-[10px] text-danger mt-1 hover:underline">Tüm Koordinatları Temizle</button>
                 </div>
 
                 <button type="submit" class="w-full mt-2 bg-neon hover:bg-neonHover text-obsidian font-bold rounded-lg text-sm px-5 py-3 transition-all">
@@ -258,8 +280,8 @@
                     <label class="block text-xs text-zinc-400 mb-1">Sürüş Tarzı</label>
                     <select id="profile-stance" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100">
                         <option value="Karışık / Her Şey">Karışık / Her Şey</option>
-                        <option value="Goofy (Sağ Ayak Önde)">Urban</option>
-                        <option value="Regular (Sol Ayak Önde)">Dağ</option>
+                        <option value="Goofy (Sağ Ayak Önde)">Goofy (Sağ Ayak Önde)</option>
+                        <option value="Regular (Sol Ayak Önde)">Regular (Sol Ayak Önde)</option>
                     </select>
                 </div>
 
@@ -304,15 +326,14 @@
             <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             <h2 class="text-xl font-bold text-warning mb-4 flex items-center gap-2"><i class="fa-solid fa-star"></i> Favoriler </h2>
             
-            <div class="flex gap-2 mb-4 border-b border-zinc-800 pb-4">
-                <button onclick="window.renderFavorites('all')" id="fav-btn-all" class="bg-warning text-obsidian px-3 py-1 rounded-full text-xs font-bold transition-colors">Tümü</button>
-                <button onclick="window.renderFavorites('Urban')" id="fav-btn-Urban" class="bg-zinc-800 text-zinc-300 hover:text-warning px-3 py-1 rounded-full text-xs font-bold transition-colors">Urban</button>
-                <button onclick="window.renderFavorites('DirtJump')" id="fav-btn-DirtJump" class="bg-zinc-800 text-zinc-300 hover:text-warning px-3 py-1 rounded-full text-xs font-bold transition-colors">Dirt Jump</button>
+            <div class="flex gap-2 mb-4 border-b border-zinc-800 pb-4 overflow-x-auto custom-scroll">
+                <button onclick="window.renderFavorites('all')" id="fav-btn-all" class="bg-warning text-obsidian px-3 py-1 rounded-full text-xs font-bold transition-colors whitespace-nowrap">Tümü</button>
+                <button onclick="window.renderFavorites('Urban')" id="fav-btn-Urban" class="bg-zinc-800 text-zinc-300 hover:text-warning px-3 py-1 rounded-full text-xs font-bold transition-colors whitespace-nowrap">Urban</button>
+                <button onclick="window.renderFavorites('DirtJump')" id="fav-btn-DirtJump" class="bg-zinc-800 text-zinc-300 hover:text-warning px-3 py-1 rounded-full text-xs font-bold transition-colors whitespace-nowrap">Dirt Jump</button>
+                <button onclick="window.renderFavorites('DownhillLine')" id="fav-btn-DownhillLine" class="bg-zinc-800 text-zinc-300 hover:text-warning px-3 py-1 rounded-full text-xs font-bold transition-colors whitespace-nowrap">Line</button>
             </div>
             
-            <div id="favorites-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2">
-                <!-- Favoriler buraya gelecek -->
-            </div>
+            <div id="favorites-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-2"></div>
         </div>
     </div>
 
@@ -412,6 +433,11 @@
         let lastActionTime = 0;
         const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { alert("Sakin ol şampiyon, 3 saniye bekle."); return true; } lastActionTime = Date.now(); return false; };
 
+        // ROTA ÇİZİM MANTIĞI DEĞİŞKENLERİ
+        let isDrawingMode = false;
+        let formCoords = []; 
+        let tempPolylines = []; 
+
         // GPS Konum
         let userLocation = null;
         let userMarker = null;
@@ -424,7 +450,7 @@
                         icon: L.divIcon({ html: '<div class="user-location-marker"></div>', className: '', iconSize: [16,16], iconAnchor: [8,8] })
                     }).addTo(map);
                 }
-                renderSpotsToDOM(); // Mesafeleri güncelle
+                renderSpotsToDOM(); 
                 if(currentDetailSpotId) updateDetailDistance();
             }, err => console.log("Konum kapalı:", err), {enableHighAccuracy: true});
         }
@@ -454,7 +480,7 @@
         }
 
         // HARİTA KURULUMU
-        const map = L.map('map', { zoomControl: false }).setView([38.4237, 27.1428], 6); // Default Izmir civarı
+        const map = L.map('map', { zoomControl: false }).setView([38.4237, 27.1428], 6);
         L.control.zoom({ position: 'topright' }).addTo(map);
 
         const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM' });
@@ -476,6 +502,7 @@
         };
 
         let markersLayer = L.layerGroup().addTo(map);
+        let routesLayer = L.layerGroup().addTo(map);
 
         window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('open');
         window.locateMe = () => {
@@ -483,7 +510,7 @@
             else alert("GPS konumun henüz bulunamadı veya izin vermedin.");
         };
 
-        const getCategoryIcon = (cat) => cat === 'DirtJump' ? 'fa-wave-square' : 'fa-building'; 
+        const getCategoryIcon = (cat) => cat === 'DirtJump' ? 'fa-wave-square' : (cat === 'DownhillLine' ? 'fa-route' : 'fa-building'); 
         const createCustomMarker = (cat) => {
             return L.divIcon({
                 html: `<div style="background-color: #84cc16; width: 36px; height: 36px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(132,204,22,0.6); border: 2px solid #fff;">
@@ -493,30 +520,122 @@
             });
         };
 
-        // FORMA NOKTA EKLEME (Sadece Tıklama)
+        // ==========================================
+        // DOWNHILL LINE / ÇİZİM MODU LOGIC
+        // ==========================================
+        document.getElementById('spot-category').addEventListener('change', (e) => {
+            const cat = e.target.value;
+            const instruction = document.getElementById('route-instruction');
+            const singleCoordDiv = document.getElementById('single-coord-inputs');
+            const drawRouteDiv = document.getElementById('draw-route-btn-container');
+
+            if(cat === 'DownhillLine') {
+                instruction.innerText = "Urban Downhill Line seçtin! Rotayı haritaya çiz.";
+                singleCoordDiv.classList.add('hidden');
+                drawRouteDiv.classList.remove('hidden');
+            } else {
+                instruction.innerText = "Bilgileri doldur ve sistemi ateşle.";
+                singleCoordDiv.classList.remove('hidden');
+                drawRouteDiv.classList.add('hidden');
+                if(formCoords.length > 1) {
+                    formCoords = [formCoords[0]];
+                    updateCoordUI();
+                    tempPolylines.forEach(p => map.removeLayer(p));
+                    tempPolylines = [];
+                }
+            }
+        });
+
+        window.startDrawing = () => {
+            if(window.innerWidth < 768) window.toggleSidebar(); // Mobilde menüyü kapat
+            document.getElementById('add-spot-modal').classList.add('hidden');
+            document.getElementById('drawing-mode-bar').classList.remove('hidden');
+            isDrawingMode = true;
+        };
+
+        window.finishDrawing = () => {
+            if(formCoords.length < 2) { alert("En az 2 nokta çizmen lazım kanka!"); return; }
+            isDrawingMode = false;
+            document.getElementById('drawing-mode-bar').classList.add('hidden');
+            document.getElementById('add-spot-modal').classList.remove('hidden');
+            updateCoordUI();
+        };
+
+        window.cancelDrawing = () => {
+            isDrawingMode = false;
+            document.getElementById('drawing-mode-bar').classList.add('hidden');
+            document.getElementById('add-spot-modal').classList.remove('hidden');
+            window.clearFormRoute();
+        };
+
+        window.clearFormRoute = () => {
+            formCoords = [];
+            tempPolylines.forEach(p => map.removeLayer(p));
+            tempPolylines = [];
+            document.getElementById('spot-lat').value = '';
+            document.getElementById('spot-lng').value = '';
+            updateCoordUI();
+            document.getElementById('draw-count').innerText = "0";
+        };
+
+        const updateCoordUI = () => {
+            document.getElementById('coord-count').innerText = formCoords.length;
+            if(formCoords.length === 0) {
+                document.getElementById('coord-display').innerText = "Haritadan nokta/rota seçilmedi.";
+            } else {
+                document.getElementById('coord-display').innerText = formCoords.map(c => `[${c.lat}, ${c.lng}]`).join(', ');
+            }
+        };
+
+        // HARİTAYA TIKLAMA (Tekli Nokta vs Rota Çizimi)
         map.on('click', (e) => {
-            if (!document.getElementById('add-spot-modal').classList.contains('hidden')) return; // Zaten açıksa elleme
+            if (isDrawingMode) {
+                const point = { lat: parseFloat(e.latlng.lat.toFixed(5)), lng: parseFloat(e.latlng.lng.toFixed(5)) };
+                formCoords.push(point);
+                document.getElementById('draw-count').innerText = formCoords.length;
+                
+                if(formCoords.length > 1) {
+                    const line = L.polyline([formCoords[formCoords.length-2], point], {color: '#84cc16', weight: 4, dashArray: '5, 10'}).addTo(map);
+                    tempPolylines.push(line);
+                }
+                return;
+            }
+
+            if (!document.getElementById('add-spot-modal').classList.contains('hidden')) return; // Modal açıksa arkaya basmayı engelle
             if (!currentUser) { alert("Spot eklemek için giriş yapman lazım!"); return; }
             if(checkSpam()) return;
             
-            document.getElementById('spot-lat').value = parseFloat(e.latlng.lat.toFixed(5));
-            document.getElementById('spot-lng').value = parseFloat(e.latlng.lng.toFixed(5));
+            const cat = document.getElementById('spot-category').value;
+            if(cat === 'DownhillLine') {
+                window.openManualAddSpotModal();
+                alert("Rota çizmek için formdaki 'Haritada Rota Çiz' butonunu kullan kanka.");
+                return;
+            }
+
+            // Normal Urban/DirtJump tek nokta ekleme
+            const point = { lat: parseFloat(e.latlng.lat.toFixed(5)), lng: parseFloat(e.latlng.lng.toFixed(5)) };
+            formCoords = [point];
+            document.getElementById('spot-lat').value = point.lat;
+            document.getElementById('spot-lng').value = point.lng;
             document.getElementById('spot-lat').readOnly = true;
             document.getElementById('spot-lng').readOnly = true;
+            updateCoordUI();
             document.getElementById('add-spot-modal').classList.remove('hidden');
         });
 
-        // MANUEL KOORDİNAT EKLEME (FAB +)
         window.openManualAddSpotModal = () => {
             if (!currentUser) { alert("Spot eklemek için giriş yapman lazım!"); return; }
             document.getElementById('spot-lat').value = '';
             document.getElementById('spot-lng').value = '';
             document.getElementById('spot-lat').readOnly = false;
             document.getElementById('spot-lng').readOnly = false;
+            window.clearFormRoute();
             document.getElementById('add-spot-modal').classList.remove('hidden');
         };
 
+        // ==========================================
         // AUTH İŞLEMLERİ
+        // ==========================================
         const authSection = document.getElementById('auth-section');
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
@@ -605,18 +724,30 @@
             const listContainer = document.getElementById('spot-list');
             listContainer.innerHTML = '';
             markersLayer.clearLayers();
+            routesLayer.clearLayers();
 
             let filteredSpots = activeFilter === 'all' ? spotsData : spotsData.filter(s => s.category === activeFilter);
             
-            // Mesafeye göre sırala
-            filteredSpots.forEach(s => s.distance = getDistance(userLocation, s.coords));
+            // Mesafeye göre sırala (Line ise ilk noktaya göre mesafe alır)
+            filteredSpots.forEach(s => {
+                const pt = (s.category === 'DownhillLine' && s.route && s.route.length > 0) ? s.route[0] : s.coords;
+                s.distance = getDistance(userLocation, pt);
+            });
             filteredSpots.sort((a, b) => a.distance - b.distance);
 
             document.getElementById('spot-count').innerText = filteredSpots.length;
 
             filteredSpots.forEach((spot) => {
-                const pt = spot.coords; if(!pt) return;
+                const isLine = spot.category === 'DownhillLine' && spot.route && spot.route.length > 0;
+                const pt = isLine ? spot.route[0] : spot.coords; 
+                if(!pt) return;
+                
                 const distText = formatDistance(spot.distance);
+
+                if(isLine && spot.route.length > 1) {
+                    const latlngs = spot.route.map(p => [p.lat, p.lng]);
+                    L.polyline(latlngs, {color: '#84cc16', weight: 4, opacity: 0.8}).addTo(routesLayer);
+                }
 
                 const gmapsLink = `https://www.google.com/maps/dir/?api=1&destination=${pt.lat},${pt.lng}`;
                 const popupContent = `
@@ -624,8 +755,8 @@
                         <h3 class="font-bold text-lg text-white mb-1">${spot.name}</h3>
                         <p class="text-zinc-400 text-xs mb-4"><i class="fa-solid ${getCategoryIcon(spot.category)}"></i> ${spot.category}</p>
                         <div class="flex flex-col gap-2">
-                            <a href="${gmapsLink}" target="_blank" class="block w-full bg-cyan hover:bg-cyan/80 text-obsidian font-bold py-2 rounded text-sm transition"><i class="fa-solid fa-route"></i> Spota Git</a>
-                            <button onclick="window.openSpotDetail('${spot.id}')" class="block w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded text-sm transition"><i class="fa-solid fa-magnifying-glass"></i> Spotu İncele</button>
+                            <a href="${gmapsLink}" target="_blank" class="block w-full bg-cyan hover:bg-cyan/80 text-obsidian font-bold py-2 rounded text-sm transition"><i class="fa-solid fa-route"></i> ${isLine ? 'Başlangıca Git' : 'Spota Git'}</a>
+                            <button onclick="window.openSpotDetail('${spot.id}')" class="block w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded text-sm transition"><i class="fa-solid fa-magnifying-glass"></i> İncele</button>
                         </div>
                     </div>
                 `;
@@ -645,7 +776,7 @@
                             <span class="text-[10px] text-zinc-500 block"><i class="fa-solid fa-user-astronaut mr-1"></i> ${spot.userName || 'Anonim'}</span>
                         </div>
                         <div class="flex flex-col items-end gap-1">
-                            <span class="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded border border-zinc-700 font-bold">${spot.category}</span>
+                            <span class="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded border border-zinc-700 font-bold">${spot.category === 'DownhillLine' ? 'Line' : spot.category}</span>
                             <span class="text-[10px] font-bold text-cyan">${distText}</span>
                         </div>
                     </div>
@@ -655,7 +786,7 @@
         };
 
         window.flyToSpot = (lat, lng) => {
-            if(window.innerWidth < 768) window.toggleSidebar(); // Mobilde listeyi kapat
+            if(window.innerWidth < 768) window.toggleSidebar();
             map.flyTo([lat, lng], 18, { animate: true, duration: 1.5 });
         };
 
@@ -676,9 +807,11 @@
             if(favs.length === 0) { listContainer.innerHTML = '<p class="text-xs text-zinc-500 text-center mt-4">Burası boş kanka.</p>'; return; }
 
             favs.forEach(spot => {
+                const pt = (spot.category === 'DownhillLine' && spot.route) ? spot.route[0] : spot.coords;
+                if(!pt) return;
                 const el = document.createElement('div');
                 el.className = 'bg-obsidian border border-zinc-800 rounded-xl p-3 flex justify-between items-center hover:border-zinc-700 cursor-pointer';
-                el.onclick = () => { window.flyToSpot(spot.coords.lat, spot.coords.lng); window.closeModals(); window.openSpotDetail(spot.id); };
+                el.onclick = () => { window.flyToSpot(pt.lat, pt.lng); window.closeModals(); window.openSpotDetail(spot.id); };
                 el.innerHTML = `
                     <div>
                         <h4 class="font-bold text-sm text-zinc-100">${spot.name}</h4>
@@ -762,7 +895,6 @@
             const cont = document.getElementById('detail-comments-list');
             if(comments.length === 0) { cont.innerHTML = `<p class="text-xs text-zinc-500 italic">Henüz yorum yok, ilk sen ateşle.</p>`; return; }
             
-            // Hiyerarşi oluştur
             const rootComments = comments.filter(c => !c.replyToId).sort((a,b) => a.date - b.date);
             let html = '';
             rootComments.forEach(root => {
@@ -773,7 +905,7 @@
             cont.innerHTML = html;
         };
 
-        const spot = { get comments() { return spotsData.find(s=>s.id === currentDetailSpotId)?.comments || [] } }; // Hacky context
+        const spot = { get comments() { return spotsData.find(s=>s.id === currentDetailSpotId)?.comments || [] } }; 
 
         const generateCommentHTML = (c, s, isReply = false) => {
             const margin = isReply ? 'ml-6 border-l-2 border-cyan/30 pl-3' : 'border border-zinc-800';
@@ -811,7 +943,6 @@
 
             const spotData = spotsData.find(s => s.id === currentDetailSpotId);
             
-            // Haftalık Yorum Limiti Kontrolü (Sadece Root yorumlar için)
             if(!replyingToCommentId) {
                 const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
                 const recentRoots = (spotData.comments || []).filter(c => c.userId === currentUser.uid && !c.replyToId && c.date > oneWeekAgo);
@@ -821,7 +952,7 @@
                 }
             }
 
-            if(!confirm("Yorumu göndermek istediğine emin misin?")) return;
+            if(!confirm("Yorumu göndermek istediğine emin misin amına koyayım?")) return;
 
             const newComment = { id: Date.now().toString(), userId: currentUser.uid, userName: currentUser.displayName, text: text, date: Date.now(), replyToId: replyingToCommentId };
             try {
@@ -831,7 +962,7 @@
             } catch(e) { alert("Yorum atılamadı."); }
         };
 
-        window.adminDeleteSpot = async (id) => { if(confirm("Silmek istediğine emin misin?")) { await deleteDoc(doc(db, 'spots', id)); window.closeModals(); } };
+        window.adminDeleteSpot = async (id) => { if(confirm("Kökten siliyorsun?")) { await deleteDoc(doc(db, 'spots', id)); window.closeModals(); } };
         window.adminDeleteComment = async (spotId, commentId) => {
             if(confirm("Yorum uçurulacak?")) {
                 const sp = spotsData.find(s => s.id === spotId); const cToDel = sp.comments.find(c => c.id === commentId);
@@ -864,28 +995,41 @@
 
         document.getElementById('add-spot-form').addEventListener('submit', async (e) => {
             e.preventDefault(); if (!currentUser) return; if(checkSpam()) return;
+            const category = document.getElementById('spot-category').value;
             
-            const lat = parseFloat(document.getElementById('spot-lat').value);
-            const lng = parseFloat(document.getElementById('spot-lng').value);
-            if(isNaN(lat) || isNaN(lng)) { alert("Geçerli koordinat gir."); return; }
+            let mainPoint;
+            if (category === 'DownhillLine') {
+                if(formCoords.length < 2) { alert("Rota için haritaya en az 2 nokta çizmen lazım kanka!"); return; }
+                mainPoint = formCoords[0];
+            } else {
+                const lat = parseFloat(document.getElementById('spot-lat').value);
+                const lng = parseFloat(document.getElementById('spot-lng').value);
+                if(isNaN(lat) || isNaN(lng)) { alert("Geçerli koordinat gir."); return; }
+                mainPoint = {lat, lng};
+            }
 
             const btn = e.target.querySelector('button[type="submit"]'); btn.innerText = 'Kaydediliyor...'; btn.disabled = true;
 
-            const category = document.getElementById('spot-category').value;
             const checkedTypes = Array.from(document.querySelectorAll('.type-checkbox:checked')).map(cb => cb.value);
-            const locText = await getCityDistrict(lat, lng);
+            const locText = await getCityDistrict(mainPoint.lat, mainPoint.lng);
 
             try {
                 const newSpot = {
                     name: document.getElementById('spot-name').value,
                     category: category, types: checkedTypes, desc: document.getElementById('spot-desc').value,
                     photoUrl: document.getElementById('spot-photo').value, locationText: locText,
-                    status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: currentUser.displayName, comments: [],
-                    coords: {lat, lng}
+                    status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: currentUser.displayName, comments: []
                 };
+
+                if(category === 'DownhillLine') {
+                    newSpot.route = formCoords;
+                } else {
+                    newSpot.coords = mainPoint;
+                }
+
                 await addDoc(collection(db, "spots"), newSpot);
-                e.target.reset(); window.closeModals();
-            } catch (error) { alert("Sorun çıktı."); } finally { btn.innerText = 'Spotu Kaydet'; btn.disabled = false; }
+                e.target.reset(); window.closeModals(); window.clearFormRoute();
+            } catch (error) { alert("Sorun çıktı kanka."); } finally { btn.innerText = 'Spotu Kaydet'; btn.disabled = false; }
         });
 
     </script>
