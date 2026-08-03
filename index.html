@@ -103,7 +103,7 @@
             100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
         }
 
-        /* Gündüz Modu */
+        /* Gündüz Modu Sınıfları */
         .day-mode { background-color: #f4f4f5 !important; color: #18181b !important; }
         .day-mode .glass-panel { background: rgba(255, 255, 255, 0.95) !important; border-color: #d4d4d8 !important; color: #18181b !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .day-mode .bg-charcoal, .day-mode .bg-obsidian { background-color: #ffffff !important; border-color: #e4e4e7 !important; color: #18181b !important; }
@@ -114,7 +114,7 @@
         .day-mode .leaflet-popup-content-wrapper, .day-mode .leaflet-popup-tip { background: #ffffff !important; color: #18181b !important; border: 1px solid #000; }
         .day-mode .leaflet-container a.leaflet-popup-close-button { color: #18181b; }
 
-        /* Skeleton Yükleme */
+        /* Skeleton Loading */
         .skeleton { animation: skeleton-loading 1s linear infinite alternate; }
         @keyframes skeleton-loading { 0% { background-color: #27272a; } 100% { background-color: #3f3f46; } }
         .day-mode .skeleton { animation: skeleton-loading-day 1s linear infinite alternate; }
@@ -123,6 +123,7 @@
 </head>
 <body class="antialiased font-sans">
 
+    <!-- Dinamik PWA Manifest -->
     <script>
         const manifestData = {
             name: "DropZone", short_name: "DropZone", start_url: ".", display: "standalone",
@@ -155,6 +156,7 @@
         
         <!-- SIDEBAR / BOTTOM SHEET -->
         <aside id="sidebar" class="glass-panel p-6 shadow-2xl flex flex-col gap-6">
+            <!-- Mobile Drag Handle -->
             <div class="w-12 h-1.5 bg-zinc-600 rounded-full mx-auto md:hidden -mt-2 cursor-pointer" onclick="window.toggleSidebar()"></div>
             
             <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mt-2 md:mt-0">
@@ -178,12 +180,12 @@
                 </div>
             </div>
 
-            <div class="flex flex-col gap-3 pb-6">
+            <div class="flex-grow flex flex-col gap-3 min-h-0">
                 <h2 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex justify-between items-center">
                     <span>Spot Listesi (Yakından Uzağa)</span>
                     <span id="spot-count" class="bg-zinc-800 text-neon py-0.5 px-2 rounded-full text-xs shadow-[0_0_8px_rgba(132,204,22,0.5)]">0</span>
                 </h2>
-                <div id="spot-list" class="flex flex-col gap-3">
+                <div id="spot-list" class="flex flex-col gap-3 overflow-y-auto pb-4 custom-scroll pr-1">
                     <div id="skeleton-loader" class="flex flex-col gap-3">
                         <div class="bg-obsidian border border-zinc-800 rounded-xl p-3 h-20 skeleton"></div>
                         <div class="bg-obsidian border border-zinc-800 rounded-xl p-3 h-20 skeleton"></div>
@@ -193,7 +195,7 @@
             </div>
 
             <div class="pt-3 border-t border-zinc-800 text-center flex flex-col gap-1 mt-auto">
-                <span class="text-[10px] text-zinc-500 font-bold tracking-wider">v0.1</span>
+                <span class="text-[10px] text-zinc-500 font-bold tracking-wider">v0.3</span>
                 <span class="text-[10px] text-zinc-600">made by <span class="text-neon">cnr_xdw</span></span>
             </div>
         </aside>
@@ -206,14 +208,14 @@
             <div class="absolute top-4 left-1/2 transform -translate-x-1/2 z-[400] w-[85%] max-w-md">
                 <div class="relative glass-panel rounded-full flex items-center px-4 py-2 shadow-lg">
                     <i class="fa-solid fa-magnifying-glass text-zinc-400"></i>
-                    <input type="text" id="search-input" placeholder="Spot veya şehir ara..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-white text-sm ml-3 placeholder-zinc-500">
+                    <input type="text" id="search-input" placeholder="Spot, şehir veya kategori ara..." class="w-full bg-transparent border-none focus:outline-none focus:ring-0 text-white text-sm ml-3 placeholder-zinc-500">
                     <button id="search-clear" onclick="window.clearSearch()" class="hidden text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div id="search-results" class="hidden absolute top-full mt-2 w-full glass-panel rounded-xl shadow-2xl max-h-60 overflow-y-auto flex flex-col p-2 gap-1 custom-scroll"></div>
             </div>
 
             <!-- Sol Menü Açma Butonu -->
-            <button onclick="window.toggleSidebar()" class="absolute left-4 z-[400] w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all md:top-4 md:bottom-auto safe-bottom">
+            <button onclick="window.toggleSidebar()" class="absolute left-4 z-[400] w-12 h-12 glass-panel border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all md:top-4 md:bottom-auto safe-bottom">
                 <i class="fa-solid fa-list-ul"></i>
             </button>
 
@@ -436,11 +438,12 @@
                     </div>
                 </div>
                 
-                <p class="text-xs text-zinc-500 mb-4 border-b border-zinc-800 pb-4">
-                    <i class="fa-solid fa-user-astronaut"></i> Ekleyen: <span id="detail-user" class="text-zinc-300 font-bold">Kim</span>
-                    <span class="ml-3"><i class="fa-solid fa-map-pin"></i> <span id="detail-location" class="text-zinc-300">Yükleniyor...</span></span>
-                    <span class="ml-3"><i class="fa-solid fa-ruler"></i> <span id="detail-distance" class="text-neon font-bold">Hesaplanıyor...</span></span>
-                </p>
+                <div class="text-xs text-zinc-500 mb-4 border-b border-zinc-800 pb-4 flex flex-wrap gap-x-4 gap-y-2">
+                    <span><i class="fa-solid fa-user-astronaut"></i> Ekleyen: <span id="detail-user" class="text-zinc-300 font-bold">Kim</span></span>
+                    <span><i class="fa-solid fa-map-pin"></i> Konum: <span id="detail-location" class="text-zinc-300">Yükleniyor...</span></span>
+                    <span><i class="fa-solid fa-ruler"></i> Uzaklık: <span id="detail-distance" class="text-neon font-bold">Hesaplanıyor...</span></span>
+                    <span id="detail-weather-container" class="w-full text-cyan font-bold"><i class="fa-solid fa-spinner fa-spin"></i> Hava durumu çekiliyor...</span>
+                </div>
                 
                 <div id="detail-types" class="flex flex-wrap gap-2 mb-4"></div>
 
@@ -538,7 +541,7 @@
         let initialLoadDone = false;
         
         let lastActionTime = 0;
-        const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { window.showToast("Çok hızlı işlem yapıyorsunuz, lütfen bekleyin.", "error"); return true; } lastActionTime = Date.now(); return false; };
+        const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { window.showToast("Lütfen çok sık işlem yapmayınız, 3 saniye bekleyin.", "error"); return true; } lastActionTime = Date.now(); return false; };
 
         // TOAST & ONAY (CONFIRM) SİSTEMİ
         window.showToast = (msg, type = 'success') => {
@@ -683,6 +686,13 @@
         };
 
         map.on('click', (e) => {
+            // FIX: Menü açıksa sadece menüyü kapat, spot ekleme formunu fırlatma
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.classList.contains('open')) {
+                window.toggleSidebar();
+                return;
+            }
+
             if (!document.getElementById('add-spot-modal').classList.contains('hidden')) return; 
             if (!currentUser) { window.showToast("Spot eklemek için giriş yapmalısınız.", "error"); return; }
             if(checkSpam()) return;
@@ -1077,6 +1087,23 @@
             document.getElementById('detail-location').innerText = spot.locationText || "Bilinmiyor";
             updateDetailDistance();
             
+            // HAVA DURUMU (Open-Meteo API)
+            document.getElementById('detail-weather-container').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Hava durumu çekiliyor...';
+            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${spot.coords.lat}&longitude=${spot.coords.lng}&current_weather=true`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data && data.current_weather) {
+                        const t = data.current_weather.temperature;
+                        const w = data.current_weather.windspeed;
+                        document.getElementById('detail-weather-container').innerHTML = `<i class="fa-solid fa-temperature-half"></i> Sıcaklık: ${t}°C <span class="mx-2 text-zinc-700">|</span> <i class="fa-solid fa-wind"></i> Rüzgar: ${w} km/s`;
+                    } else {
+                        document.getElementById('detail-weather-container').innerHTML = '<i class="fa-solid fa-cloud-xmark text-zinc-500"></i> Hava verisi yok';
+                    }
+                })
+                .catch(() => {
+                    document.getElementById('detail-weather-container').innerHTML = '<i class="fa-solid fa-cloud-xmark text-zinc-500"></i> Hava verisi yok';
+                });
+
             const btnFav = document.getElementById('btn-toggle-favorite');
             if(currentUserData.favorites && currentUserData.favorites.includes(spot.id)) { btnFav.innerHTML = '<i class="fa-solid fa-star"></i>'; btnFav.classList.replace('text-zinc-500', 'text-warning'); }
             else { btnFav.innerHTML = '<i class="fa-regular fa-star"></i>'; btnFav.classList.replace('text-warning', 'text-zinc-500'); }
