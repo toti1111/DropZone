@@ -156,7 +156,6 @@
         
         <!-- SIDEBAR / BOTTOM SHEET -->
         <aside id="sidebar" class="glass-panel p-6 shadow-2xl flex flex-col gap-6">
-            <!-- Mobile Drag Handle -->
             <div class="w-12 h-1.5 bg-zinc-600 rounded-full mx-auto md:hidden -mt-2 cursor-pointer" onclick="window.toggleSidebar()"></div>
             
             <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mt-2 md:mt-0">
@@ -195,7 +194,7 @@
             </div>
 
             <div class="pt-3 border-t border-zinc-800 text-center flex flex-col gap-1 mt-auto">
-                <span class="text-[10px] text-zinc-500 font-bold tracking-wider">v0.3</span>
+                <span class="text-[10px] text-zinc-500 font-bold tracking-wider">v0.4</span>
                 <span class="text-[10px] text-zinc-600">made by <span class="text-neon">cnr_xdw</span></span>
             </div>
         </aside>
@@ -215,7 +214,7 @@
             </div>
 
             <!-- Sol Menü Açma Butonu -->
-            <button onclick="window.toggleSidebar()" class="absolute left-4 z-[400] w-12 h-12 glass-panel border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all md:top-4 md:bottom-auto safe-bottom">
+            <button onclick="window.toggleSidebar()" class="absolute left-4 z-[400] w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all md:top-4 md:bottom-auto safe-bottom">
                 <i class="fa-solid fa-list-ul"></i>
             </button>
 
@@ -484,8 +483,9 @@
                     </div>
                 </div>
 
+                <!-- DİNAMİK SİLME BUTONU (Admin veya Kendi Spotu) -->
                 <div id="admin-spot-actions" class="hidden mb-6 flex gap-2 border-t border-zinc-800 pt-4">
-                    <button id="btn-admin-delete-spot" class="bg-danger/20 text-danger border border-danger/50 px-4 py-2 rounded-lg text-sm font-bold hover:bg-danger hover:text-white transition-colors"><i class="fa-solid fa-trash"></i> Spotu Sil (Yetkili İşlemi)</button>
+                    <button id="btn-admin-delete-spot" class="bg-danger/20 text-danger border border-danger/50 px-4 py-2 rounded-lg text-sm font-bold hover:bg-danger hover:text-white transition-colors"><i class="fa-solid fa-trash"></i> Spotu Sil</button>
                 </div>
 
                 <!-- Yorumlar Bölümü -->
@@ -541,7 +541,7 @@
         let initialLoadDone = false;
         
         let lastActionTime = 0;
-        const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { window.showToast("Lütfen çok sık işlem yapmayınız, 3 saniye bekleyin.", "error"); return true; } lastActionTime = Date.now(); return false; };
+        const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { window.showToast("Çok hızlı işlem yapıyorsunuz, lütfen bekleyin.", "error"); return true; } lastActionTime = Date.now(); return false; };
 
         // TOAST & ONAY (CONFIRM) SİSTEMİ
         window.showToast = (msg, type = 'success') => {
@@ -621,6 +621,19 @@
                 return "Bilinmeyen Konum";
             } catch(e) { return "Bilinmeyen Konum"; }
         }
+
+        // HAVA DURUMU İKON VE METİN EŞLEŞTİRME
+        const getWeatherDesc = (code) => {
+            if(code === 0) return { t: 'Güneşli / Açık', i: 'fa-sun' };
+            if(code === 1 || code === 2) return { t: 'Parçalı Bulutlu', i: 'fa-cloud-sun' };
+            if(code === 3) return { t: 'Çok Bulutlu', i: 'fa-cloud' };
+            if(code === 45 || code === 48) return { t: 'Sisli', i: 'fa-smog' };
+            if([51,53,55,56,57,61,63,65,66,67].includes(code)) return { t: 'Yağmurlu', i: 'fa-cloud-rain' };
+            if([71,73,75,77,85,86].includes(code)) return { t: 'Karlı', i: 'fa-snowflake' };
+            if([80,81,82].includes(code)) return { t: 'Sağanak Yağışlı', i: 'fa-cloud-showers-heavy' };
+            if([95,96,99].includes(code)) return { t: 'Fırtınalı', i: 'fa-cloud-bolt' };
+            return { t: 'Bilinmiyor', i: 'fa-cloud' };
+        };
 
         // HARİTA VE CLUSTER KURULUMU 
         const map = L.map('map', { zoomControl: false, closePopupOnClick: false }).setView([38.4237, 27.1428], 6); 
@@ -1087,7 +1100,7 @@
             document.getElementById('detail-location').innerText = spot.locationText || "Bilinmiyor";
             updateDetailDistance();
             
-            // HAVA DURUMU (Open-Meteo API)
+            // HAVA DURUMU (Open-Meteo API + WMO Condition)
             document.getElementById('detail-weather-container').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Hava durumu çekiliyor...';
             fetch(`https://api.open-meteo.com/v1/forecast?latitude=${spot.coords.lat}&longitude=${spot.coords.lng}&current_weather=true`)
                 .then(res => res.json())
@@ -1095,7 +1108,16 @@
                     if(data && data.current_weather) {
                         const t = data.current_weather.temperature;
                         const w = data.current_weather.windspeed;
-                        document.getElementById('detail-weather-container').innerHTML = `<i class="fa-solid fa-temperature-half"></i> Sıcaklık: ${t}°C <span class="mx-2 text-zinc-700">|</span> <i class="fa-solid fa-wind"></i> Rüzgar: ${w} km/s`;
+                        const code = data.current_weather.weathercode;
+                        const weatherInfo = getWeatherDesc(code);
+                        
+                        document.getElementById('detail-weather-container').innerHTML = `
+                            <i class="fa-solid fa-temperature-half"></i> ${t}°C 
+                            <span class="mx-2 text-zinc-700">|</span> 
+                            <i class="fa-solid fa-wind"></i> ${w} km/s 
+                            <span class="mx-2 text-zinc-700">|</span> 
+                            <i class="fa-solid ${weatherInfo.i}"></i> ${weatherInfo.t}
+                        `;
                     } else {
                         document.getElementById('detail-weather-container').innerHTML = '<i class="fa-solid fa-cloud-xmark text-zinc-500"></i> Hava verisi yok';
                     }
@@ -1119,8 +1141,19 @@
 
             const isOwner = currentUser && spot.userId === currentUser.uid;
             document.getElementById('btn-edit-desc').classList.toggle('hidden', !(isAdmin || isOwner));
-            document.getElementById('admin-spot-actions').classList.toggle('hidden', !isAdmin);
-            if(isAdmin) document.getElementById('btn-admin-delete-spot').onclick = () => window.adminDeleteSpot(id);
+            
+            const adminActions = document.getElementById('admin-spot-actions');
+            adminActions.classList.toggle('hidden', !(isAdmin || isOwner));
+            
+            if(isAdmin || isOwner) {
+                const delBtn = document.getElementById('btn-admin-delete-spot');
+                delBtn.onclick = () => window.adminDeleteSpot(id);
+                if (isAdmin && !isOwner) {
+                    delBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Spotu Sil (Admin)';
+                } else {
+                    delBtn.innerHTML = '<i class="fa-solid fa-trash"></i> Spotu Sil';
+                }
+            }
 
             window.cancelEditDesc(); window.cancelReply();
             document.getElementById('report-form-section').classList.add('hidden');
