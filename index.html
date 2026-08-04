@@ -154,8 +154,10 @@
         document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
     </script>
 
+    <!-- TOAST BİLDİRİM KONTEYNERİ -->
     <div id="toast-container" class="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm safe-bottom"></div>
 
+    <!-- ÖZEL ONAY (CONFIRM) MODALI -->
     <div id="confirm-modal" class="hidden fixed inset-0 z-[9999] modal-overlay flex items-center justify-center p-4">
         <div class="bg-charcoal glass-panel w-full max-w-sm p-6 rounded-2xl shadow-2xl relative text-center">
             <div class="w-16 h-16 bg-warning/20 text-warning rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
@@ -172,10 +174,14 @@
 
     <div id="app-container">
         
+        <!-- SIDEBAR / BOTTOM SHEET -->
         <aside id="sidebar" class="glass-panel p-6 shadow-2xl flex flex-col gap-6">
-            <div class="w-12 h-1.5 bg-zinc-600 rounded-full mx-auto md:hidden -mt-2 cursor-pointer" onclick="window.toggleSidebar()"></div>
+            <!-- Kaydırma (Drag) Alanı -->
+            <div id="drag-handle" class="w-full h-8 flex justify-center items-center md:hidden -mt-4 mb-2 cursor-pointer">
+                <div class="w-12 h-1.5 bg-zinc-600 rounded-full"></div>
+            </div>
             
-            <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mt-2 md:mt-0">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-4 md:mt-0 -mt-2">
                 <h1 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-neon to-cyan">DropZone</h1>
                 <button onclick="window.toggleSidebar()" class="text-zinc-400 hover:text-white text-2xl hidden md:block"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -581,6 +587,37 @@
             }
         };
 
+        // MENU DRAG LOGIC (Swipe to close on mobile)
+        const dragHandle = document.getElementById('drag-handle');
+        const sidebarEl = document.getElementById('sidebar');
+        let touchStartY = 0;
+
+        dragHandle.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, {passive: true});
+
+        dragHandle.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const diff = touchY - touchStartY;
+            if (diff > 0 && window.innerWidth <= 768) {
+                sidebarEl.style.transform = `translateY(${diff}px)`;
+            }
+        }, {passive: true});
+
+        dragHandle.addEventListener('touchend', (e) => {
+            const touchY = e.changedTouches[0].clientY;
+            const diff = touchY - touchStartY;
+            sidebarEl.style.transform = ''; // inline stili kaldır
+            if (diff > 50 && window.innerWidth <= 768 && sidebarEl.classList.contains('open')) {
+                window.toggleSidebar();
+            }
+        });
+
+        window.toggleSidebar = () => {
+            sidebarEl.classList.toggle('open');
+            sidebarEl.style.transform = ''; // Temizle
+        };
+
         let userLocation = null;
         let userMarker = null;
         if ("geolocation" in navigator) {
@@ -635,7 +672,10 @@
 
         const map = L.map('map', { zoomControl: false, closePopupOnClick: false }).setView([38.4237, 27.1428], 6); 
         L.control.zoom({ position: 'topright' }).addTo(map);
-        map.on('movestart', () => { map.closePopup(); });
+        
+        // FIX: movestart yerine dragstart kullanıyoruz (Otomatik pan'da popup kapanmasın)
+        map.on('dragstart', () => { map.closePopup(); });
+        
         setTimeout(() => { map.invalidateSize(); }, 500);
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
@@ -671,7 +711,6 @@
         });
         map.addLayer(markersLayer);
 
-        window.toggleSidebar = () => document.getElementById('sidebar').classList.toggle('open');
         window.locateMe = () => {
             if(userLocation) map.flyTo([userLocation.lat, userLocation.lng], 15, {animate: true, duration: 1});
             else window.showToast("GPS konumunuz henüz bulunamadı veya izin vermediniz.", "error");
@@ -695,8 +734,7 @@
         };
 
         map.on('click', (e) => {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar.classList.contains('open')) {
+            if (sidebarEl.classList.contains('open')) {
                 window.toggleSidebar();
                 return;
             }
@@ -852,7 +890,7 @@
         const renderSpotsToDOM = () => {
             const listContainer = document.getElementById('spot-list');
             if(!initialLoadDone) {
-                // Skeleton loading
+                // Skeleton loading duracak
             } else {
                 listContainer.innerHTML = '';
             }
@@ -879,7 +917,6 @@
                 const gmapsLink = `https://www.google.com/maps/dir/?api=1&destination=${pt.lat},${pt.lng}`;
                 const mainPhoto = spot.photoUrl ? spot.photoUrl.split(',')[0].trim() : null;
                 
-                // GELİŞTİRİLMİŞ YENİ POPUP UI
                 const popupContent = `
                     <div class="flex flex-col">
                         ${mainPhoto 
@@ -927,7 +964,7 @@
         };
 
         window.flyToSpot = (lat, lng) => {
-            if(window.innerWidth < 768) document.getElementById('sidebar').classList.remove('open'); 
+            if(window.innerWidth < 768) sidebarEl.classList.remove('open'); 
             map.flyTo([lat, lng], 18, { animate: true, duration: 1.5 });
         };
 
