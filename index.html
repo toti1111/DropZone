@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DropZone | Discover. Ride. Share.</title>
+    <title>DropZone</title>
     
     <!-- PWA Manifest & Meta -->
     <meta name="theme-color" content="#09090b">
@@ -59,9 +59,32 @@
             background: rgba(24, 24, 27, 0.85); backdrop-filter: blur(12px); border: 1px solid #27272a;
         }
 
-        .leaflet-popup-content-wrapper { background: #18181b; color: #f4f4f5; border: 1px solid #84cc16; border-radius: 0.75rem; }
+        /* Geliştirilmiş Harita Popup CSS'i */
+        .leaflet-popup-content-wrapper { 
+            padding: 0 !important; 
+            overflow: hidden; 
+            background: #18181b !important; 
+            color: #f4f4f5; 
+            border: 1px solid #84cc16; 
+            border-radius: 1rem !important; 
+            box-shadow: 0 10px 25px -5px rgba(132, 204, 22, 0.3) !important; 
+        }
+        .leaflet-popup-content { margin: 0 !important; width: 240px !important; line-height: normal; }
         .leaflet-popup-tip { background: #18181b; border: 1px solid #84cc16; }
-        .leaflet-container a.leaflet-popup-close-button { color: #f4f4f5; }
+        .leaflet-container a.leaflet-popup-close-button { 
+            color: #fff !important; 
+            right: 8px !important; 
+            top: 8px !important; 
+            z-index: 20; 
+            background: rgba(0,0,0,0.5); 
+            border-radius: 50%; 
+            width: 24px !important; 
+            height: 24px !important; 
+            display: flex; align-items: center; justify-content: center; 
+            padding: 0; text-decoration: none; 
+            transition: all 0.2s;
+        }
+        .leaflet-container a.leaflet-popup-close-button:hover { background: #84cc16; color: #000 !important; }
         
         #app-container { display: flex; height: 100%; width: 100%; position: relative; overflow: hidden; }
         
@@ -84,12 +107,10 @@
             #sidebar.open { transform: translateY(0); }
         }
 
-        /* Güvenli Bölge Çizgisi İçin Buton Konumlandırması */
         .safe-bottom { bottom: calc(1.5rem + env(safe-area-inset-bottom)) !important; }
 
         #map-container { flex-grow: 1; height: 100%; position: relative; z-index: 10; cursor: crosshair; width: 100vw; }
         .modal-overlay { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); }
-
         .custom-checkbox input:checked + div { background-color: #84cc16; border-color: #84cc16; color: #09090b; }
 
         .user-location-marker {
@@ -111,10 +132,9 @@
         .day-mode .text-zinc-400, .day-mode .text-zinc-500 { color: #52525b !important; }
         .day-mode .border-zinc-700, .day-mode .border-zinc-800 { border-color: #e4e4e7 !important; }
         .day-mode input, .day-mode textarea, .day-mode select { background-color: #f4f4f5 !important; color: #18181b !important; border-color: #d4d4d8 !important; }
-        .day-mode .leaflet-popup-content-wrapper, .day-mode .leaflet-popup-tip { background: #ffffff !important; color: #18181b !important; border: 1px solid #000; }
-        .day-mode .leaflet-container a.leaflet-popup-close-button { color: #18181b; }
+        .day-mode .leaflet-popup-content-wrapper, .day-mode .leaflet-popup-tip { background: #ffffff !important; color: #18181b !important; border: 1px solid #d4d4d8; }
+        .day-mode .leaflet-container a.leaflet-popup-close-button { color: #fff !important; }
 
-        /* Skeleton Loading */
         .skeleton { animation: skeleton-loading 1s linear infinite alternate; }
         @keyframes skeleton-loading { 0% { background-color: #27272a; } 100% { background-color: #3f3f46; } }
         .day-mode .skeleton { animation: skeleton-loading-day 1s linear infinite alternate; }
@@ -134,10 +154,8 @@
         document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
     </script>
 
-    <!-- TOAST BİLDİRİM KONTEYNERİ -->
     <div id="toast-container" class="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-[9999] flex flex-col gap-2 pointer-events-none w-[90%] max-w-sm safe-bottom"></div>
 
-    <!-- ÖZEL ONAY (CONFIRM) MODALI -->
     <div id="confirm-modal" class="hidden fixed inset-0 z-[9999] modal-overlay flex items-center justify-center p-4">
         <div class="bg-charcoal glass-panel w-full max-w-sm p-6 rounded-2xl shadow-2xl relative text-center">
             <div class="w-16 h-16 bg-warning/20 text-warning rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
@@ -154,15 +172,11 @@
 
     <div id="app-container">
         
-        <!-- SIDEBAR / BOTTOM SHEET -->
         <aside id="sidebar" class="glass-panel p-6 shadow-2xl flex flex-col gap-6">
             <div class="w-12 h-1.5 bg-zinc-600 rounded-full mx-auto md:hidden -mt-2 cursor-pointer" onclick="window.toggleSidebar()"></div>
             
             <div class="flex items-center justify-between border-b border-zinc-800 pb-4 mt-2 md:mt-0">
-                <div>
-                    <h1 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-neon to-cyan">DropZone</h1>
-                    <p class="text-zinc-400 text-sm italic">Discover. Ride. Share.</p>
-                </div>
+                <h1 class="text-3xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-neon to-cyan">DropZone</h1>
                 <button onclick="window.toggleSidebar()" class="text-zinc-400 hover:text-white text-2xl hidden md:block"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
@@ -181,7 +195,7 @@
 
             <div class="flex-grow flex flex-col gap-3 min-h-0">
                 <h2 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex justify-between items-center">
-                    <span>Spot Listesi (Yakından Uzağa)</span>
+                    <span>Spot Listesi</span>
                     <span id="spot-count" class="bg-zinc-800 text-neon py-0.5 px-2 rounded-full text-xs shadow-[0_0_8px_rgba(132,204,22,0.5)]">0</span>
                 </h2>
                 <div id="spot-list" class="flex flex-col gap-3 overflow-y-auto pb-4 custom-scroll pr-1">
@@ -199,11 +213,9 @@
             </div>
         </aside>
 
-        <!-- MAP AREA -->
         <main id="map-container">
             <div id="map" class="w-full h-full"></div>
             
-            <!-- AKILLI ARAMA -->
             <div class="absolute top-4 left-1/2 transform -translate-x-1/2 z-[400] w-[85%] max-w-md">
                 <div class="relative glass-panel rounded-full flex items-center px-4 py-2 shadow-lg">
                     <i class="fa-solid fa-magnifying-glass text-zinc-400"></i>
@@ -213,18 +225,15 @@
                 <div id="search-results" class="hidden absolute top-full mt-2 w-full glass-panel rounded-xl shadow-2xl max-h-60 overflow-y-auto flex flex-col p-2 gap-1 custom-scroll"></div>
             </div>
 
-            <!-- Sol Menü Açma Butonu -->
             <button onclick="window.toggleSidebar()" class="absolute left-4 z-[400] w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all md:top-4 md:bottom-auto safe-bottom">
                 <i class="fa-solid fa-list-ul"></i>
             </button>
 
-            <!-- ADMIN RAPORLARI BUTONU -->
             <button id="btn-admin-reports" onclick="window.openAdminReportsModal()" class="hidden absolute top-16 right-4 md:top-4 md:right-[100px] z-[400] glass-panel px-4 py-2 rounded-full flex gap-2 items-center text-sm font-semibold text-danger hover:bg-danger hover:text-white transition-colors">
                 <i class="fa-solid fa-shield-halved"></i> Raporlar 
                 <span id="pending-report-count" class="bg-danger text-white text-[10px] px-1.5 py-0.5 rounded-full hidden">0</span>
             </button>
 
-            <!-- Floating Action Buttons (Sağ Alt) -->
             <div class="absolute right-4 md:right-6 z-[400] flex flex-col gap-3 safe-bottom">
                 <button onclick="window.locateMe()" class="w-12 h-12 bg-charcoal border border-zinc-700 hover:border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-110" title="Konumumu Bul">
                     <i class="fa-solid fa-location-crosshairs"></i>
@@ -420,7 +429,6 @@
         <div class="bg-charcoal w-full max-w-2xl mt-12 mb-auto rounded-2xl border border-zinc-700 shadow-2xl overflow-hidden relative flex flex-col max-h-[85vh]">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 z-20 text-white bg-black/60 hover:bg-neon hover:text-black w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
             
-            <!-- Fotoğraf Galerisi (Carousel) -->
             <div class="w-full h-64 bg-obsidian relative group flex items-center justify-center border-b border-zinc-800">
                 <div id="detail-photo-container" class="w-full h-full"></div>
                 <button id="carousel-prev" onclick="window.prevPhoto()" class="hidden absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white w-8 h-8 rounded-full hover:bg-neon hover:text-black transition z-10"><i class="fa-solid fa-chevron-left"></i></button>
@@ -439,7 +447,7 @@
                 
                 <div class="text-xs text-zinc-500 mb-4 border-b border-zinc-800 pb-4 flex flex-wrap gap-x-4 gap-y-2">
                     <span><i class="fa-solid fa-user-astronaut"></i> Ekleyen: <span id="detail-user" class="text-zinc-300 font-bold">Kim</span></span>
-                    <span><i class="fa-solid fa-map-pin"></i> Konum: <span id="detail-location" class="text-zinc-300">Yükleniyor...</span></span>
+                    <span><i class="fa-solid fa-map-pin"></i> <span id="detail-location" class="text-zinc-300">Yükleniyor...</span></span>
                     <span><i class="fa-solid fa-ruler"></i> Uzaklık: <span id="detail-distance" class="text-neon font-bold">Hesaplanıyor...</span></span>
                     <span id="detail-weather-container" class="w-full text-cyan font-bold"><i class="fa-solid fa-spinner fa-spin"></i> Hava durumu çekiliyor...</span>
                 </div>
@@ -461,7 +469,6 @@
                     </div>
                 </div>
                 
-                <!-- DURUM RAPORLARI ALANI -->
                 <div id="detail-report-section" class="mb-6 border-t border-zinc-800 pt-4 rounded-xl transition-all duration-300">
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="text-sm font-bold text-warning uppercase tracking-wider flex items-center gap-2">
@@ -471,7 +478,6 @@
                     </div>
                     <div id="detail-active-reports" class="flex flex-wrap gap-2 mb-3"></div>
 
-                    <!-- Durum Bildirme Formu -->
                     <div id="report-form-section" class="hidden flex flex-col gap-2 bg-obsidian p-3 rounded-xl border border-zinc-800 mt-2">
                         <select id="report-type" class="bg-charcoal border border-zinc-700 text-xs rounded focus:ring-warning block w-full p-2 text-zinc-100">
                             <option value="Güvenlik / Zabıta 👮">Güvenlik / Zabıta 👮</option>
@@ -483,12 +489,10 @@
                     </div>
                 </div>
 
-                <!-- DİNAMİK SİLME BUTONU (Admin veya Kendi Spotu) -->
                 <div id="admin-spot-actions" class="hidden mb-6 flex gap-2 border-t border-zinc-800 pt-4">
                     <button id="btn-admin-delete-spot" class="bg-danger/20 text-danger border border-danger/50 px-4 py-2 rounded-lg text-sm font-bold hover:bg-danger hover:text-white transition-colors"><i class="fa-solid fa-trash"></i> Spotu Sil</button>
                 </div>
 
-                <!-- Yorumlar Bölümü -->
                 <div>
                     <h3 class="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4 border-b border-zinc-800 pb-2">Yorumlar</h3>
                     <div id="detail-comments-list" class="flex flex-col gap-3 mb-4"></div>
@@ -507,11 +511,9 @@
         </div>
     </div>
 
-    <!-- Leaflet & MarkerCluster JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
-    <!-- FIREBASE MODULE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy, arrayUnion, arrayRemove, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -541,9 +543,8 @@
         let initialLoadDone = false;
         
         let lastActionTime = 0;
-        const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { window.showToast("Çok hızlı işlem yapıyorsunuz, lütfen bekleyin.", "error"); return true; } lastActionTime = Date.now(); return false; };
+        const checkSpam = () => { if(Date.now() - lastActionTime < 3000) { window.showToast("Lütfen çok sık işlem yapmayınız, 3 saniye bekleyin.", "error"); return true; } lastActionTime = Date.now(); return false; };
 
-        // TOAST & ONAY (CONFIRM) SİSTEMİ
         window.showToast = (msg, type = 'success') => {
             const toast = document.createElement('div');
             const bg = type === 'error' ? 'bg-danger' : 'bg-neon';
@@ -568,7 +569,6 @@
         window.closeConfirm = () => { document.getElementById('confirm-modal').classList.add('hidden'); confirmCallback = null; };
         window.executeConfirm = () => { if(confirmCallback) confirmCallback(); window.closeConfirm(); };
 
-        // GÜNDÜZ MODU (DAY MODE)
         window.toggleDayMode = () => {
             document.body.classList.toggle('day-mode');
             const btn = document.getElementById('btn-day-mode');
@@ -581,7 +581,6 @@
             }
         };
 
-        // GPS Konum
         let userLocation = null;
         let userMarker = null;
         if ("geolocation" in navigator) {
@@ -622,7 +621,6 @@
             } catch(e) { return "Bilinmeyen Konum"; }
         }
 
-        // HAVA DURUMU İKON VE METİN EŞLEŞTİRME
         const getWeatherDesc = (code) => {
             if(code === 0) return { t: 'Güneşli / Açık', i: 'fa-sun' };
             if(code === 1 || code === 2) return { t: 'Parçalı Bulutlu', i: 'fa-cloud-sun' };
@@ -635,7 +633,6 @@
             return { t: 'Bilinmiyor', i: 'fa-cloud' };
         };
 
-        // HARİTA VE CLUSTER KURULUMU 
         const map = L.map('map', { zoomControl: false, closePopupOnClick: false }).setView([38.4237, 27.1428], 6); 
         L.control.zoom({ position: 'topright' }).addTo(map);
         map.on('movestart', () => { map.closePopup(); });
@@ -660,7 +657,6 @@
             currentTileLayer.addTo(map);
         };
 
-        // KÜMELEME (CLUSTER) AYARLARI
         let markersLayer = L.markerClusterGroup({
             chunkedLoading: true,
             maxClusterRadius: 40,
@@ -699,7 +695,6 @@
         };
 
         map.on('click', (e) => {
-            // FIX: Menü açıksa sadece menüyü kapat, spot ekleme formunu fırlatma
             const sidebar = document.getElementById('sidebar');
             if (sidebar.classList.contains('open')) {
                 window.toggleSidebar();
@@ -726,7 +721,6 @@
             document.getElementById('add-spot-modal').classList.remove('hidden');
         };
 
-        // AKILLI ARAMA
         const searchInput = document.getElementById('search-input');
         const searchResults = document.getElementById('search-results');
         const searchClear = document.getElementById('search-clear');
@@ -742,7 +736,7 @@
                 s.name.toLowerCase().includes(val) || 
                 (s.locationText && s.locationText.toLowerCase().includes(val)) ||
                 s.category.toLowerCase().includes(val)
-            ).slice(0, 5); // Max 5 sonuç
+            ).slice(0, 5);
 
             if(results.length > 0) {
                 searchResults.innerHTML = results.map(r => `
@@ -767,7 +761,6 @@
             searchClear.classList.add('hidden');
         };
 
-        // AUTH İŞLEMLERİ
         const authSection = document.getElementById('auth-section');
         onAuthStateChanged(auth, async (user) => {
             currentUser = user;
@@ -859,7 +852,7 @@
         const renderSpotsToDOM = () => {
             const listContainer = document.getElementById('spot-list');
             if(!initialLoadDone) {
-                // Skeleton loading duracak
+                // Skeleton loading
             } else {
                 listContainer.innerHTML = '';
             }
@@ -876,7 +869,7 @@
 
             document.getElementById('spot-count').innerText = filteredSpots.length;
 
-            if(initialLoadDone) listContainer.innerHTML = ''; // Skeleton silindi
+            if(initialLoadDone) listContainer.innerHTML = ''; 
 
             filteredSpots.forEach((spot) => {
                 const pt = spot.coords; if(!pt) return;
@@ -884,13 +877,25 @@
                 const hasReport = spot.reports && spot.reports.some(r => r.status === 'approved');
 
                 const gmapsLink = `https://www.google.com/maps/dir/?api=1&destination=${pt.lat},${pt.lng}`;
+                const mainPhoto = spot.photoUrl ? spot.photoUrl.split(',')[0].trim() : null;
+                
+                // GELİŞTİRİLMİŞ YENİ POPUP UI
                 const popupContent = `
-                    <div class="p-2 min-w-[200px] text-center">
-                        <h3 class="font-bold text-lg text-white mb-1">${spot.name}</h3>
-                        <p class="text-zinc-400 text-xs mb-4"><i class="fa-solid ${getSpotIcon(spot)}"></i> ${spot.category}</p>
-                        <div class="flex flex-col gap-2">
-                            <a href="${gmapsLink}" target="_blank" class="block w-full bg-cyan hover:bg-cyan/80 text-obsidian font-bold py-2 rounded text-sm transition"><i class="fa-solid fa-route"></i> Spota Git</a>
-                            <button onclick="window.openSpotDetail('${spot.id}')" class="block w-full bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded text-sm transition"><i class="fa-solid fa-magnifying-glass"></i> Spotu İncele</button>
+                    <div class="flex flex-col">
+                        ${mainPhoto 
+                            ? `<div class="h-28 w-full bg-cover bg-center border-b border-zinc-800" style="background-image: url('${mainPhoto}')"></div>` 
+                            : `<div class="h-16 w-full bg-zinc-900 flex items-center justify-center border-b border-zinc-800"><i class="fa-solid fa-image text-zinc-700 text-2xl"></i></div>`
+                        }
+                        <div class="p-4">
+                            <h3 class="font-black text-lg text-white leading-tight mb-1 truncate w-full" title="${spot.name}">${spot.name}</h3>
+                            <div class="flex items-center gap-2 mb-4">
+                                <span class="bg-zinc-800 px-2 py-0.5 rounded text-[10px] text-zinc-300 border border-zinc-700"><i class="fa-solid ${getSpotIcon(spot)} mr-1 text-neon"></i>${spot.category}</span>
+                                <span class="text-cyan text-[10px] font-bold"><i class="fa-solid fa-location-arrow mr-1"></i>${distText}</span>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="window.openSpotDetail('${spot.id}')" class="flex-1 bg-neon hover:bg-neonHover text-obsidian font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 shadow-md"><i class="fa-solid fa-bolt"></i> İncele</button>
+                                <a href="${gmapsLink}" target="_blank" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 border border-zinc-700"><i class="fa-solid fa-route"></i> Git</a>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -902,7 +907,6 @@
                 if(initialLoadDone) {
                     const el = document.createElement('div');
                     el.className = 'bg-obsidian border border-zinc-800 rounded-xl p-3 flex flex-col gap-2 hover:border-zinc-700 transition-colors cursor-pointer group relative overflow-hidden';
-                    const mainPhoto = spot.photoUrl ? spot.photoUrl.split(',')[0].trim() : null;
                     if(mainPhoto) el.innerHTML += `<div class="absolute inset-0 opacity-10 bg-cover bg-center" style="background-image: url('${mainPhoto}')"></div>`;
                     el.innerHTML += `
                         <div class="flex justify-between items-start relative z-10" onclick="window.flyToSpot(${pt.lat}, ${pt.lng})">
@@ -1065,7 +1069,6 @@
             else { badge.classList.add('hidden'); }
         };
 
-        // CAROUSEL MANTIĞI
         let currentPhotos = [];
         let currentPhotoIndex = 0;
         const renderCarousel = () => {
@@ -1100,7 +1103,7 @@
             document.getElementById('detail-location').innerText = spot.locationText || "Bilinmiyor";
             updateDetailDistance();
             
-            // HAVA DURUMU (Open-Meteo API + WMO Condition)
+            // HAVA DURUMU
             document.getElementById('detail-weather-container').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Hava durumu çekiliyor...';
             fetch(`https://api.open-meteo.com/v1/forecast?latitude=${spot.coords.lat}&longitude=${spot.coords.lng}&current_weather=true`)
                 .then(res => res.json())
@@ -1131,7 +1134,6 @@
             else { btnFav.innerHTML = '<i class="fa-regular fa-star"></i>'; btnFav.classList.replace('text-warning', 'text-zinc-500'); }
             btnFav.onclick = () => window.toggleFavorite(spot.id);
 
-            // Carousel Setup
             currentPhotos = spot.photoUrl ? spot.photoUrl.split(',').map(url => url.trim()).filter(url => url) : [];
             currentPhotoIndex = 0;
             renderCarousel();
