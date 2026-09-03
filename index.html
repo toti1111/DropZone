@@ -139,6 +139,11 @@
         @keyframes skeleton-loading { 0% { background-color: #27272a; } 100% { background-color: #3f3f46; } }
         .day-mode .skeleton { animation: skeleton-loading-day 1s linear infinite alternate; }
         @keyframes skeleton-loading-day { 0% { background-color: #e4e4e7; } 100% { background-color: #d4d4d8; } }
+
+        /* YENİ EKLENEN KARANLIK HARİTA FİLTRESİ */
+        .map-dark-filter {
+            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+        }
     </style>
 </head>
 <body class="antialiased font-sans">
@@ -679,7 +684,12 @@
         setTimeout(() => { map.invalidateSize(); }, 500);
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
-        const darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OSM', maxZoom: 19 });
+        // YENİ KARANLIK HARİTA KODU
+        const darkTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+            attribution: '&copy; OSM', 
+            maxZoom: 19,
+            className: 'map-dark-filter' 
+        });
         const satTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: '&copy; Esri', maxZoom: 19 });
         let currentTileLayer = darkTiles.addTo(map);
 
