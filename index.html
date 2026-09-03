@@ -140,9 +140,9 @@
         .day-mode .skeleton { animation: skeleton-loading-day 1s linear infinite alternate; }
         @keyframes skeleton-loading-day { 0% { background-color: #e4e4e7; } 100% { background-color: #d4d4d8; } }
 
-        /* YENİ EKLENEN KARANLIK HARİTA FİLTRESİ */
+        /* YENİ EKLENEN KARANLIK HARİTA FİLTRESİ (Google Maps için optimize edildi) */
         .map-dark-filter {
-            filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+            filter: invert(100%) hue-rotate(180deg) brightness(100%) contrast(90%) grayscale(70%);
         }
     </style>
 </head>
@@ -684,10 +684,10 @@
         setTimeout(() => { map.invalidateSize(); }, 500);
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
-        // YENİ KARANLIK HARİTA KODU
-        const darkTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
-            attribution: '&copy; OSM', 
-            maxZoom: 19,
+        // YENİ KARANLIK HARİTA KODU (Google Maps altyapısı ile tertemiz siyah)
+        const darkTiles = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { 
+            attribution: '&copy; Google', 
+            maxZoom: 20,
             className: 'map-dark-filter' 
         });
         const satTiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: '&copy; Esri', maxZoom: 19 });
