@@ -154,15 +154,19 @@
             id: "com.cnrxdw.dropzone",
             name: "DropZone", 
             short_name: "DropZone", 
-            description: "Türkiye'nin en büyük extreme spor haritası.",
+            description: "Türkiye'nin en büyük extreme spor haritası ve topluluğu.",
             start_url: "/", 
             display: "standalone",
             orientation: "portrait",
             background_color: "#09090b", 
             theme_color: "#84cc16",
             icons: [
-                { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Map_icon.svg/192px-Map_icon.svg.png", sizes: "192x192", type: "image/png" },
-                { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Map_icon.svg/512px-Map_icon.svg.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }
+                { src: "https://dummyimage.com/192x192/84cc16/09090b.png&text=DZ", sizes: "192x192", type: "image/png" },
+                { src: "https://dummyimage.com/512x512/84cc16/09090b.png&text=DropZone", sizes: "512x512", type: "image/png", purpose: "any maskable" }
+            ],
+            screenshots: [
+                { src: "https://dummyimage.com/540x720/18181b/84cc16.png&text=DropZone+Harita", sizes: "540x720", type: "image/png", form_factor: "narrow" },
+                { src: "https://dummyimage.com/540x720/18181b/84cc16.png&text=Spot+Detaylari", sizes: "540x720", type: "image/png", form_factor: "narrow" }
             ]
         };
         const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
