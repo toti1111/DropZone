@@ -10,15 +10,29 @@
   "theme_color": "#84cc16",
   "icons": [
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Map_icon.svg/192px-Map_icon.svg.png",
+      "src": "https://dummyimage.com/192x192/84cc16/09090b.png&text=DZ",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Map_icon.svg/512px-Map_icon.svg.png",
+      "src": "https://dummyimage.com/512x512/84cc16/09090b.png&text=DropZone",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://dummyimage.com/540x720/18181b/84cc16.png&text=DropZone+App",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "https://dummyimage.com/540x720/18181b/84cc16.png&text=Harita",
+      "sizes": "540x720",
+      "type": "image/png",
+      "form_factor": "narrow"
     }
   ]
 }
