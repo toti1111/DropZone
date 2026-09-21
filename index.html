@@ -151,9 +151,23 @@
     <!-- Dinamik PWA Manifest -->
     <script>
         const manifestData = {
-            name: "DropZone", short_name: "DropZone", start_url: ".", display: "standalone",
-            background_color: "#09090b", theme_color: "#84cc16",
-            icons: [{src: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjODRjYzE2IiBkPSJNNDA1LjggMjEwLjFjLTE1LjYgMC0zMC41IDMuNy00NC4xIDEwLjJMMzExIDExN2MtMy40LTEwLjQtMTMuNi0xNy41LTI0LjYtMTcuNWgtMjIuMUMyNTMuMiA4MS4zIDI0MCA2NCAyMjQgNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMyczE0LjMgMzIgMzIgMzJjMTIuOSAwIDI0LTMuNiAzMC4xLTEwaDE3LjZsNDAuMiA5MS4yYy0xOC40IDE1LjUtMzAuMiAzOC44LTMwLjIgNjQuOCAwIDQ2LjkgMzguMSA4NSA4NSA4NXM4NS0zOC4xIDg1LTg1Yy4xLTQ2LjktMzgtODUtODQuOS04NXptMCAxMTljLTIwLjkgMC0zOC0xNy4xLTM4LTM4czE3LjEtMzggMzgtMzggMzggMTcuMSAzOCAzOC0xNy4xIDM4LTM4IDM4em0tMjY1LjktMTYuMmMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhzMjEuNS00OCA0OC00OGMyNC4xIDAgNDQuMyAxNy43IDQ3LjYgNDEuMmw0My43LTEwLjRjLTYuOS00MS00Mi42LTcyLjgtODUuNC03My4yLTQ2LjktLjQtODUuNCAzNy4yLTg1LjQgODQuMnMuNCA4NC4yIDQ3LjMgODQuMmMzNy41IDAgNzEuMi0yMyA4Mi43LTU2bC00NC44LTEyLjRjLTYuMiAyMS0yNS42IDM2LjgtNDcuNyAzNi44eiIvPjwvc3ZnPg==", sizes: "512x512", type: "image/svg+xml"}]
+            id: "com.cnrxdw.dropzone",
+            name: "DropZone", 
+            short_name: "DropZone", 
+            description: "Türkiye'nin en büyük extreme spor haritası ve topluluğu.",
+            start_url: "/", 
+            display: "standalone",
+            orientation: "portrait",
+            background_color: "#09090b", 
+            theme_color: "#84cc16",
+            icons: [
+                { src: "https://dummyimage.com/192x192/84cc16/09090b.png&text=DZ", sizes: "192x192", type: "image/png" },
+                { src: "https://dummyimage.com/512x512/84cc16/09090b.png&text=DropZone", sizes: "512x512", type: "image/png", purpose: "any maskable" }
+            ],
+            screenshots: [
+                { src: "https://dummyimage.com/540x720/18181b/84cc16.png&text=DropZone+Harita", sizes: "540x720", type: "image/png", form_factor: "narrow" },
+                { src: "https://dummyimage.com/540x720/18181b/84cc16.png&text=Spot+Detaylari", sizes: "540x720", type: "image/png", form_factor: "narrow" }
+            ]
         };
         const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.head.insertAdjacentHTML('beforeend', `<link rel="manifest" href="${URL.createObjectURL(manifestBlob)}">`);
