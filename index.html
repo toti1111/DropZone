@@ -9,9 +9,9 @@
     <meta name="theme-color" content="#09090b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjODRjYzE2IiBkPSJNNDA1LjggMjEwLjFjLTE1LjYgMC0zMC41IDMuNy00NC4xIDEwLjJMMzExIDExN2MtMy40LTEwLjQtMTMuNi0xNy41LTI0LjYtMTcuNWgtMjIuMUMyNTMuMiA4MS4zIDI0MCA2NCAyMjQgNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMyczE0LjMgMzIgMzIgMzJjMTIuOSAwIDI0LTMuNiAzMC4xLTEwaDE3LjZsNDAuMiA5MS4yYy0xOC40IDE1LjUtMzAuMiAzOC44LTMwLjIgNjQuOCAwIDQ2LjkgMzguMSA4NSA4NSA4NXM4NS0zOC4xIDg1LTg1Yy4xLTQ2LjktMzgtODUtODQuOS04NXptMCAxMTljLTIwLjkgMC0zOC0xNy4xLTM4LTM4czE3LjEtMzggMzgtMzggMzggMTcuMSAzOCAzOC0xNy4xIDM4LTM4IDM4em0tMjY1LjktMTYuMmMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhzMjEuNS00OCA0OC00OGMyNC4xIDAgNDQuMyAxNy43IDQ3LjYgNDEuMmw0My43LTEwLjRjLTYuOS00MS00Mi42LTcyLjgtODUuNC03My4yLTQ2LjktLjQtODUuNCAzNy4yLTg1LjQgODQuMnMuNCA4NC4yIDQ3LjMgODQuMmMzNy41IDAgNzEuMi0yMyA4Mi43LTU2bC00NC44LTEyLjRjLTYuMiAyMS0yNS42IDM2LjgtNDcuNyAzNi44eiIvPjwvc3ZnPg==">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjODRjYzE2IiBkPSJNNDA1LjggMjEwLjFjLTE1LjYgMC0zMC41IDMuNy00NC4xIDEwLjJMMzExIDExN2MtMy40LTEwLjQtMTMuNi0xNy41LTI0LjYtMTcuNWgtMjIuMUMyNTMuMiA4MS4zIDI0MCA2NCAyMjQgNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMyczE0LjMgMzIgMzIgMzJjMTIuOSAwIDI0LTMuNiAzMC4xLTEwaDE3LjZsNDAuMiA5MS4yYy0xOC40IDE1LjUtMzAuMiAzOC44LTMwLjIgNjQuOCAwIDQ2LjkgMzguMSA4NSA4Ns84NS0zOC4xIDg1LTg1Yy4xLTQ2LjktMzgtODUtODQuOS04NXptMCAxMTljLTIwLjkgMC0zOC0xNy4xLTM4LTM4czE3LjEtMzggMzgtMzggMzggMTcuMSAzOCAzOC0xNy4xIDM4LTM4IDM4em0tMjY1LjktMTYuMmMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhzMjEuNS00OCA0OC00OGMyNC4xIDAgNDQuMyAxNy43IDQ3LjYgNDEuMmw0My43LTEwLjRjLTYuOS00MS00Mi42LTcyLjgtODUuNC03My4yLTQ2LjktLjQtODUuNCAzNy4yLTg1LjQgODQuMsMuNCA4NC4yIDQ3LjMsODQuMmMzNy41IDAgNzEuMi0y3A4Mi43LTU2bC00NC44LTEyLjRjLTYuMiAyMS0yNS42IDM2LjgtNDcuNyAzNi44eiIvPjwvc3ZnPg==">
 
-    <!-- PWA Manifest Bağlantısı (Yeni Eklenen) -->
+    <!-- PWA Manifest Bağlantısı -->
     <link rel="manifest" href="/manifest.json">
 
     <!-- Leaflet & MarkerCluster CSS -->
@@ -40,7 +40,6 @@
     </script>
 
     <style>
-        /* Elastik kaydırmayı kilitleyen ve App hissi veren kritik CSS */
         html, body { 
             background-color: #09090b; color: #f4f4f5; 
             height: 100%; width: 100%;
@@ -62,7 +61,6 @@
             background: rgba(24, 24, 27, 0.85); backdrop-filter: blur(12px); border: 1px solid #27272a;
         }
 
-        /* Geliştirilmiş Harita Popup CSS'i */
         .leaflet-popup-content-wrapper { 
             padding: 0 !important; 
             overflow: hidden; 
@@ -91,7 +89,6 @@
         
         #app-container { display: flex; height: 100%; width: 100%; position: relative; overflow: hidden; }
         
-        /* Sidebar ve Bottom Sheet Optimizasyonu */
         #sidebar { 
             width: 400px; max-width: 100%; height: 100%; z-index: 1000; 
             position: absolute; left: 0; top: 0; transform: translateX(-100%); 
@@ -127,7 +124,6 @@
             100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
         }
 
-        /* Gündüz Modu Sınıfları */
         .day-mode { background-color: #f4f4f5 !important; color: #18181b !important; }
         .day-mode .glass-panel { background: rgba(255, 255, 255, 0.95) !important; border-color: #d4d4d8 !important; color: #18181b !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
         .day-mode .bg-charcoal, .day-mode .bg-obsidian { background-color: #ffffff !important; border-color: #e4e4e7 !important; color: #18181b !important; }
@@ -143,7 +139,6 @@
         .day-mode .skeleton { animation: skeleton-loading-day 1s linear infinite alternate; }
         @keyframes skeleton-loading-day { 0% { background-color: #e4e4e7; } 100% { background-color: #d4d4d8; } }
 
-        /* YENİ EKLENEN KARANLIK HARİTA FİLTRESİ (Google Maps için optimize edildi) */
         .map-dark-filter {
             filter: invert(100%) hue-rotate(180deg) brightness(100%) contrast(90%) grayscale(70%);
         }
@@ -173,7 +168,6 @@
         
         <!-- SIDEBAR / BOTTOM SHEET -->
         <aside id="sidebar" class="glass-panel p-6 shadow-2xl flex flex-col gap-6">
-            <!-- Kaydırma (Drag) Alanı -->
             <div id="drag-handle" class="w-full h-8 flex justify-center items-center md:hidden -mt-4 mb-2 cursor-pointer">
                 <div class="w-12 h-1.5 bg-zinc-600 rounded-full"></div>
             </div>
@@ -522,6 +516,27 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy, arrayUnion, arrayRemove, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+        // GÜVENLİK YARDIMCI FONKSİYONLARI (XSS VE URL KONTROLÜ)
+        function escapeHTML(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function isValidUrl(url) {
+            if (!url) return false;
+            try {
+                const parsed = new URL(url);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch (_) {
+                return false;
+            }
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyCsCXNl2WeTPrY3P1C9c_KXLLwugkuDtkY", authDomain: "dropzone-1997f.firebaseapp.com",
             projectId: "dropzone-1997f", storageBucket: "dropzone-1997f.firebasestorage.app",
@@ -553,7 +568,7 @@
             const bg = type === 'error' ? 'bg-danger' : 'bg-neon';
             const text = type === 'error' ? 'text-white' : 'text-obsidian';
             toast.className = `${bg} ${text} px-4 py-3 rounded-xl shadow-[0_0_15px_rgba(0,0,0,0.5)] text-sm font-bold opacity-0 transition-all duration-300 transform translate-y-4 flex items-center gap-2`;
-            toast.innerHTML = `<i class="fa-solid ${type === 'error' ? 'fa-circle-xmark' : 'fa-circle-check'}"></i> ${msg}`;
+            toast.innerHTML = `<i class="fa-solid ${type === 'error' ? 'fa-circle-xmark' : 'fa-circle-check'}"></i> ${escapeHTML(msg)}`;
             document.getElementById('toast-container').appendChild(toast);
             
             setTimeout(() => { toast.classList.remove('opacity-0', 'translate-y-4'); }, 10);
@@ -584,7 +599,6 @@
             }
         };
 
-        // MENU DRAG LOGIC (Swipe to close on mobile)
         const dragHandle = document.getElementById('drag-handle');
         const sidebarEl = document.getElementById('sidebar');
         let touchStartY = 0;
@@ -604,7 +618,7 @@
         dragHandle.addEventListener('touchend', (e) => {
             const touchY = e.changedTouches[0].clientY;
             const diff = touchY - touchStartY;
-            sidebarEl.style.transform = ''; // inline stili kaldır
+            sidebarEl.style.transform = '';
             if (diff > 50 && window.innerWidth <= 768 && sidebarEl.classList.contains('open')) {
                 window.toggleSidebar();
             }
@@ -612,7 +626,7 @@
 
         window.toggleSidebar = () => {
             sidebarEl.classList.toggle('open');
-            sidebarEl.style.transform = ''; // Temizle
+            sidebarEl.style.transform = '';
         };
 
         let userLocation = null;
@@ -670,13 +684,11 @@
         const map = L.map('map', { zoomControl: false, closePopupOnClick: false }).setView([38.4237, 27.1428], 6); 
         L.control.zoom({ position: 'topright' }).addTo(map);
         
-        // FIX: movestart yerine dragstart kullanıyoruz (Otomatik pan'da popup kapanmasın)
         map.on('dragstart', () => { map.closePopup(); });
         
         setTimeout(() => { map.invalidateSize(); }, 500);
         window.addEventListener('resize', () => { map.invalidateSize(); });
 
-        // YENİ KARANLIK HARİTA KODU (Google Maps altyapısı ile tertemiz siyah)
         const darkTiles = L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', { 
             attribution: '&copy; Google', 
             maxZoom: 20,
@@ -780,10 +792,10 @@
 
             if(results.length > 0) {
                 searchResults.innerHTML = results.map(r => `
-                    <div onclick="window.flyToSpot(${r.coords.lat}, ${r.coords.lng}); window.openSpotDetail('${r.id}'); window.clearSearch();" class="p-3 hover:bg-zinc-800 rounded-lg cursor-pointer transition-colors border-b border-zinc-800 last:border-0 flex justify-between items-center">
+                    <div onclick="window.flyToSpot(${r.coords.lat}, ${r.coords.lng}); window.openSpotDetail('${escapeHTML(r.id)}'); window.clearSearch();" class="p-3 hover:bg-zinc-800 rounded-lg cursor-pointer transition-colors border-b border-zinc-800 last:border-0 flex justify-between items-center">
                         <div>
-                            <p class="text-sm font-bold text-white">${r.name}</p>
-                            <p class="text-[10px] text-zinc-500">${r.locationText || 'Bilinmiyor'}</p>
+                            <p class="text-sm font-bold text-white">${escapeHTML(r.name)}</p>
+                            <p class="text-[10px] text-zinc-500">${escapeHTML(r.locationText || 'Bilinmiyor')}</p>
                         </div>
                         <i class="fa-solid fa-chevron-right text-neon text-xs"></i>
                     </div>
@@ -816,13 +828,15 @@
                 }
                 if(!currentUserData.favorites) currentUserData.favorites = [];
 
+                const userPhoto = isValidUrl(user.photoURL) ? user.photoURL : 'https://via.placeholder.com/150';
+
                 authSection.innerHTML = `
                     <div class="flex items-center gap-3 w-full justify-between hover:bg-zinc-800 p-2 rounded-xl cursor-pointer transition-colors" onclick="window.openProfileModal()">
                         <div class="flex items-center gap-3">
-                            <img src="${user.photoURL || 'https://via.placeholder.com/150'}" alt="Profil" class="w-10 h-10 rounded-full border-2 border-neon object-cover">
+                            <img src="${userPhoto}" alt="Profil" class="w-10 h-10 rounded-full border-2 border-neon object-cover">
                             <div class="text-left">
-                                <p class="text-sm font-bold text-white">${user.displayName} ${isAdmin ? '<span class="text-[10px] bg-danger px-1 rounded text-white ml-1">ADMIN</span>' : ''}</p>
-                                <p class="text-[10px] text-cyan">${currentUserData.stance || 'Rider'}</p>
+                                <p class="text-sm font-bold text-white">${escapeHTML(user.displayName)} ${isAdmin ? '<span class="text-[10px] bg-danger px-1 rounded text-white ml-1">ADMIN</span>' : ''}</p>
+                                <p class="text-[10px] text-cyan">${escapeHTML(currentUserData.stance || 'Rider')}</p>
                             </div>
                         </div>
                         <button onclick="event.stopPropagation(); window.showConfirm('Çıkış yapmak istediğinize emin misiniz?', window.logout);" class="text-xs text-zinc-500 hover:text-danger transition-colors p-2" title="Çıkış Yap"><i class="fa-solid fa-right-from-bracket text-lg"></i></button>
@@ -859,7 +873,8 @@
         };
         window.openProfileModal = () => {
             if(!currentUser) return;
-            document.getElementById('profile-img-preview').src = currentUser.photoURL || 'https://via.placeholder.com/150';
+            const profilePhoto = isValidUrl(currentUser.photoURL) ? currentUser.photoURL : 'https://via.placeholder.com/150';
+            document.getElementById('profile-img-preview').src = profilePhoto;
             document.getElementById('profile-gender').value = currentUserData.gender || 'Belirtmek İstemiyorum';
             document.getElementById('profile-stance').value = currentUserData.stance || 'Karışık / Her Şey';
             document.getElementById('profile-bio').value = currentUserData.bio || '';
@@ -892,7 +907,6 @@
         const renderSpotsToDOM = () => {
             const listContainer = document.getElementById('spot-list');
             if(!initialLoadDone) {
-                // Skeleton loading duracak
             } else {
                 listContainer.innerHTML = '';
             }
@@ -917,7 +931,8 @@
                 const hasReport = spot.reports && spot.reports.some(r => r.status === 'approved');
 
                 const gmapsLink = `https://www.google.com/maps/dir/?api=1&destination=${pt.lat},${pt.lng}`;
-                const mainPhoto = spot.photoUrl ? spot.photoUrl.split(',')[0].trim() : null;
+                const rawPhotos = spot.photoUrl ? spot.photoUrl.split(',').map(u => u.trim()).filter(u => isValidUrl(u)) : [];
+                const mainPhoto = rawPhotos.length > 0 ? rawPhotos[0] : null;
                 
                 const popupContent = `
                     <div class="flex flex-col">
@@ -926,13 +941,13 @@
                             : `<div class="h-16 w-full bg-zinc-900 flex items-center justify-center border-b border-zinc-800"><i class="fa-solid fa-image text-zinc-700 text-2xl"></i></div>`
                         }
                         <div class="p-4">
-                            <h3 class="font-black text-lg text-white leading-tight mb-1 truncate w-full" title="${spot.name}">${spot.name}</h3>
+                            <h3 class="font-black text-lg text-white leading-tight mb-1 truncate w-full" title="${escapeHTML(spot.name)}">${escapeHTML(spot.name)}</h3>
                             <div class="flex items-center gap-2 mb-4">
-                                <span class="bg-zinc-800 px-2 py-0.5 rounded text-[10px] text-zinc-300 border border-zinc-700"><i class="fa-solid ${getSpotIcon(spot)} mr-1 text-neon"></i>${spot.category}</span>
+                                <span class="bg-zinc-800 px-2 py-0.5 rounded text-[10px] text-zinc-300 border border-zinc-700"><i class="fa-solid ${getSpotIcon(spot)} mr-1 text-neon"></i>${escapeHTML(spot.category)}</span>
                                 <span class="text-cyan text-[10px] font-bold"><i class="fa-solid fa-location-arrow mr-1"></i>${distText}</span>
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="window.openSpotDetail('${spot.id}')" class="flex-1 bg-neon hover:bg-neonHover text-obsidian font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 shadow-md"><i class="fa-solid fa-bolt"></i> İncele</button>
+                                <button onclick="window.openSpotDetail('${escapeHTML(spot.id)}')" class="flex-1 bg-neon hover:bg-neonHover text-obsidian font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 shadow-md"><i class="fa-solid fa-bolt"></i> İncele</button>
                                 <a href="${gmapsLink}" target="_blank" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 border border-zinc-700"><i class="fa-solid fa-route"></i> Git</a>
                             </div>
                         </div>
@@ -950,12 +965,12 @@
                     el.innerHTML += `
                         <div class="flex justify-between items-start relative z-10" onclick="window.flyToSpot(${pt.lat}, ${pt.lng})">
                             <div class="pr-8">
-                                <h4 class="font-bold text-sm text-zinc-100 group-hover:text-cyan transition-colors truncate">${spot.name}</h4>
-                                <span class="text-[10px] text-zinc-400 block mt-1"><i class="fa-solid fa-map-pin text-neon mr-1"></i> ${spot.locationText || 'Bilinmiyor'}</span>
-                                <span class="text-[10px] text-zinc-500 block"><i class="fa-solid fa-user-astronaut mr-1"></i> ${spot.userName || 'Anonim'}</span>
+                                <h4 class="font-bold text-sm text-zinc-100 group-hover:text-cyan transition-colors truncate">${escapeHTML(spot.name)}</h4>
+                                <span class="text-[10px] text-zinc-400 block mt-1"><i class="fa-solid fa-map-pin text-neon mr-1"></i> ${escapeHTML(spot.locationText || 'Bilinmiyor')}</span>
+                                <span class="text-[10px] text-zinc-500 block"><i class="fa-solid fa-user-astronaut mr-1"></i> ${escapeHTML(spot.userName || 'Anonim')}</span>
                             </div>
                             <div class="flex flex-col items-end gap-1">
-                                <span class="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded border border-zinc-700 font-bold">${spot.category}</span>
+                                <span class="text-[10px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded border border-zinc-700 font-bold">${escapeHTML(spot.category)}</span>
                                 <span class="text-[10px] font-bold text-cyan">${distText}</span>
                             </div>
                         </div>
@@ -995,8 +1010,8 @@
                 el.onclick = () => { window.flyToSpot(spot.coords.lat, spot.coords.lng); window.closeModals(); window.openSpotDetail(spot.id); };
                 el.innerHTML = `
                     <div>
-                        <h4 class="font-bold text-sm text-zinc-100">${spot.name}</h4>
-                        <span class="text-[10px] text-zinc-500">${formatDistance(spot.distance)} • ${spot.category}</span>
+                        <h4 class="font-bold text-sm text-zinc-100">${escapeHTML(spot.name)}</h4>
+                        <span class="text-[10px] text-zinc-500">${formatDistance(spot.distance)} • ${escapeHTML(spot.category)}</span>
                     </div>
                     <i class="fa-solid fa-star text-warning"></i>
                 `;
@@ -1039,7 +1054,7 @@
             const type = document.getElementById('report-type').value;
             const photoUrl = document.getElementById('report-photo').value.trim();
             
-            if(!photoUrl) { window.showToast("Kanıt fotoğrafı bağlantısı zorunludur.", "error"); return; }
+            if(!photoUrl || !isValidUrl(photoUrl)) { window.showToast("Geçerli bir (http/https) kanıt fotoğrafı bağlantısı giriniz.", "error"); return; }
 
             const newReport = { id: Date.now().toString(), type: type, photoUrl: photoUrl, userId: currentUser.uid, userName: currentUser.displayName, date: Date.now(), status: 'pending' };
 
@@ -1061,18 +1076,27 @@
                 const pendingReports = (spot.reports || []).filter(r => r.status === 'pending');
                 pendingReports.forEach(r => {
                     pendingCount++;
-                    list.innerHTML += `
-                        <div class="bg-obsidian p-3 rounded-lg border border-zinc-700">
-                            <p class="text-sm font-bold text-white">${spot.name}</p>
-                            <p class="text-xs text-warning font-bold"><i class="fa-solid fa-triangle-exclamation"></i> ${r.type}</p>
-                            <p class="text-[10px] text-zinc-400 mt-1">Ekleyen: ${r.userName} • ${new Date(r.date).toLocaleString()}</p>
-                            <img src="${r.photoUrl}" class="w-full h-32 object-cover mt-2 rounded border border-zinc-800 cursor-pointer" onclick="window.open('${r.photoUrl}')">
-                            <div class="flex gap-2 mt-3">
-                                <button onclick="window.approveReport('${spot.id}', '${r.id}')" class="bg-neon text-obsidian px-3 py-1.5 rounded text-xs font-bold w-1/2 hover:bg-neonHover transition-colors">Onayla</button>
-                                <button onclick="window.rejectReport('${spot.id}', '${r.id}')" class="bg-danger text-white px-3 py-1.5 rounded text-xs font-bold w-1/2 hover:bg-red-600 transition-colors">Reddet (Sil)</button>
-                            </div>
+                    const safePhoto = isValidUrl(r.photoUrl) ? r.photoUrl : '';
+                    const reportItem = document.createElement('div');
+                    reportItem.className = 'bg-obsidian p-3 rounded-lg border border-zinc-700';
+                    reportItem.innerHTML = `
+                        <p class="text-sm font-bold text-white">${escapeHTML(spot.name)}</p>
+                        <p class="text-xs text-warning font-bold"><i class="fa-solid fa-triangle-exclamation"></i> ${escapeHTML(r.type)}</p>
+                        <p class="text-[10px] text-zinc-400 mt-1">Ekleyen: ${escapeHTML(r.userName)} • ${new Date(r.date).toLocaleString()}</p>
+                        ${safePhoto ? `<img src="${safePhoto}" class="w-full h-32 object-cover mt-2 rounded border border-zinc-800 cursor-pointer report-preview-img">` : ''}
+                        <div class="flex gap-2 mt-3">
+                            <button class="btn-approve bg-neon text-obsidian px-3 py-1.5 rounded text-xs font-bold w-1/2 hover:bg-neonHover transition-colors">Onayla</button>
+                            <button class="btn-reject bg-danger text-white px-3 py-1.5 rounded text-xs font-bold w-1/2 hover:bg-red-600 transition-colors">Reddet (Sil)</button>
                         </div>
                     `;
+                    
+                    if(safePhoto) {
+                        reportItem.querySelector('.report-preview-img').addEventListener('click', () => window.open(safePhoto, '_blank'));
+                    }
+                    reportItem.querySelector('.btn-approve').addEventListener('click', () => window.approveReport(spot.id, r.id));
+                    reportItem.querySelector('.btn-reject').addEventListener('click', () => window.rejectReport(spot.id, r.id));
+
+                    list.appendChild(reportItem);
                 });
             });
 
@@ -1120,7 +1144,14 @@
                 container.innerHTML = `<div class="flex flex-col items-center"><i class="fa-solid fa-image text-4xl text-zinc-700 mb-2"></i><span class="text-zinc-600 text-xs">Fotoğraf Yok</span></div>`;
                 prevBtn.classList.add('hidden'); nextBtn.classList.add('hidden'); indicators.innerHTML = '';
             } else {
-                container.innerHTML = `<img src="${currentPhotos[currentPhotoIndex]}" class="w-full h-full object-cover cursor-pointer hover:opacity-80 transition" onclick="window.open('${currentPhotos[currentPhotoIndex]}')">`;
+                const photoUrl = currentPhotos[currentPhotoIndex];
+                container.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = photoUrl;
+                img.className = "w-full h-full object-cover cursor-pointer hover:opacity-80 transition";
+                img.addEventListener('click', () => window.open(photoUrl, '_blank'));
+                container.appendChild(img);
+
                 if(currentPhotos.length > 1) {
                     prevBtn.classList.remove('hidden'); nextBtn.classList.remove('hidden');
                     indicators.innerHTML = currentPhotos.map((_, i) => `<div class="w-2 h-2 rounded-full ${i === currentPhotoIndex ? 'bg-neon' : 'bg-zinc-500'}"></div>`).join('');
@@ -1132,17 +1163,15 @@
         window.nextPhoto = () => { currentPhotoIndex = (currentPhotoIndex + 1) % currentPhotos.length; renderCarousel(); };
         window.prevPhoto = () => { currentPhotoIndex = (currentPhotoIndex - 1 + currentPhotos.length) % currentPhotos.length; renderCarousel(); };
 
-
         window.openSpotDetail = (id) => {
             currentDetailSpotId = id; const spot = spotsData.find(s => s.id === id); if(!spot) return;
 
-            document.getElementById('detail-name').innerText = spot.name;
-            document.getElementById('detail-category').innerText = spot.category;
-            document.getElementById('detail-user').innerText = spot.userName;
+            document.getElementById('detail-name').innerText = spot.name || "";
+            document.getElementById('detail-category').innerText = spot.category || "";
+            document.getElementById('detail-user').innerText = spot.userName || "";
             document.getElementById('detail-location').innerText = spot.locationText || "Bilinmiyor";
             updateDetailDistance();
             
-            // HAVA DURUMU
             document.getElementById('detail-weather-container').innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Hava durumu çekiliyor...';
             fetch(`https://api.open-meteo.com/v1/forecast?latitude=${spot.coords.lat}&longitude=${spot.coords.lng}&current_weather=true`)
                 .then(res => res.json())
@@ -1158,7 +1187,7 @@
                             <span class="mx-2 text-zinc-700">|</span> 
                             <i class="fa-solid fa-wind"></i> ${w} km/s 
                             <span class="mx-2 text-zinc-700">|</span> 
-                            <i class="fa-solid ${weatherInfo.i}"></i> ${weatherInfo.t}
+                            <i class="fa-solid ${weatherInfo.i}"></i> ${escapeHTML(weatherInfo.t)}
                         `;
                     } else {
                         document.getElementById('detail-weather-container').innerHTML = '<i class="fa-solid fa-cloud-xmark text-zinc-500"></i> Hava verisi yok';
@@ -1173,11 +1202,11 @@
             else { btnFav.innerHTML = '<i class="fa-regular fa-star"></i>'; btnFav.classList.replace('text-warning', 'text-zinc-500'); }
             btnFav.onclick = () => window.toggleFavorite(spot.id);
 
-            currentPhotos = spot.photoUrl ? spot.photoUrl.split(',').map(url => url.trim()).filter(url => url) : [];
+            currentPhotos = spot.photoUrl ? spot.photoUrl.split(',').map(url => url.trim()).filter(url => isValidUrl(url)) : [];
             currentPhotoIndex = 0;
             renderCarousel();
 
-            document.getElementById('detail-types').innerHTML = (spot.types || []).map(t => `<span class="bg-zinc-800 border border-zinc-700 text-neon px-2 py-1 rounded text-[10px] font-bold">${t}</span>`).join('');
+            document.getElementById('detail-types').innerHTML = (spot.types || []).map(t => `<span class="bg-zinc-800 border border-zinc-700 text-neon px-2 py-1 rounded text-[10px] font-bold">${escapeHTML(t)}</span>`).join('');
             document.getElementById('detail-desc').innerText = spot.desc || "Açıklama belirtilmemiş.";
 
             const isOwner = currentUser && spot.userId === currentUser.uid;
@@ -1207,12 +1236,31 @@
             if(approvedReports.length > 0) {
                 reportSection.classList.add('shadow-[0_0_15px_rgba(239,68,68,0.5)]', 'border-danger', 'border', 'p-3');
                 reportSection.classList.remove('border-t', 'border-zinc-800');
-                reportsCont.innerHTML = approvedReports.map(r => `
-                    <div class="bg-warning/10 border border-warning/30 text-warning px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1.5 cursor-pointer hover:bg-warning/20 transition-colors" onclick="window.open('${r.photoUrl}')" title="Kanıtı İncele">
-                        <i class="fa-solid fa-triangle-exclamation"></i> ${r.type} <span class="opacity-70 font-normal ml-1">${new Date(r.date).toLocaleDateString()}</span>
-                        ${isAdmin ? `<button onclick="event.stopPropagation(); window.rejectReport('${spot.id}', '${r.id}')" class="ml-2 text-danger hover:text-white"><i class="fa-solid fa-xmark"></i></button>` : ''}
-                    </div>
-                `).join('');
+                reportsCont.innerHTML = '';
+                approvedReports.forEach(r => {
+                    const rDiv = document.createElement('div');
+                    rDiv.className = 'bg-warning/10 border border-warning/30 text-warning px-2 py-1.5 rounded text-[10px] font-bold flex items-center gap-1.5 cursor-pointer hover:bg-warning/20 transition-colors';
+                    rDiv.title = 'Kanıtı İncele';
+                    
+                    const safePhoto = isValidUrl(r.photoUrl) ? r.photoUrl : '';
+                    if (safePhoto) {
+                        rDiv.addEventListener('click', () => window.open(safePhoto, '_blank'));
+                    }
+
+                    rDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${escapeHTML(r.type)} <span class="opacity-70 font-normal ml-1">${new Date(r.date).toLocaleDateString()}</span>`;
+                    
+                    if (isAdmin) {
+                        const delReportBtn = document.createElement('button');
+                        delReportBtn.className = 'ml-2 text-danger hover:text-white';
+                        delReportBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                        delReportBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            window.rejectReport(spot.id, r.id);
+                        });
+                        rDiv.appendChild(delReportBtn);
+                    }
+                    reportsCont.appendChild(rDiv);
+                });
             } else {
                 reportSection.classList.remove('shadow-[0_0_15px_rgba(239,68,68,0.5)]', 'border-danger', 'border', 'p-3');
                 reportSection.classList.add('border-t', 'border-zinc-800');
@@ -1250,13 +1298,13 @@
 
         const generateCommentHTML = (c, s, isReply = false) => {
             const margin = isReply ? 'ml-6 border-l-2 border-cyan/30 pl-3' : 'border border-zinc-800';
-            const delBtn = (isAdmin || (currentUser && c.userId === currentUser.uid)) ? `<button onclick="window.adminDeleteComment('${currentDetailSpotId}', '${c.id}')" class="absolute top-2 right-2 text-danger hover:text-white text-xs"><i class="fa-solid fa-trash"></i></button>` : '';
+            const delBtn = (isAdmin || (currentUser && c.userId === currentUser.uid)) ? `<button onclick="window.adminDeleteComment('${currentDetailSpotId}', '${escapeHTML(c.id)}')" class="absolute top-2 right-2 text-danger hover:text-white text-xs"><i class="fa-solid fa-trash"></i></button>` : '';
             return `
                 <div class="bg-obsidian p-3 rounded-lg ${margin} relative group">
-                    <p class="text-xs font-bold text-cyan mb-1">${c.userName} ${isReply ? '<span class="text-zinc-500 font-normal">yanıtladı</span>' : ''} <span class="text-[10px] text-zinc-600 font-normal ml-2">${new Date(c.date).toLocaleDateString()}</span></p>
-                    <p class="text-sm text-zinc-300 pr-6">${c.text}</p>
+                    <p class="text-xs font-bold text-cyan mb-1">${escapeHTML(c.userName)} ${isReply ? '<span class="text-zinc-500 font-normal">yanıtladı</span>' : ''} <span class="text-[10px] text-zinc-600 font-normal ml-2">${new Date(c.date).toLocaleDateString()}</span></p>
+                    <p class="text-sm text-zinc-300 pr-6">${escapeHTML(c.text)}</p>
                     <div class="mt-2 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                        ${!isReply && currentUser ? `<button onclick="window.setReply('${c.id}', '${c.userName}')" class="text-[10px] text-zinc-400 hover:text-cyan"><i class="fa-solid fa-reply"></i> Cevapla</button>` : ''}
+                        ${!isReply && currentUser ? `<button onclick="window.setReply('${escapeHTML(c.id)}', '${escapeHTML(c.userName)}')" class="text-[10px] text-zinc-400 hover:text-cyan"><i class="fa-solid fa-reply"></i> Cevapla</button>` : ''}
                     </div>
                     ${delBtn}
                 </div>
@@ -1348,11 +1396,14 @@
             const checkedTypes = Array.from(document.querySelectorAll('.type-checkbox:checked')).map(cb => cb.value);
             const locText = await getCityDistrict(lat, lng);
 
+            const rawPhotoInput = document.getElementById('spot-photo').value;
+            const validPhotos = rawPhotoInput.split(',').map(url => url.trim()).filter(url => isValidUrl(url));
+
             try {
                 const newSpot = {
                     name: document.getElementById('spot-name').value,
                     category: category, types: checkedTypes, desc: document.getElementById('spot-desc').value,
-                    photoUrl: document.getElementById('spot-photo').value, locationText: locText,
+                    photoUrl: validPhotos.join(','), locationText: locText,
                     status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: currentUser.displayName, 
                     comments: [], reports: [], 
                     coords: {lat, lng}
