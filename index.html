@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#09090b">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBmaWxsPSIjODRjYzE2IiBkPSJNNDA1LjggMjEwLjFjLTE1LjYgMC0zMC41IDMuNy00NC4xIDEwLjJMMzExIDExN2MtMy40LTEwLjQtMTMuNi0xNy41LTI0LjYtMTcuNWgtMjIuMUMyNTMuMiA4MS4zIDI0MCA2NCAyMjQgNjRjLTE3LjcgMC0zMiAxNC4zLTMyIDMyczE0LjMgMzIgMzIgMzJjMTIuOSAwIDI0LTMuNiAzMC4xLTEwaDE3LjZsNDAuMiA5MS4yYy0xOC40IDE1LjUtMzAuMiAzOC44LTMwLjIgNjQuOCAwIDQ2LjkgMzguMSA4NSA4Ns84NS0zOC4xIDg1LTg1Yy4xLTQ2LjktMzgtODUtODQuOS04NXptMCAxMTljLTIwLjkgMC0zOC0xNy4xLTM4LTM4czE3LjEtMzggMzgtMzggMzggMTcuMSAzOCAzOC0xNy4xIDM4LTM4IDM4em0tMjY1LjktMTYuMmMtMjYuNSAwLTQ4LTIxLjUtNDgtNDhzMjEuNS00OCA0OC00OGMyNC4xIDAgNDQuMyAxNy43IDQ3LjYgNDEuMmw0My43LTEwLjRjLTYuOS00MS00Mi42LTcyLjgtODUuNC03My4yLTQ2LjktLjQtODUuNCAzNy4yLTg1LjQgODQuMsMuNCA4NC4yIDQ3LjMsODQuMmMzNy41IDAgNzEuMi0y3A4Mi43LTU2bC00NC44LTEyLjRjLTYuMiAyMS0yNS42IDM2LjgtNDcuNyAzNi44eiIvPjwvc3ZnPg==">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/854/854878.png">
 
     <!-- PWA Manifest Bağlantısı -->
     <link rel="manifest" href="/manifest.json">
@@ -222,9 +222,15 @@
                 <div id="search-results" class="hidden absolute top-full mt-2 w-full glass-panel rounded-xl shadow-2xl max-h-60 overflow-y-auto flex flex-col p-2 gap-1 custom-scroll"></div>
             </div>
 
-            <button onclick="window.toggleSidebar()" class="absolute left-4 z-[400] w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all md:top-4 md:bottom-auto safe-bottom">
-                <i class="fa-solid fa-list-ul"></i>
-            </button>
+            <!-- SOL ÜST KISIM: MENÜ BUTONU VE YANINDA YENİ TOPLULUK BUTONU -->
+            <div class="absolute left-4 top-4 z-[400] flex items-center gap-2">
+                <button onclick="window.toggleSidebar()" class="w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105" title="Menüyü Aç">
+                    <i class="fa-solid fa-list-ul"></i>
+                </button>
+                <button onclick="window.openCommunityModal()" class="w-12 h-12 glass-panel border border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105" title="Topluluk Akışı">
+                    <i class="fa-solid fa-comments"></i>
+                </button>
+            </div>
 
             <button id="btn-admin-reports" onclick="window.openAdminReportsModal()" class="hidden absolute top-16 right-4 md:top-4 md:right-[100px] z-[400] glass-panel px-4 py-2 rounded-full flex gap-2 items-center text-sm font-semibold text-danger hover:bg-danger hover:text-white transition-colors">
                 <i class="fa-solid fa-shield-halved"></i> Raporlar 
@@ -246,6 +252,113 @@
                 </button>
             </div>
         </main>
+    </div>
+
+    <!-- ARKADAŞININKİNE BENZER MODERN TOPLULUK MODALI (3 SÜTUNLU YAPI) -->
+    <div id="community-modal" class="hidden fixed inset-0 z-[3000] modal-overlay flex justify-center items-center p-2 md:p-6">
+        <div class="bg-charcoal w-full max-w-6xl h-[90vh] rounded-2xl border border-zinc-700 shadow-2xl overflow-hidden relative flex flex-col">
+            
+            <!-- ÜST HEADER (Marka ve Arama) -->
+            <div class="flex items-center justify-between px-6 py-3 border-b border-zinc-800 bg-obsidian">
+                <div class="flex items-center gap-6">
+                    <h2 class="text-xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-neon to-cyan">DropZone Topluluk</h2>
+                    <div class="hidden md:flex items-center gap-2">
+                        <button class="text-xs font-bold text-obsidian bg-neon px-4 py-1.5 rounded-full shadow-[0_0_10px_rgba(132,204,22,0.4)]">Tümü</button>
+                        <button class="text-xs font-bold text-zinc-400 hover:text-white px-4 py-1.5 rounded-full transition">Takip</button>
+                        <button class="text-xs font-bold text-zinc-400 hover:text-white px-4 py-1.5 rounded-full transition">Trend</button>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="relative hidden sm:block">
+                        <i class="fa-solid fa-magnifying-glass text-zinc-400 absolute left-3 top-2.5 text-xs"></i>
+                        <input type="text" placeholder="Toplulukta ara..." class="bg-obsidian border border-zinc-800 text-xs text-white rounded-full pl-8 pr-4 py-2 focus:outline-none focus:border-cyan w-48">
+                    </div>
+                    <button onclick="window.closeModals()" class="text-zinc-400 hover:text-white text-xl w-9 h-9 rounded-full flex items-center justify-center bg-zinc-800/50 hover:bg-zinc-800 transition"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <!-- ANA İÇERİK (2 SÜTUNLU: SOL AKIŞ + SAĞ WIDGET PANELİ) -->
+            <div class="flex flex-grow overflow-hidden">
+                
+                <!-- SOL ANA AKIŞ -->
+                <div class="flex-grow overflow-y-auto custom-scroll p-4 md:p-6 flex flex-col gap-4 border-r border-zinc-800">
+                    
+                    <!-- Gönderi Paylaşma Kutusu -->
+                    <div id="community-post-box" class="bg-obsidian border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 shadow-md">
+                        <div class="flex items-start gap-3">
+                            <div id="community-user-avatar" class="w-10 h-10 rounded-full bg-zinc-800 border border-neon flex items-center justify-center text-neon font-bold overflow-hidden shrink-0">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <textarea id="community-post-input" rows="2" placeholder="Sokakta neler oluyor? Yeni bir spot mu buldun, yoksa sürüşte misin?" class="bg-transparent border-none text-sm rounded-lg focus:outline-none block w-full text-zinc-100 resize-none placeholder-zinc-500 pt-2"></textarea>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-zinc-800/80 pt-3">
+                            <div class="flex items-center gap-3">
+                                <input type="url" id="community-post-photo" placeholder="Fotoğraf URL (İsteğe bağlı)" class="bg-charcoal border border-zinc-800 text-xs rounded-lg focus:ring-cyan block p-2 text-zinc-100 w-52 sm:w-64">
+                            </div>
+                            <button onclick="window.submitCommunityPost()" class="bg-neon hover:bg-neonHover text-obsidian font-bold text-xs px-5 py-2 rounded-full transition-all shadow-[0_0_10px_rgba(132,204,22,0.4)]">
+                                Paylaş
+                            </button>
+                        </div>
+                    </div>
+                    <p id="community-login-warning" class="text-xs text-warning text-center hidden bg-warning/10 p-2 rounded-lg border border-warning/20">Paylaşım yapmak için sol menüden giriş yapmalısınız.</p>
+
+                    <!-- Gönderi Listesi -->
+                    <div class="flex flex-col gap-4" id="community-feed-list">
+                        <!-- Dinamik Yüklenecek -->
+                    </div>
+                </div>
+
+                <!-- SAĞ WIDGET PANELİ (Trendler, Kanallar) -->
+                <div class="hidden lg:flex flex-col w-80 p-4 gap-4 overflow-y-auto custom-scroll bg-obsidian/30 shrink-0">
+                    
+                    <!-- Trend Konular -->
+                    <div class="bg-obsidian border border-zinc-800 rounded-2xl p-4 shadow-sm">
+                        <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-fire text-neon"></i> Trend Konular
+                        </h3>
+                        <div class="flex flex-col gap-3">
+                            <div class="cursor-pointer hover:bg-zinc-800/50 p-2 rounded-lg transition">
+                                <span class="text-[10px] text-zinc-500">Topluluk • Popüler</span>
+                                <p class="text-xs font-bold text-white">#DropZone</p>
+                                <span class="text-[10px] text-zinc-400">12 paylaşım</span>
+                            </div>
+                            <div class="cursor-pointer hover:bg-zinc-800/50 p-2 rounded-lg transition">
+                                <span class="text-[10px] text-zinc-500">Sokak Sürüşü</span>
+                                <p class="text-xs font-bold text-white">#UrbanDH</p>
+                                <span class="text-[10px] text-zinc-400">8 paylaşım</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kanallar -->
+                    <div class="bg-obsidian border border-zinc-800 rounded-2xl p-4 shadow-sm">
+                        <h3 class="text-xs font-bold text-zinc-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-hashtag text-cyan"></i> Kanallar
+                        </h3>
+                        <div class="flex flex-col gap-1.5">
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-cyan/10 border border-cyan/20 text-cyan text-xs font-semibold cursor-pointer">
+                                <span># genel</span>
+                                <span class="bg-cyan text-obsidian text-[10px] px-1.5 py-0.2 rounded-full font-bold">Aktif</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs cursor-pointer transition">
+                                <span># duyurular</span>
+                                <span class="text-[10px] text-zinc-500">salt-okunur</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white text-xs cursor-pointer transition">
+                                <span># ekipman-setup</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto text-center text-[10px] text-zinc-600 pb-2">
+                        <span>Gizlilik • Koşullar • Yardım</span>
+                        <p class="mt-1">© 2026 DropZone • cnr_xdw</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
 
     <!-- ADD SPOT MODAL -->
@@ -553,6 +666,7 @@
         let currentUserData = { favorites: [] }; 
         let isAdmin = false;
         let spotsData = []; 
+        let postsData = []; // Topluluk gönderileri için
         let activeFilter = 'all';
         let favActiveFilter = 'all';
         let currentDetailSpotId = null;
@@ -627,6 +741,12 @@
         window.toggleSidebar = () => {
             sidebarEl.classList.toggle('open');
             sidebarEl.style.transform = '';
+        };
+
+        // TOPLULUK MODAL AÇMA / KAPAMA
+        window.openCommunityModal = () => {
+            document.getElementById('community-modal').classList.remove('hidden');
+            renderCommunityFeed();
         };
 
         let userLocation = null;
@@ -846,6 +966,10 @@
                 if(isAdmin) document.getElementById('btn-admin-reports').classList.remove('hidden');
                 else document.getElementById('btn-admin-reports').classList.add('hidden');
 
+                document.getElementById('community-post-box').classList.remove('hidden');
+                document.getElementById('community-login-warning').classList.add('hidden');
+                document.getElementById('community-user-avatar').innerHTML = `<img src="${userPhoto}" class="w-full h-full object-cover rounded-full">`;
+
             } else {
                 currentUserData = { favorites: [] };
                 authSection.innerHTML = `
@@ -855,6 +979,8 @@
                     </button>
                 `;
                 document.getElementById('btn-admin-reports').classList.add('hidden');
+                document.getElementById('community-post-box').classList.add('hidden');
+                document.getElementById('community-login-warning').classList.remove('hidden');
             }
             if(initialLoadDone) renderSpotsToDOM();
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
@@ -1101,7 +1227,7 @@
             });
 
             if(pendingCount === 0) list.innerHTML = '<p class="text-xs text-zinc-500 text-center mt-4">Bekleyen rapor bulunmuyor.</p>';
-            document.getElementById('admin-reports-modal').classList.remove('hidden');
+            document.getElementById('admin-reports-modal').classList.add('hidden');
         };
 
         window.approveReport = async (spotId, reportId) => {
@@ -1130,6 +1256,135 @@
             const badge = document.getElementById('pending-report-count');
             if(pendingCount > 0) { badge.innerText = pendingCount; badge.classList.remove('hidden'); } 
             else { badge.classList.add('hidden'); }
+        };
+
+        // TOPLULUK GÖNDERİLERİ (FIRESTORE) İŞLEMLERİ
+        window.submitCommunityPost = async () => {
+            if(!currentUser) return;
+            if(checkSpam()) return;
+
+            const textInput = document.getElementById('community-post-input');
+            const photoInput = document.getElementById('community-post-photo');
+            const text = textInput.value.trim();
+            const photoUrl = photoInput.value.trim();
+
+            if(!text && !photoUrl) {
+                window.showToast("Lütfen bir metin veya fotoğraf ekleyin.", "error");
+                return;
+            }
+
+            if(photoUrl && !isValidUrl(photoUrl)) {
+                window.showToast("Lütfen geçerli bir (http/https) fotoğraf URL'si girin.", "error");
+                return;
+            }
+
+            try {
+                const newPost = {
+                    userId: currentUser.uid,
+                    userName: currentUser.displayName || "Rider",
+                    userPhoto: currentUser.photoURL || "",
+                    text: text,
+                    photoUrl: photoUrl,
+                    createdAt: Date.now(),
+                    likes: []
+                };
+
+                await addDoc(collection(db, "community_posts"), newPost);
+                textInput.value = '';
+                photoInput.value = '';
+                window.showToast("Gönderi paylaşıldı!");
+            } catch(e) {
+                window.showToast("Gönderi paylaşılamadı.", "error");
+            }
+        };
+
+        window.togglePostLike = async (postId, currentLikes) => {
+            if(!currentUser) {
+                window.showToast("Beğenmek için giriş yapmalısınız.", "error");
+                return;
+            }
+            if(checkSpam()) return;
+
+            const postRef = doc(db, 'community_posts', postId);
+            const hasLiked = currentLikes && currentLikes.includes(currentUser.uid);
+
+            try {
+                if(hasLiked) {
+                    await updateDoc(postRef, { likes: arrayRemove(currentUser.uid) });
+                } else {
+                    await updateDoc(postRef, { likes: arrayUnion(currentUser.uid) });
+                }
+            } catch(e) {
+                window.showToast("İşlem başarısız.", "error");
+            }
+        };
+
+        window.deleteCommunityPost = async (postId, postUserId) => {
+            if(!currentUser) return;
+            if(!isAdmin && currentUser.uid !== postUserId) return;
+
+            window.showConfirm("Bu gönderiyi silmek istediğinize emin misiniz?", async () => {
+                try {
+                    await deleteDoc(doc(db, 'community_posts', postId));
+                    window.showToast("Gönderi silindi.");
+                } catch(e) {
+                    window.showToast("Silinemedi.", "error");
+                }
+            });
+        };
+
+        const renderCommunityFeed = () => {
+            const feedContainer = document.getElementById('community-feed-list');
+            if(!feedContainer) return;
+
+            if(postsData.length === 0) {
+                feedContainer.innerHTML = '<p class="text-xs text-zinc-500 text-center py-8">Henüz akışta gönderi yok. İlk paylaşımı sen yap!</p>';
+                return;
+            }
+
+            feedContainer.innerHTML = postsData.map(post => {
+                const userPhoto = isValidUrl(post.userPhoto) ? post.userPhoto : 'https://via.placeholder.com/150';
+                const postPhoto = isValidUrl(post.photoUrl) ? post.photoUrl : null;
+                const likesCount = post.likes ? post.likes.length : 0;
+                const isLiked = currentUser && post.likes && post.likes.includes(currentUser.uid);
+                const canDelete = currentUser && (isAdmin || currentUser.uid === post.userId);
+
+                return `
+                    <div class="bg-obsidian border border-zinc-800 rounded-2xl p-4 flex flex-col gap-3 relative group shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <img src="${userPhoto}" class="w-10 h-10 rounded-full border border-neon object-cover">
+                                <div>
+                                    <h4 class="text-sm font-bold text-white flex items-center gap-1">
+                                        ${escapeHTML(post.userName)}
+                                        <i class="fa-solid fa-circle-check text-cyan text-xs"></i>
+                                    </h4>
+                                    <span class="text-[10px] text-zinc-500">${new Date(post.createdAt).toLocaleDateString()} • ${new Date(post.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                                </div>
+                            </div>
+                            ${canDelete ? `<button onclick="window.deleteCommunityPost('${post.id}', '${post.userId}')" class="text-zinc-500 hover:text-danger text-xs p-1.5 rounded-lg hover:bg-zinc-800 transition" title="Gönderiyi Sil"><i class="fa-solid fa-trash"></i></button>` : ''}
+                        </div>
+
+                        ${post.text ? `<p class="text-sm text-zinc-200 mt-1 whitespace-pre-wrap leading-relaxed">${escapeHTML(post.text)}</p>` : ''}
+
+                        ${postPhoto ? `<img src="${postPhoto}" class="w-full h-64 object-cover rounded-xl mt-2 border border-zinc-800 cursor-pointer hover:opacity-95 transition" onclick="window.open('${postPhoto}', '_blank')">` : ''}
+
+                        <div class="flex items-center gap-6 mt-2 pt-3 border-t border-zinc-800/80 text-xs text-zinc-400">
+                            <button onclick="window.togglePostLike('${post.id}', ${JSON.stringify(post.likes || [])})" class="flex items-center gap-1.5 hover:text-danger transition ${isLiked ? 'text-danger font-bold' : ''}">
+                                <i class="${isLiked ? 'fa-solid fa-heart text-danger' : 'fa-regular fa-heart'} text-base"></i> 
+                                <span>${likesCount}</span>
+                            </button>
+                            <button class="flex items-center gap-1.5 hover:text-cyan transition">
+                                <i class="fa-regular fa-comment text-base"></i>
+                                <span>Yorum</span>
+                            </button>
+                            <button class="flex items-center gap-1.5 hover:text-neon transition ml-auto">
+                                <i class="fa-solid fa-share-nodes text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         };
 
         let currentPhotos = [];
@@ -1368,6 +1623,18 @@
             if(!document.getElementById('admin-reports-modal').classList.contains('hidden')) window.openAdminReportsModal();
             if(!document.getElementById('spot-detail-modal').classList.contains('hidden') && currentDetailSpotId) window.openSpotDetail(currentDetailSpotId); 
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
+        });
+
+        // COMMUNITY POSTS DİNLEYİCİ
+        const postsQuery = query(collection(db, "community_posts"), orderBy("createdAt", "desc"));
+        onSnapshot(postsQuery, (snapshot) => {
+            postsData = [];
+            snapshot.forEach((doc) => {
+                postsData.push({ id: doc.id, ...doc.data() });
+            });
+            if(!document.getElementById('community-modal').classList.contains('hidden')) {
+                renderCommunityFeed();
+            }
         });
 
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
