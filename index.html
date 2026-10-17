@@ -222,15 +222,9 @@
                 <div id="search-results" class="hidden absolute top-full mt-2 w-full glass-panel rounded-xl shadow-2xl max-h-60 overflow-y-auto flex flex-col p-2 gap-1 custom-scroll"></div>
             </div>
 
-            <!-- SOL ÜST KISIM: MENÜ BUTONU VE YANINA TOPLULUK BUTONU -->
-            <div class="absolute left-4 top-4 z-[400] flex items-center gap-2">
-                <button onclick="window.toggleSidebar()" class="w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105" title="Menüyü Aç">
-                    <i class="fa-solid fa-list-ul"></i>
-                </button>
-                <button onclick="window.openCommunityModal()" class="w-12 h-12 glass-panel border border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105" title="Topluluk Akışı">
-                    <i class="fa-solid fa-comments"></i>
-                </button>
-            </div>
+            <button onclick="window.toggleSidebar()" class="absolute left-4 z-[400] w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all md:top-4 md:bottom-auto safe-bottom">
+                <i class="fa-solid fa-list-ul"></i>
+            </button>
 
             <button id="btn-admin-reports" onclick="window.openAdminReportsModal()" class="hidden absolute top-16 right-4 md:top-4 md:right-[100px] z-[400] glass-panel px-4 py-2 rounded-full flex gap-2 items-center text-sm font-semibold text-danger hover:bg-danger hover:text-white transition-colors">
                 <i class="fa-solid fa-shield-halved"></i> Raporlar 
@@ -252,44 +246,6 @@
                 </button>
             </div>
         </main>
-    </div>
-
-    <!-- TOPLULUK (COMMUNITY) MODAL (TWITTER TARZI AKIŞ VE PAYLAŞIM) -->
-    <div id="community-modal" class="hidden fixed inset-0 z-[3000] modal-overlay flex justify-center p-2 md:p-4 custom-scroll overflow-y-auto">
-        <div class="bg-charcoal w-full max-w-xl my-auto rounded-2xl border border-zinc-700 shadow-2xl overflow-hidden relative flex flex-col max-h-[90vh]">
-            <!-- Header -->
-            <div class="flex items-center justify-between p-4 border-b border-zinc-800 bg-obsidian/50">
-                <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-comments text-cyan"></i> Topluluk Akışı
-                </h2>
-                <button onclick="window.closeModals()" class="text-zinc-400 hover:text-white text-xl w-8 h-8 rounded-full flex items-center justify-center bg-zinc-800/50 hover:bg-zinc-800 transition"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <!-- İçerik Alanı -->
-            <div class="p-4 overflow-y-auto flex-grow custom-scroll flex flex-col gap-4">
-                
-                <!-- Tweet Atma Kutusu -->
-                <div id="community-post-box" class="bg-obsidian border border-zinc-800 rounded-xl p-3 flex flex-col gap-3">
-                    <textarea id="community-post-input" rows="3" placeholder="Sokakta neler oluyor? Yeni bir spot mu buldun, yoksa kaykay/bisiklet sürüşünde misin? Yaz gitsin..." class="bg-charcoal border border-zinc-700 text-sm rounded-lg focus:ring-cyan focus:border-cyan block w-full p-2.5 text-zinc-100 resize-none"></textarea>
-                    <div class="flex justify-between items-center">
-                        <input type="url" id="community-post-photo" placeholder="Fotoğraf URL (İsteğe bağlı)" class="bg-charcoal border border-zinc-700 text-xs rounded-lg focus:ring-cyan block w-1/2 p-2 text-zinc-100">
-                        <button onclick="window.submitCommunityPost()" class="bg-cyan hover:bg-cyan/80 text-obsidian font-bold text-xs px-4 py-2 rounded-lg transition-all shadow-[0_0_10px_rgba(6,182,212,0.4)]">
-                            Paylaş
-                        </button>
-                    </div>
-                </div>
-                <p id="community-login-warning" class="text-xs text-warning text-center hidden">Paylaşım yapmak için giriş yapmalısınız.</p>
-
-                <!-- Akış Listesi -->
-                <div class="border-t border-zinc-800 pt-3 flex flex-col gap-3">
-                    <h3 class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Son Gönderiler</h3>
-                    <div id="community-feed-list" class="flex flex-col gap-3">
-                        <!-- Gönderiler buraya dinamik yüklenecek -->
-                    </div>
-                </div>
-
-            </div>
-        </div>
     </div>
 
     <!-- ADD SPOT MODAL -->
@@ -597,7 +553,6 @@
         let currentUserData = { favorites: [] }; 
         let isAdmin = false;
         let spotsData = []; 
-        let postsData = []; // Topluluk gönderileri için
         let activeFilter = 'all';
         let favActiveFilter = 'all';
         let currentDetailSpotId = null;
@@ -672,12 +627,6 @@
         window.toggleSidebar = () => {
             sidebarEl.classList.toggle('open');
             sidebarEl.style.transform = '';
-        };
-
-        // TOPLULUK MODAL AÇMA / KAPAMA
-        window.openCommunityModal = () => {
-            document.getElementById('community-modal').classList.remove('hidden');
-            renderCommunityFeed();
         };
 
         let userLocation = null;
@@ -756,7 +705,7 @@
                 document.getElementById('btn-map-sat').classList.replace('border-neon', 'border-zinc-700'); document.getElementById('btn-map-sat').classList.replace('text-white', 'text-zinc-400');
             } else {
                 currentTileLayer = satTiles;
-                document.getElementById('btn-map-sat').classList.replace('border-zinc-700', 'border-neon'); document.getElementById('btn-map-sat').classList.replace('text-white', 'text-zinc-400');
+                document.getElementById('btn-map-sat').classList.replace('border-zinc-700', 'border-neon'); document.getElementById('btn-map-sat').classList.replace('text-zinc-400', 'text-white');
                 document.getElementById('btn-map-dark').classList.replace('border-neon', 'border-zinc-700'); document.getElementById('btn-map-dark').classList.replace('text-white', 'text-zinc-400');
             }
             currentTileLayer.addTo(map);
@@ -897,9 +846,6 @@
                 if(isAdmin) document.getElementById('btn-admin-reports').classList.remove('hidden');
                 else document.getElementById('btn-admin-reports').classList.add('hidden');
 
-                document.getElementById('community-post-box').classList.remove('hidden');
-                document.getElementById('community-login-warning').classList.add('hidden');
-
             } else {
                 currentUserData = { favorites: [] };
                 authSection.innerHTML = `
@@ -909,8 +855,6 @@
                     </button>
                 `;
                 document.getElementById('btn-admin-reports').classList.add('hidden');
-                document.getElementById('community-post-box').classList.add('hidden');
-                document.getElementById('community-login-warning').classList.remove('hidden');
             }
             if(initialLoadDone) renderSpotsToDOM();
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
@@ -1188,125 +1132,6 @@
             else { badge.classList.add('hidden'); }
         };
 
-        // TOPLULUK GÖNDERİLERİ (FIRESTORE) İŞLEMLERİ
-        window.submitCommunityPost = async () => {
-            if(!currentUser) return;
-            if(checkSpam()) return;
-
-            const textInput = document.getElementById('community-post-input');
-            const photoInput = document.getElementById('community-post-photo');
-            const text = textInput.value.trim();
-            const photoUrl = photoInput.value.trim();
-
-            if(!text && !photoUrl) {
-                window.showToast("Lütfen bir metin veya fotoğraf ekleyin.", "error");
-                return;
-            }
-
-            if(photoUrl && !isValidUrl(photoUrl)) {
-                window.showToast("Lütfen geçerli bir (http/https) fotoğraf URL'si girin.", "error");
-                return;
-            }
-
-            try {
-                const newPost = {
-                    userId: currentUser.uid,
-                    userName: currentUser.displayName || "Rider",
-                    userPhoto: currentUser.photoURL || "",
-                    text: text,
-                    photoUrl: photoUrl,
-                    createdAt: Date.now(),
-                    likes: []
-                };
-
-                await addDoc(collection(db, "community_posts"), newPost);
-                textInput.value = '';
-                photoInput.value = '';
-                window.showToast("Gönderi paylaşıldı!");
-            } catch(e) {
-                window.showToast("Gönderi paylaşılamadı.", "error");
-            }
-        };
-
-        window.togglePostLike = async (postId, currentLikes) => {
-            if(!currentUser) {
-                window.showToast("Beğenmek için giriş yapmalısınız.", "error");
-                return;
-            }
-            if(checkSpam()) return;
-
-            const postRef = doc(db, 'community_posts', postId);
-            const hasLiked = currentLikes && currentLikes.includes(currentUser.uid);
-
-            try {
-                if(hasLiked) {
-                    await updateDoc(postRef, { likes: arrayRemove(currentUser.uid) });
-                } else {
-                    await updateDoc(postRef, { likes: arrayUnion(currentUser.uid) });
-                }
-            } catch(e) {
-                window.showToast("İşlem başarısız.", "error");
-            }
-        };
-
-        window.deleteCommunityPost = async (postId, postUserId) => {
-            if(!currentUser) return;
-            if(!isAdmin && currentUser.uid !== postUserId) return;
-
-            window.showConfirm("Bu gönderiyi silmek istediğinize emin misiniz?", async () => {
-                try {
-                    await deleteDoc(doc(db, 'community_posts', postId));
-                    window.showToast("Gönderi silindi.");
-                } catch(e) {
-                    window.showToast("Silinemedi.", "error");
-                }
-            });
-        };
-
-        const renderCommunityFeed = () => {
-            const feedContainer = document.getElementById('community-feed-list');
-            if(!feedContainer) return;
-
-            if(postsData.length === 0) {
-                feedContainer.innerHTML = '<p class="text-xs text-zinc-500 text-center py-6">Henüz akışta gönderi yok. İlk paylaşımı sen yap!</p>';
-                return;
-            }
-
-            feedContainer.innerHTML = postsData.map(post => {
-                const userPhoto = isValidUrl(post.userPhoto) ? post.userPhoto : 'https://via.placeholder.com/150';
-                const postPhoto = isValidUrl(post.photoUrl) ? post.photoUrl : null;
-                const likesCount = post.likes ? post.likes.length : 0;
-                const isLiked = currentUser && post.likes && post.likes.includes(currentUser.uid);
-                const canDelete = currentUser && (isAdmin || currentUser.uid === post.userId);
-
-                return `
-                    <div class="bg-obsidian border border-zinc-800 rounded-xl p-4 flex flex-col gap-2 relative group">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2.5">
-                                <img src="${userPhoto}" class="w-9 h-9 rounded-full border border-cyan object-cover">
-                                <div>
-                                    <h4 class="text-sm font-bold text-white">${escapeHTML(post.userName)}</h4>
-                                    <span class="text-[10px] text-zinc-500">${new Date(post.createdAt).toLocaleDateString()} • ${new Date(post.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-                                </div>
-                            </div>
-                            ${canDelete ? `<button onclick="window.deleteCommunityPost('${post.id}', '${post.userId}')" class="text-zinc-500 hover:text-danger text-xs p-1" title="Gönderiyi Sil"><i class="fa-solid fa-trash"></i></button>` : ''}
-                        </div>
-
-                        ${post.text ? `<p class="text-sm text-zinc-200 mt-1 whitespace-pre-wrap">${escapeHTML(post.text)}</p>` : ''}
-
-                        ${postPhoto ? `<img src="${postPhoto}" class="w-full h-48 object-cover rounded-lg mt-2 border border-zinc-800 cursor-pointer" onclick="window.open('${postPhoto}', '_blank')">` : ''}
-
-                        <div class="flex items-center gap-4 mt-2 pt-2 border-t border-zinc-800/80 text-xs text-zinc-400">
-                            <button onclick="window.togglePostLike('${post.id}', ${JSON.stringify(post.likes || [])})" class="flex items-center gap-1.5 hover:text-danger transition ${isLiked ? 'text-danger font-bold' : ''}">
-                                <i class="${isLiked ? 'fa-solid fa-heart' : 'fa-regular fa-heart'} text-sm"></i> 
-                                <span>${likesCount}</span> Beğeni
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        };
-
         let currentPhotos = [];
         let currentPhotoIndex = 0;
         const renderCarousel = () => {
@@ -1533,7 +1358,6 @@
             });
         };
 
-        // SPOTS DİNLEYİCİ
         const q = query(collection(db, "spots"), orderBy("createdAt", "desc"));
         onSnapshot(q, (snapshot) => {
             spotsData = []; snapshot.forEach((doc) => { spotsData.push({ id: doc.id, ...doc.data() }); });
@@ -1544,18 +1368,6 @@
             if(!document.getElementById('admin-reports-modal').classList.contains('hidden')) window.openAdminReportsModal();
             if(!document.getElementById('spot-detail-modal').classList.contains('hidden') && currentDetailSpotId) window.openSpotDetail(currentDetailSpotId); 
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
-        });
-
-        // COMMUNITY POSTS DİNLEYİCİ (GERÇEK ZAMANLI AKIŞ)
-        const postsQuery = query(collection(db, "community_posts"), orderBy("createdAt", "desc"));
-        onSnapshot(postsQuery, (snapshot) => {
-            postsData = [];
-            snapshot.forEach((doc) => {
-                postsData.push({ id: doc.id, ...doc.data() });
-            });
-            if(!document.getElementById('community-modal').classList.contains('hidden')) {
-                renderCommunityFeed();
-            }
         });
 
         document.getElementById('profile-form').addEventListener('submit', async (e) => {
