@@ -212,7 +212,7 @@
         </div>
     </div>
 
-    <!-- KULLANICILAR İÇİN DUYURU POP-UP EKRANI (Siteye Girince Çıkar) -->
+    <!-- KULLANICILAR İÇİN DUYURU POP-UP EKRANI -->
     <div id="active-announcement-modal" class="hidden fixed inset-0 z-[4000] modal-overlay flex items-center justify-center p-4">
         <div class="bg-charcoal w-full max-w-md p-6 rounded-2xl border border-neon shadow-2xl relative text-center">
             <div class="w-16 h-16 bg-neon/20 text-neon rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-[0_0_15px_rgba(132,204,22,0.4)]">
@@ -242,7 +242,6 @@
                 <i class="fa-solid fa-circle-notch fa-spin text-neon text-2xl"></i>
             </div>
 
-            <!-- ADMIN İÇİN DUYURU YÖNETİM BUTONU -->
             <div id="admin-announcement-btn-container" class="hidden">
                 <button onclick="document.getElementById('admin-announcement-modal').classList.remove('hidden')" class="w-full bg-neon/10 border border-neon/30 text-neon font-bold py-2.5 rounded-xl text-xs hover:bg-neon/20 transition flex items-center justify-center gap-2">
                     <i class="fa-solid fa-bullhorn"></i> Duyuru Ekle (Admin)
@@ -290,7 +289,7 @@
                 <div id="search-results" class="hidden absolute top-full mt-2 w-full glass-panel rounded-xl shadow-2xl max-h-60 overflow-y-auto flex flex-col p-2 gap-1 custom-scroll"></div>
             </div>
 
-            <!-- SOL ÜST KISIM: MENÜ VE TOPLULUK (ÇOK YAKINDA) BUTONU -->
+            <!-- SOL ÜST KISIM -->
             <div class="absolute left-4 top-4 z-[400] flex items-center gap-2">
                 <button onclick="window.toggleSidebar()" class="w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105" title="Menüyü Aç">
                     <i class="fa-solid fa-list-ul"></i>
@@ -300,7 +299,7 @@
                 </button>
             </div>
 
-            <!-- SAĞ ÜST: BİLDİRİMLER VE RAPORLAR -->
+            <!-- SAĞ ÜST KISIM -->
             <div class="absolute top-4 right-4 z-[400] flex items-center gap-2">
                 <button onclick="window.openNotificationsModal()" class="w-12 h-12 glass-panel border border-warning text-warning rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105 relative" title="Bildirimler">
                     <i class="fa-solid fa-bell"></i>
@@ -502,7 +501,7 @@
         </div>
     </div>
 
-    <!-- SPOT DETAY (İNCELE) MODAL -->
+    <!-- SPOT DETAY MODAL -->
     <div id="spot-detail-modal" class="hidden fixed inset-0 z-[2000] modal-overlay flex justify-center p-4 custom-scroll overflow-y-auto">
         <div class="bg-charcoal w-full max-w-2xl mt-12 mb-auto rounded-2xl border border-zinc-700 shadow-2xl overflow-hidden relative flex flex-col max-h-[85vh]">
             <button onclick="window.closeModals()" class="absolute top-4 right-4 z-20 text-white bg-black/60 hover:bg-neon hover:text-black w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
@@ -588,6 +587,32 @@
             </div>
         </div>
     </div>
+
+    <!-- SAĞ TIK VE DEVTOOLS ENGELLEME KORUMA SCRİPTİ -->
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12') {
+                e.preventDefault();
+                return false;
+            }
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+                e.preventDefault();
+                return false;
+            }
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+                e.preventDefault();
+                return false;
+            }
+            if (e.ctrlKey && (e.key === 'S' || e.key === 's')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
@@ -1128,7 +1153,6 @@
                     document.getElementById('btn-toggle-favorite').classList.replace('text-zinc-500', 'text-warning');
                     window.showToast("Favorilere eklendi.");
 
-                    // Bildirim Tetikleme (Eğer spotu başkası eklediyse sahibine bildirim at)
                     if(spot && spot.userId && spot.userId !== currentUser.uid) {
                         await addNotification(spot.userId, {
                             id: Date.now().toString(),
@@ -1141,7 +1165,6 @@
             } catch(e) { window.showToast("Hata oluştu.", "error"); }
         };
 
-        // BİLDİRİM EKLEME VE YÖNETME
         async function addNotification(targetUserId, notifObj) {
             try {
                 const targetRef = doc(db, 'users', targetUserId);
@@ -1167,7 +1190,6 @@
             }
             document.getElementById('notifications-modal').classList.remove('hidden');
 
-            // Bildirimleri okundu olarak güncelle
             if(notifs.some(n => !n.read)) {
                 const updated = notifs.map(n => ({...n, read: true}));
                 updateDoc(doc(db, 'users', currentUser.uid), { notifications: updated });
@@ -1281,7 +1303,6 @@
             else { badge.classList.add('hidden'); }
         };
 
-        // ADMIN DUYURU OLUŞTURMA
         document.getElementById('announcement-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             if(!isAdmin) return;
@@ -1306,7 +1327,6 @@
             }
         });
 
-        // DUYURU DİNLEYİCİ VE KULLANICIYA GÖSTERME
         const checkActiveAnnouncements = (announcements) => {
             const now = Date.now();
             const active = announcements.filter(a => a.expiresAt > now);
@@ -1544,7 +1564,6 @@
                     await updateDoc(doc(db, 'spots', currentDetailSpotId), { comments: arrayUnion(newComment) });
                     input.value = ''; window.cancelReply(); window.showToast("Yorum gönderildi.");
 
-                    // Bildirim Tetikleme (Eğer spotu başkası eklediyse sahibine bildirim at)
                     if(spotData && spotData.userId && spotData.userId !== currentUser.uid) {
                         await addNotification(spotData.userId, {
                             id: Date.now().toString(),
@@ -1579,7 +1598,6 @@
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
         });
 
-        // DUYURULARI DİNLE
         const annQuery = query(collection(db, "announcements"), orderBy("createdAt", "desc"));
         onSnapshot(annQuery, (snapshot) => {
             announcementsData = [];
