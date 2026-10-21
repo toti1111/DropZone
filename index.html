@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>DropZone</title>
     
     <!-- PWA Manifest & Meta -->
@@ -142,6 +142,782 @@
         .map-dark-filter {
             filter: invert(100%) hue-rotate(180deg) brightness(100%) contrast(90%) grayscale(70%);
         }
+        /* Community styles are scoped so map controls keep their existing layout. */
+        .dz {
+            --dz-bg:#0b0d0b;
+            --dz-card:#121610;
+            --dz-line:#293023;
+            --dz-text:#f1f5ec;
+            --dz-muted:#a3ad9a;
+            --dz-accent:#b7ec65;
+            position:fixed;
+            inset:0;
+            z-index:2500;
+            color:var(--dz-text);
+            background:var(--dz-bg);
+            font-family:Inter,system-ui,sans-serif;
+        }
+        .dz-header-actions {
+            display:flex;
+            gap:8px;
+            align-items:flex-start
+        }
+        .dz-header-actions button {
+            position:relative
+        }
+        .dz-header-actions [id$="unread"] {
+            position:absolute;
+            right:-4px;
+            top:-4px;
+            background:#b7ec65;
+            color:#17210b;
+            font-size:9px;
+            font-weight:800;
+            border-radius:20px;
+            padding:2px 5px
+        }
+        .dz.hidden {
+            display:none;
+        }
+        .dz [hidden] {
+            display:none!important
+        }
+        .dz * {
+            box-sizing:border-box
+        }
+        .dz button,.dz input,.dz textarea,.dz select {
+            font:inherit
+        }
+        .dz button {
+            cursor:pointer
+        }
+        .dz button:disabled {
+            opacity:.5;
+            cursor:wait
+        }
+        .dz button:focus-visible,.dz input:focus-visible,.dz textarea:focus-visible,.dz select:focus-visible {
+            outline:2px solid var(--dz-accent);
+            outline-offset:3px
+        }
+        .dz button {
+            touch-action:manipulation
+        }
+        .dz-shell {
+            display:grid;
+            grid-template-columns:220px minmax(0,660px) 290px;
+            max-width:1240px;
+            height:100%;
+            margin:auto
+        }
+        .dz-nav {
+            padding:34px 20px;
+            display:flex;
+            flex-direction:column;
+            border-right:1px solid var(--dz-line);
+            gap:10px
+        }
+        .dz-brand {
+            font-size:28px;
+            font-weight:900;
+            letter-spacing:-1.5px;
+            margin:0 0 34px
+        }
+        .dz-brand>span {
+            color:var(--dz-accent)
+        }
+        .dz-brand small {
+            display:block;
+            font-size:8px;
+            letter-spacing:2px;
+            color:var(--dz-muted);
+            margin-top:8px
+        }
+        .dz-nav>button {
+            border:0;
+            background:transparent;
+            color:var(--dz-muted);
+            border-radius:12px;
+            min-height:48px;
+            text-align:left;
+            padding:12px;
+            font-weight:650;
+            font-size:14px;
+            display:flex;
+            gap:12px;
+            align-items:center
+        }
+        .dz-nav>button:hover,.dz-nav>.dz-nav-active {
+            color:var(--dz-accent);
+            background:#b7ec6512
+        }
+        .dz-nav>button span {
+            background:var(--dz-accent);
+            color:#17210b;
+            border-radius:20px;
+            font-size:10px;
+            padding:2px 6px
+        }
+        .dz-nav-note {
+            margin-top:auto;
+            font-size:12px;
+            color:var(--dz-accent);
+            line-height:1.7;
+            padding:20px 10px
+        }
+        .dz-nav-note p {
+            color:var(--dz-muted);
+            margin:10px 0
+        }
+        .dz-dot {
+            display:inline-block;
+            width:6px;
+            height:6px;
+            border-radius:50%;
+            background:var(--dz-accent);
+            margin-right:6px
+        }
+        .dz-identity {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            border-top:1px solid var(--dz-line);
+            padding-top:18px;
+            min-width:0;
+            font-size:13px
+        }
+        .dz-identity strong {
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap
+        }
+        .dz-main {
+            overflow-y:auto;
+            overscroll-behavior:contain;
+            -webkit-overflow-scrolling:touch;
+            scrollbar-gutter:stable;
+            padding-bottom:env(safe-area-inset-bottom);
+            position:relative
+        }
+        .dz-header {
+            display:flex;
+            justify-content:space-between;
+            gap:15px;
+            padding:30px 26px 26px;
+            border-bottom:1px solid var(--dz-line);
+            background:radial-gradient(ellipse at top right,#b7ec650e,transparent 70%)
+        }
+        .dz-eyebrow {
+            font-size:10px;
+            letter-spacing:2px;
+            font-weight:750;
+            color:var(--dz-accent);
+            margin:0 0 12px
+        }
+        .dz-header h2 {
+            font-size:29px;
+            font-weight:800;
+            letter-spacing:-1px;
+            line-height:1.2;
+            margin:0
+        }
+        .dz-header h2 span {
+            color:var(--dz-muted)
+        }
+        .dz-icon-button {
+            border:1px solid var(--dz-line);
+            background:transparent;
+            color:var(--dz-muted);
+            border-radius:50%;
+            height:40px;
+            min-width:40px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center
+        }
+        .dz-icon-button:hover {
+            color:var(--dz-text);
+            background:#ffffff08
+        }
+        .dz-tabs {
+            display:flex;
+            align-items:center;
+            border-bottom:1px solid var(--dz-line);
+            padding:0 24px;
+            gap:24px
+        }
+        .dz-tabs>button {
+            font-size:12px;
+            font-weight:700;
+            padding:18px 0;
+            border:0;
+            border-bottom:2px solid transparent;
+            color:var(--dz-muted);
+            background:transparent;
+            min-height:48px
+        }
+        .dz-tabs>button[aria-pressed=true] {
+            border-bottom-color:var(--dz-accent);
+            color:var(--dz-text)
+        }
+        .dz-tabs>.dz-refresh {
+            margin-left:auto;
+            min-width:32px
+        }
+        .dz-filter-panel {
+            padding:16px 24px;
+            background:var(--dz-card);
+            font-size:12px
+        }
+        .dz-filter-panel label {
+            display:block;
+            margin-bottom:8px
+        }
+        .dz select,.dz input[type=search] {
+            min-width:0;
+            border:1px solid var(--dz-line);
+            background:var(--dz-bg);
+            color:var(--dz-text);
+            padding:10px;
+            border-radius:8px;
+            max-width:100%;
+            font-size:12px
+        }
+        .dz-filter-panel select {
+            width:100%
+        }
+        .dz-compose {
+            padding:24px;
+            display:flex;
+            gap:12px;
+            border-bottom:1px solid var(--dz-line)
+        }
+        .dz-avatar {
+            width:38px;
+            height:38px;
+            flex-shrink:0;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:#b7ec651a;
+            color:var(--dz-accent);
+            font-size:13px;
+            font-weight:800;
+            overflow:hidden
+        }
+        .dz-avatar img {
+            width:100%;
+            height:100%;
+            object-fit:cover
+        }
+        .dz-compose-body {
+            min-width:0;
+            flex:1
+        }
+        .dz textarea {
+            width:100%;
+            resize:vertical;
+            min-height:78px;
+            max-height:260px;
+            background:transparent;
+            color:var(--dz-text);
+            border:0;
+            padding:4px 0;
+            line-height:1.6;
+            font-size:15px;
+            outline-offset:4px;
+            white-space:pre-wrap
+        }
+        .dz textarea::placeholder {
+            color:#86907c
+        }
+        .dz-spot-picker {
+            display:flex;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:8px;
+            padding-top:12px
+        }
+        .dz-spot-picker label {
+            color:var(--dz-accent);
+            font-size:11px;
+            font-weight:650;
+            white-space:nowrap
+        }
+        .dz-spot-picker input {
+            width:110px;
+            flex:1;
+            min-width:80px
+        }
+        .dz-spot-picker select {
+            flex:2;
+            width:170px
+        }
+        .dz-compose-footer {
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:12px;
+            padding-top:16px
+        }
+        .dz-compose-footer small {
+            font-size:10px;
+            color:var(--dz-muted);
+            font-variant-numeric:tabular-nums
+        }
+        .dz-primary {
+            border:0;
+            border-radius:999px;
+            background:var(--dz-accent);
+            color:#17210b;
+            padding:10px 22px;
+            min-height:42px;
+            font-size:12px;
+            font-weight:800;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            gap:16px
+        }
+        .dz-primary:hover {
+            background:#c8fa81
+        }
+        .dz-status {
+            font-size:12px;
+            line-height:1.5;
+            color:var(--dz-muted);
+            margin:8px 0 0;
+            overflow-wrap:anywhere
+        }
+        .dz-status:empty {
+            display:none
+        }
+        .dz-status[data-error=true] {
+            color:#fca5a5
+        }
+        .dz-feed-status {
+            font-size:13px;
+            text-align:center;
+            padding:0 24px;
+            color:var(--dz-muted);
+            line-height:1.7;
+            white-space:pre-line
+        }
+        .dz-feed-status:not(:empty) {
+            padding:24px
+        }
+        .dz-post {
+            padding:24px;
+            border-bottom:1px solid var(--dz-line);
+            content-visibility:auto;
+            contain-intrinsic-size:auto 210px
+        }
+        .dz-post-heading {
+            display:flex;
+            align-items:center;
+            gap:10px;
+            min-width:0
+        }
+        .dz-post-author {
+            min-width:0;
+            flex:1;
+            display:flex;
+            align-items:center;
+            flex-wrap:wrap;
+            gap:6px;
+            font-size:13px
+        }
+        .dz-post-author strong {
+            max-width:230px;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap
+        }
+        .dz-post-author time {
+            color:var(--dz-muted);
+            font-size:10px
+        }
+        .dz-post-text {
+            font-size:14px;
+            line-height:1.75;
+            white-space:pre-wrap;
+            overflow-wrap:anywhere;
+            margin:14px 0 12px
+        }
+        .dz-post-spot {
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            max-width:100%;
+            border:1px solid #b7ec6530;
+            border-radius:8px;
+            padding:8px 10px;
+            background:#b7ec6508;
+            color:var(--dz-accent);
+            font-size:11px;
+            min-height:36px;
+            text-align:left;
+            overflow-wrap:anywhere
+        }
+        .dz-post-spot:disabled {
+            opacity:.6;
+            cursor:default
+        }
+        .dz-post-actions {
+            display:flex;
+            align-items:center;
+            gap:28px;
+            margin-top:16px
+        }
+        .dz-post-actions button {
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            min-height:40px;
+            min-width:44px;
+            color:var(--dz-muted);
+            background:transparent;
+            border:0;
+            padding:4px;
+            font-size:12px
+        }
+        .dz-post-actions button:hover {
+            color:var(--dz-accent)
+        }
+        .dz-post-actions button[aria-pressed=true] {
+            color:#fb7185
+        }
+        .dz-post-actions button:last-child {
+            margin-left:auto
+        }
+        .dz-post-actions i {
+            font-size:17px
+        }
+        .dz-comments {
+            margin-top:14px;
+            border-top:1px solid var(--dz-line);
+            padding-top:16px
+        }
+        .dz-comments h4 {
+            font-size:12px;
+            color:var(--dz-muted);
+            margin:0 0 12px
+        }
+        .dz-comment {
+            padding:12px 0;
+            border-bottom:1px solid var(--dz-line)
+        }
+        .dz-comment strong {
+            font-size:11px
+        }
+        .dz-comment time {
+            font-size:9px;
+            color:var(--dz-muted);
+            margin-left:8px
+        }
+        .dz-comment p {
+            font-size:12px;
+            line-height:1.7;
+            white-space:pre-wrap;
+            overflow-wrap:anywhere;
+            margin:6px 0
+        }
+        .dz-comment-form {
+            display:flex;
+            flex-wrap:wrap;
+            gap:8px;
+            margin-top:14px
+        }
+        .dz-comment-form textarea {
+            font-size:13px;
+            min-height:58px;
+            resize:vertical;
+            border:1px solid var(--dz-line);
+            border-radius:10px;
+            padding:10px
+        }
+        .dz-comment-form small {
+            font-size:10px;
+            color:var(--dz-muted);
+            margin-right:auto;
+            align-self:center
+        }
+        .dz-comment-form button {
+            padding:8px 16px
+        }
+        .dz-comment-more {
+            font-size:11px;
+            color:var(--dz-accent);
+            border:0;
+            background:transparent;
+            min-height:44px
+        }
+        .dz-new-posts {
+            text-align:center;
+            padding:12px
+        }
+        .dz-new-posts button {
+            background:var(--dz-accent);
+            color:#17210b;
+            border:0;
+            border-radius:20px;
+            padding:10px 18px;
+            font-size:12px;
+            font-weight:700
+        }
+        .dz-load-more {
+            display:block;
+            margin:22px auto;
+            border:1px solid var(--dz-line);
+            border-radius:24px;
+            color:var(--dz-text);
+            background:transparent;
+            padding:12px 22px;
+            min-height:44px;
+            font-size:12px
+        }
+        .dz-endnote {
+            text-align:center;
+            color:var(--dz-muted);
+            font-size:10px;
+            margin:32px 20px;
+            line-height:1.7
+        }
+        .dz-rail {
+            border-left:1px solid var(--dz-line);
+            padding:30px 20px;
+            overflow-y:auto
+        }
+        .dz-rail-card {
+            background:var(--dz-card);
+            border:1px solid var(--dz-line);
+            border-radius:16px;
+            padding:20px;
+            margin-bottom:20px
+        }
+        .dz-rail-card h3 {
+            font-size:20px;
+            font-weight:800;
+            line-height:1.3;
+            letter-spacing:-.4px;
+            margin:0 0 14px
+        }
+        .dz-rail-card>p:not(.dz-eyebrow) {
+            font-size:12px;
+            line-height:1.8;
+            color:var(--dz-muted)
+        }
+        .dz-rail-card>button {
+            color:var(--dz-accent);
+            font-size:12px;
+            font-weight:700;
+            background:transparent;
+            border:0;
+            padding:12px 0;
+            min-height:44px
+        }
+        .dz-guide h3 {
+            font-size:14px
+        }
+        .dz-guide p {
+            display:flex;
+            gap:12px
+        }
+        .dz-guide span {
+            color:var(--dz-accent);
+            font-size:10px;
+            padding-top:2px
+        }
+        .dz-rail-footer {
+            font-size:9px;
+            color:var(--dz-muted);
+            line-height:1.8
+        }
+        .dz-rail-footer span {
+            color:var(--dz-accent);
+            margin:0 4px
+        }
+        .dz-signin {
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:20px 24px;
+            border-bottom:1px solid var(--dz-line);
+            background:#b7ec6508
+        }
+        .dz-signin>i {
+            color:var(--dz-accent)
+        }
+        .dz-signin strong {
+            font-size:12px
+        }
+        .dz-signin p {
+            font-size:11px;
+            color:var(--dz-muted);
+            margin:4px 0
+        }
+        .dz-signin button {
+            margin-left:auto;
+            border:1px solid #b7ec6544;
+            border-radius:20px;
+            min-height:40px;
+            background:transparent;
+            color:var(--dz-accent);
+            padding:8px 14px;
+            font-size:11px;
+            white-space:nowrap
+        }
+        .dz-sr {
+            position:absolute;
+            width:1px;
+            height:1px;
+            overflow:hidden;
+            clip-path:inset(50%)
+        }
+        .dz-inbox-item {
+            display:block;
+            width:100%;
+            text-align:left;
+            border:1px solid #303728;
+            background:#11150e;
+            border-radius:12px;
+            padding:14px;
+            color:#edf4e8;
+            font:inherit;
+            cursor:pointer
+        }
+        .dz-inbox-item[data-unread=true] {
+            border-left:3px solid #b7ec65
+        }
+        .dz-inbox-item p {
+            font-size:12px;
+            line-height:1.7;
+            margin:0 0 6px;
+            white-space:pre-wrap;
+            overflow-wrap:anywhere
+        }
+        .dz-inbox-item time {
+            font-size:10px;
+            color:#a3ad9a
+        }
+        .day-mode .dz {
+            --dz-bg:#f7f9f3;
+            --dz-card:#fff;
+            --dz-line:#dce3d2;
+            --dz-text:#1d2815;
+            --dz-muted:#5e6b52;
+            --dz-accent:#507c12
+        }
+        .day-mode .dz-primary,.day-mode .dz-new-posts button {
+            color:#fff
+        }
+        .day-mode .dz-inbox-item {
+            background:#f7f9f3;
+            color:#1d2815
+        }
+        @media(min-width:1600px) {
+            .dz-shell {
+                border-left:1px solid var(--dz-line);
+                border-right:1px solid var(--dz-line)
+            }
+        }
+        @media(max-width:1100px) {
+            .dz-shell {
+                grid-template-columns:190px minmax(0,1fr)
+            }
+            .dz-rail {
+                display:none
+            }
+            .dz-nav {
+                padding:26px 16px
+            }
+        }
+        @media(max-width:700px) {
+            .dz-shell {
+                display:block
+            }
+            .dz-nav {
+                display:none
+            }
+            .dz-main {
+                height:100%;
+                scrollbar-gutter:auto
+            }
+            .dz-header {
+                padding:24px 18px 20px;
+                padding-top:max(24px,env(safe-area-inset-top))
+            }
+            .dz-header h2 {
+                font-size:26px
+            }
+            .dz-tabs {
+                padding:0 18px;
+                gap:22px
+            }
+            .dz-compose {
+                padding:20px 16px;
+                gap:10px
+            }
+            .dz-compose>.dz-avatar {
+                width:30px;
+                height:30px;
+                font-size:11px
+            }
+            .dz-spot-picker {
+                gap:6px
+            }
+            .dz-spot-picker label {
+                width:100%;
+                margin-bottom:2px
+            }
+            .dz-spot-picker input {
+                width:80px
+            }
+            .dz-spot-picker select {
+                width:120px
+            }
+            .dz-post {
+                padding:20px 18px
+            }
+            .dz-post-author strong {
+                max-width:170px
+            }
+            .dz-post-actions {
+                gap:22px
+            }
+            .dz-signin {
+                padding:16px
+            }
+            .dz textarea {
+                font-size:16px
+            }
+            .dz input[type=search],.dz select {
+                font-size:16px
+            }
+            .dz-spot-picker select,.dz-spot-picker input {
+                font-size:12px;
+                min-height:40px
+            }
+            .dz-spot-picker select:focus,.dz-spot-picker input:focus {
+                font-size:16px
+            }
+            .dz-comment-form textarea {
+                font-size:16px
+            }
+            .dz-compose-footer {
+                padding-top:12px
+            }
+            .dz-primary {
+                min-height:44px
+            }
+        }
+        @media(prefers-reduced-motion:reduce) {
+            .dz *, .dz *::before, .dz *::after {
+                scroll-behavior:auto!important;
+                transition:none!important;
+                animation:none!important
+            }
+        }
     </style>
 </head>
 <body class="antialiased font-sans">
@@ -164,25 +940,52 @@
         </div>
     </div>
 
-    <!-- TOPLULUK "ÇOK YAKINDA" POP-UP MODALI -->
-    <div id="community-soon-modal" class="hidden fixed inset-0 z-[3000] modal-overlay flex items-center justify-center p-4">
-        <div class="bg-charcoal w-full max-w-sm p-6 rounded-2xl border border-cyan shadow-2xl relative text-center">
-            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
-            <div class="w-16 h-16 bg-cyan/20 text-cyan rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
-                <i class="fa-solid fa-comments"></i>
+    <!-- TOPLULUK AKIŞI -->
+    <section id="community-modal" class="hidden modal-overlay dz" role="dialog" aria-modal="true" aria-labelledby="community-title">
+      <div class="dz-shell">
+        <aside class="dz-nav" aria-label="Topluluk menüsü">
+          <div class="dz-brand">Drop<span>Zone</span><small>RIDE. CONNECT. REPEAT.</small></div>
+          <button class="dz-nav-active" type="button" data-community-action="feed"><i class="fa-solid fa-hashtag" aria-hidden="true"></i> Topluluk</button>
+          <button type="button" data-community-action="map"><i class="fa-regular fa-map" aria-hidden="true"></i> Haritayı keşfet</button>
+          <button type="button" data-community-action="notifications"><i class="fa-regular fa-bell" aria-hidden="true"></i> Bildirimler <span id="community-unread" hidden></span></button>
+          <div class="dz-nav-note"><span class="dz-dot"></span> Aynı tutkuda buluş.<p>Bir rota, bir ipucu ya da günün en iyi anı. Burası senin ekibin.</p></div>
+          <div id="community-identity" class="dz-identity"></div>
+        </aside>
+        <div class="dz-main" id="community-scroll">
+          <header class="dz-header">
+            <div><p class="dz-eyebrow">SPOTTAN TOPLULUĞA</p><h2 id="community-title">Sürüş bitse de<br><span>muhabbet devam eder.</span></h2></div>
+            <div class="dz-header-actions"><button type="button" class="dz-icon-button" data-community-action="notifications" aria-label="Bildirimler"><i class="fa-regular fa-bell" aria-hidden="true"></i><span id="community-header-unread" hidden></span></button><button type="button" class="dz-icon-button" data-community-action="close" aria-label="Topluluğu kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+          </header>
+          <div class="dz-tabs" aria-label="Akış filtreleri"><button type="button" id="community-tab-all" aria-pressed="true" data-community-action="all">Tüm paylaşımlar</button><button type="button" id="community-tab-spot" aria-pressed="false" data-community-action="filter">Spota göre <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button><button type="button" class="dz-refresh" data-community-action="refresh" aria-label="Akışı yenile"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button></div>
+          <div id="community-filter-panel" class="dz-filter-panel" hidden><label for="community-filter-spot">Bir spotun paylaşımlarını gör</label><select id="community-filter-spot"><option value="">Tüm spotlar</option></select></div>
+          <div id="community-auth-prompt" class="dz-signin" hidden><i class="fa-solid fa-bolt" aria-hidden="true"></i><div><strong>Ekibe sen de katıl.</strong><p>Paylaşım, beğeni ve yorum için giriş yap.</p></div><button type="button" data-community-action="login">Giriş yap</button></div>
+          <form id="community-compose" class="dz-compose">
+            <div id="community-compose-avatar" class="dz-avatar" aria-hidden="true">DZ</div>
+            <div class="dz-compose-body"><label class="dz-sr" for="community-text">Paylaşımın</label><textarea id="community-text" maxlength="1000" rows="3" placeholder="Bugün hangi spottasın? Ekiple bir şeyler paylaş…" required></textarea>
+              <div class="dz-spot-picker"><label for="community-spot"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Spot ekle</label><input id="community-spot-search" type="search" placeholder="Spot ara…" maxlength="100" aria-label="Paylaşıma eklenecek spotu ara"><select id="community-spot" aria-label="Paylaşımın spotu"><option value="">Spotsuz paylaş</option></select></div>
+              <div class="dz-compose-footer"><small id="community-char-count" aria-live="polite">0 / 1000</small><button id="community-publish" class="dz-primary" type="submit">Paylaş <i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button></div>
+              <p id="community-compose-status" class="dz-status" role="status"></p>
             </div>
-            <h3 class="text-xl font-black text-white mb-1">Topluluk Akışı</h3>
-            <p class="text-xs text-cyan uppercase tracking-widest font-bold mb-4">Çok Yakında Sizlerle!</p>
-            <p class="text-sm text-zinc-400 mb-6">Sokak sürücülerinin buluşacağı, anlık paylaşımlar yapıp etkileşim kuracağı sosyal ağ altyapısı şu an geliştirme aşamasında.</p>
-            <button onclick="window.closeModals()" class="w-full bg-cyan text-obsidian font-bold py-2.5 rounded-xl text-sm hover:bg-cyan/80 transition">Anladım</button>
+          </form>
+          <div id="community-new-posts" class="dz-new-posts" hidden><button type="button" data-community-action="new-posts">Yeni paylaşımlar var · Göster ↑</button></div>
+          <p id="community-feed-status" class="dz-feed-status" role="status" aria-live="polite"></p>
+          <div id="community-feed" class="dz-feed" aria-label="Topluluk paylaşımları"></div>
+          <button id="community-load-more" class="dz-load-more" type="button" hidden>Daha fazla göster <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></button>
+          <p class="dz-endnote">İz bırak, çöp bırakma. Ekibe ve spotlara iyi davran. ✌</p>
         </div>
-    </div>
+        <aside class="dz-rail">
+          <div class="dz-rail-card"><p class="dz-eyebrow">BİR SONRAKİ DURAK</p><h3>Haritada keşfet.<br>Burada hikâyeni anlat.</h3><p>Paylaşımına spot ekle, aynı yerde süren insanlarla buluş.</p><button type="button" data-community-action="map">Spotları keşfet <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></button></div>
+          <div class="dz-rail-card dz-guide"><h3>İyi bir ekip arkadaşı ol.</h3><p><span>01</span> Deneyimini ve faydalı ipuçlarını paylaş.</p><p><span>02</span> Özel bilgilerini ve başkalarının konumunu ifşa etme.</p><p><span>03</span> Saygılı ol. Spotu bulduğundan iyi bırak.</p></div>
+          <p class="dz-rail-footer">DropZone Community <span>●</span> Birlikte daha iyi sürüşler.</p>
+        </aside>
+      </div>
+    </section>
 
     <!-- KULLANICI BİLDİRİMLER MODALI (Sağ Üst Zil) -->
-    <div id="notifications-modal" class="hidden fixed inset-0 z-[3000] modal-overlay flex items-center justify-center p-4">
+    <div id="notifications-modal" role="dialog" aria-modal="true" aria-labelledby="notifications-title" class="hidden fixed inset-0 z-[3000] modal-overlay flex items-center justify-center p-4">
         <div class="bg-charcoal w-full max-w-md p-6 rounded-2xl border border-warning shadow-2xl relative max-h-[80vh] flex flex-col">
-            <button onclick="window.closeModals()" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
-            <h2 class="text-xl font-bold text-warning mb-4 flex items-center gap-2"><i class="fa-solid fa-bell"></i> Bildirimler</h2>
+            <button onclick="window.closeNotifications()" aria-label="Bildirimleri kapat" class="absolute top-4 right-4 text-zinc-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            <h2 id="notifications-title" class="text-xl font-bold text-warning mb-4 flex items-center gap-2"><i class="fa-solid fa-bell"></i> Bildirimler</h2>
             <div id="notifications-list" class="flex-grow overflow-y-auto custom-scroll flex flex-col gap-3 pr-1">
                 <p class="text-xs text-zinc-500 text-center py-6">Bildiriminiz bulunmuyor.</p>
             </div>
@@ -197,11 +1000,11 @@
             <form id="announcement-form" class="flex flex-col gap-4">
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Duyuru Başlığı</label>
-                    <input type="text" id="ann-title" required placeholder="örn: Yeni Güncelleme Yayında!" class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100">
+                    <input type="text" id="ann-title" maxlength="160" required placeholder="örn: Yeni Güncelleme Yayında!" class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100">
                 </div>
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Duyuru İçeriği</label>
-                    <textarea id="ann-desc" rows="3" required placeholder="Kullanıcıların göreceği duyuru metni..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100"></textarea>
+                    <textarea id="ann-desc" maxlength="5000" rows="3" required placeholder="Kullanıcıların göreceği duyuru metni..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg block w-full p-2.5 text-zinc-100"></textarea>
                 </div>
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Gösterimde Kalacağı Süre (Gün olarak)</label>
@@ -295,7 +1098,7 @@
                 <button onclick="window.toggleSidebar()" class="w-12 h-12 glass-panel border border-neon text-neon rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105" title="Menüyü Aç">
                     <i class="fa-solid fa-list-ul"></i>
                 </button>
-                <button onclick="document.getElementById('community-soon-modal').classList.remove('hidden')" class="w-12 h-12 glass-panel border border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105" title="Topluluk Akışı">
+                <button onclick="window.openCommunity()" class="w-12 h-12 glass-panel border border-cyan text-cyan rounded-full shadow-lg flex items-center justify-center text-xl transition-all hover:scale-105" title="Topluluk Akışı">
                     <i class="fa-solid fa-comments"></i>
                 </button>
             </div>
@@ -351,7 +1154,7 @@
 
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Spot Adı</label>
-                    <input type="text" id="spot-name" required placeholder="örn: Kalamış Merdivenleri" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
+                    <input type="text" id="spot-name" maxlength="120" required placeholder="örn: Kalamış Merdivenleri" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
                 </div>
 
                 <div>
@@ -389,7 +1192,7 @@
 
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Açıklama / Detaylar</label>
-                    <textarea id="spot-desc" rows="2" placeholder="Spot hakkında bilmeniz gereken detaylar..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100"></textarea>
+                    <textarea id="spot-desc" maxlength="5000" rows="2" placeholder="Spot hakkında bilmeniz gereken detaylar..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100"></textarea>
                 </div>
 
                 <div>
@@ -438,7 +1241,7 @@
 
                 <div>
                     <label class="block text-xs text-zinc-400 mb-1">Biyografi (Hakkında)</label>
-                    <textarea id="profile-bio" rows="3" placeholder="Kendinizden bahsedin..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100"></textarea>
+                    <textarea id="profile-bio" maxlength="1000" rows="3" placeholder="Kendinizden bahsedin..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100"></textarea>
                 </div>
 
                 <button type="submit" class="w-full mt-2 bg-neon hover:bg-neonHover text-obsidian font-bold rounded-lg text-sm px-5 py-3 transition-all">
@@ -539,7 +1342,7 @@
                     </div>
                     <div id="desc-view-mode"><p id="detail-desc" class="text-sm text-zinc-300 bg-obsidian p-4 rounded-xl border border-zinc-800">Açıklama yok.</p></div>
                     <div id="desc-edit-mode" class="hidden flex flex-col gap-2">
-                        <textarea id="detail-desc-input" rows="3" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100"></textarea>
+                        <textarea id="detail-desc-input" maxlength="5000" rows="3" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100"></textarea>
                         <div class="flex justify-end gap-2">
                             <button onclick="window.cancelEditDesc()" class="text-xs text-zinc-400 hover:text-white px-3 py-1">İptal</button>
                             <button onclick="window.saveDesc()" class="bg-neon text-obsidian text-xs font-bold px-3 py-1 rounded">Kaydet</button>
@@ -580,7 +1383,7 @@
                             <span>Yanıtlıyorsunuz: <strong id="reply-to-name">@username</strong></span>
                             <button onclick="window.cancelReply()" class="hover:text-white"><i class="fa-solid fa-xmark"></i></button>
                         </div>
-                        <input type="text" id="comment-input" placeholder="Yorum yazıp Enter'a basın..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100">
+                        <input type="text" id="comment-input" maxlength="1000" placeholder="Yorum yazıp Enter'a basın..." class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon block w-full p-2.5 text-zinc-100">
                         <p class="text-[10px] text-zinc-500">Ana yorum hakkınız haftalık 5 adettir. Cevap yazmak sınırsızdır.</p>
                     </div>
                     <p id="comment-login-warning" class="text-xs text-warning hidden">Yorum yazmak için giriş yapmalısınız.</p>
@@ -594,7 +1397,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy, arrayUnion, arrayRemove, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy, arrayUnion, arrayRemove, getDoc, setDoc, getDocs, where, limit, startAfter, runTransaction, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         function escapeHTML(str) {
@@ -630,7 +1433,8 @@
 
         const ADMIN_EMAIL = "delidereliler@gmail.com";
         let currentUser = null;
-        let currentUserData = { favorites: [], notifications: [] }; 
+        let currentUserData = { favorites: [], notifications: [] };
+        let communityInboxRows = [];
         let isAdmin = false;
         let spotsData = []; 
         let announcementsData = [];
@@ -866,14 +1670,14 @@
             if(val.length < 2) { searchResults.classList.add('hidden'); return; }
             
             const results = spotsData.filter(s => 
-                s.name.toLowerCase().includes(val) || 
+                String(s.name || '').toLowerCase().includes(val) ||
                 (s.locationText && s.locationText.toLowerCase().includes(val)) ||
-                s.category.toLowerCase().includes(val)
+                String(s.category || '').toLowerCase().includes(val)
             ).slice(0, 5);
 
             if(results.length > 0) {
                 searchResults.innerHTML = results.map(r => `
-                    <div onclick="window.flyToSpot(${r.coords.lat}, ${r.coords.lng}); window.openSpotDetail('${escapeHTML(r.id)}'); window.clearSearch();" class="p-3 hover:bg-zinc-800 rounded-lg cursor-pointer transition-colors border-b border-zinc-800 last:border-0 flex justify-between items-center">
+                    <div data-search-spot="${escapeHTML(r.id)}" class="p-3 hover:bg-zinc-800 rounded-lg cursor-pointer transition-colors border-b border-zinc-800 last:border-0 flex justify-between items-center">
                         <div>
                             <p class="text-sm font-bold text-white">${escapeHTML(r.name)}</p>
                             <p class="text-[10px] text-zinc-500">${escapeHTML(r.locationText || 'Bilinmiyor')}</p>
@@ -888,6 +1692,18 @@
             }
         });
 
+        searchResults.addEventListener('click', event => {
+            const target = event.target.closest('[data-search-spot]');
+            const spot = target && spotsData.find(s => s.id === target.dataset.searchSpot);
+            if (spot && Number.isFinite(spot.coords?.lat) && Number.isFinite(spot.coords?.lng)) {
+                window.flyToSpot(spot.coords.lat, spot.coords.lng); window.openSpotDetail(spot.id); window.clearSearch();
+            }
+        });
+        map.getContainer().addEventListener('click', event => {
+            const target = event.target.closest('[data-detail-spot]');
+            if (target) window.openSpotDetail(target.dataset.detailSpot);
+        });
+
         window.clearSearch = () => {
             searchInput.value = '';
             searchResults.classList.add('hidden');
@@ -895,17 +1711,25 @@
         };
 
         const authSection = document.getElementById('auth-section');
+        let legacyAuthGeneration = 0;
         onAuthStateChanged(auth, async (user) => {
+            const generation = ++legacyAuthGeneration;
+            currentUserData = { favorites: [], notifications: [] };
             currentUser = user;
             isAdmin = user && user.email === ADMIN_EMAIL;
             
             if (user) {
                 const userDocRef = doc(db, 'users', user.uid);
-                const userSnap = await getDoc(userDocRef);
-                if (userSnap.exists()) currentUserData = userSnap.data();
-                else {
+                let userSnap;
+                try { userSnap = await getDoc(userDocRef); }
+                catch (error) { if (generation === legacyAuthGeneration) window.showToast('Profil bilgileri alınamadı. Bağlantını ve profil izinlerini kontrol et.', 'error'); }
+                if (generation !== legacyAuthGeneration || auth.currentUser?.uid !== user.uid) return;
+                if (userSnap?.exists()) currentUserData = userSnap.data();
+                else if (userSnap) {
                     currentUserData = { bio: "", gender: "Belirtmek İstemiyorum", stance: "Karışık / Her Şey", favorites: [], notifications: [] };
-                    await setDoc(userDocRef, currentUserData);
+                    try { await setDoc(userDocRef, currentUserData); }
+                    catch (error) { if (generation === legacyAuthGeneration) window.showToast('Profil oluşturulamadı. Profil izinlerini kontrol et.', 'error'); }
+                    if (generation !== legacyAuthGeneration || auth.currentUser?.uid !== user.uid) return;
                 }
                 if(!currentUserData.favorites) currentUserData.favorites = [];
                 if(!currentUserData.notifications) currentUserData.notifications = [];
@@ -915,7 +1739,7 @@
                 authSection.innerHTML = `
                     <div class="flex items-center gap-3 w-full justify-between hover:bg-zinc-800 p-2 rounded-xl cursor-pointer transition-colors" onclick="window.openProfileModal()">
                         <div class="flex items-center gap-3">
-                            <img src="${userPhoto}" alt="Profil" class="w-10 h-10 rounded-full border-2 border-neon object-cover">
+                            <img src="${escapeHTML(userPhoto)}" alt="Profil" class="w-10 h-10 rounded-full border-2 border-neon object-cover">
                             <div class="text-left">
                                 <p class="text-sm font-bold text-white">${escapeHTML(user.displayName)} ${isAdmin ? '<span class="text-[10px] bg-danger px-1 rounded text-white ml-1">ADMIN</span>' : ''}</p>
                                 <p class="text-[10px] text-cyan">${escapeHTML(currentUserData.stance || 'Rider')}</p>
@@ -972,6 +1796,7 @@
             document.getElementById('profile-modal').classList.remove('hidden');
         };
         window.closeModals = () => {
+            if (typeof window.closeCommunity === 'function') window.closeCommunity();
             document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
             window.cancelEditDesc(); window.cancelReply();
             document.getElementById('report-form-section').classList.add('hidden');
@@ -1014,7 +1839,7 @@
             if(initialLoadDone) listContainer.innerHTML = ''; 
 
             filteredSpots.forEach((spot) => {
-                const pt = spot.coords; if(!pt) return;
+                const pt = spot.coords; if(!pt || !Number.isFinite(pt.lat) || !Number.isFinite(pt.lng) || Math.abs(pt.lat)>90 || Math.abs(pt.lng)>180) return;
                 const distText = formatDistance(spot.distance);
                 const hasReport = spot.reports && spot.reports.some(r => r.status === 'approved');
 
@@ -1025,7 +1850,7 @@
                 const popupContent = `
                     <div class="flex flex-col">
                         ${mainPhoto 
-                            ? `<div class="h-28 w-full bg-cover bg-center border-b border-zinc-800" style="background-image: url('${mainPhoto}')"></div>` 
+                            ? `<img src="${escapeHTML(mainPhoto)}" alt="Spot fotoğrafı" loading="lazy" class="h-28 w-full object-cover border-b border-zinc-800">`
                             : `<div class="h-16 w-full bg-zinc-900 flex items-center justify-center border-b border-zinc-800"><i class="fa-solid fa-image text-zinc-700 text-2xl"></i></div>`
                         }
                         <div class="p-4">
@@ -1035,8 +1860,8 @@
                                 <span class="text-cyan text-[10px] font-bold"><i class="fa-solid fa-location-arrow mr-1"></i>${distText}</span>
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="window.openSpotDetail('${escapeHTML(spot.id)}')" class="flex-1 bg-neon hover:bg-neonHover text-obsidian font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 shadow-md"><i class="fa-solid fa-bolt"></i> İncele</button>
-                                <a href="${gmapsLink}" target="_blank" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 border border-zinc-700"><i class="fa-solid fa-route"></i> Git</a>
+                                <button data-detail-spot="${escapeHTML(spot.id)}" class="flex-1 bg-neon hover:bg-neonHover text-obsidian font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 shadow-md"><i class="fa-solid fa-bolt"></i> İncele</button>
+                                <a href="${gmapsLink}" target="_blank" rel="noopener noreferrer" class="flex-1 bg-zinc-800 hover:bg-zinc-700 text-white font-bold py-2 rounded-lg text-xs transition flex items-center justify-center gap-1 border border-zinc-700"><i class="fa-solid fa-route"></i> Git</a>
                             </div>
                         </div>
                     </div>
@@ -1049,9 +1874,9 @@
                 if(initialLoadDone) {
                     const el = document.createElement('div');
                     el.className = 'bg-obsidian border border-zinc-800 rounded-xl p-3 flex flex-col gap-2 hover:border-zinc-700 transition-colors cursor-pointer group relative overflow-hidden';
-                    if(mainPhoto) el.innerHTML += `<div class="absolute inset-0 opacity-10 bg-cover bg-center" style="background-image: url('${mainPhoto}')"></div>`;
+                    if(mainPhoto) el.innerHTML += `<img src="${escapeHTML(mainPhoto)}" alt="" loading="lazy" class="absolute inset-0 w-full h-full opacity-10 object-cover">`;
                     el.innerHTML += `
-                        <div class="flex justify-between items-start relative z-10" onclick="window.flyToSpot(${pt.lat}, ${pt.lng})">
+                        <div class="flex justify-between items-start relative z-10" >
                             <div class="pr-8">
                                 <h4 class="font-bold text-sm text-zinc-100 group-hover:text-cyan transition-colors truncate">${escapeHTML(spot.name)}</h4>
                                 <span class="text-[10px] text-zinc-400 block mt-1"><i class="fa-solid fa-map-pin text-neon mr-1"></i> ${escapeHTML(spot.locationText || 'Bilinmiyor')}</span>
@@ -1063,6 +1888,7 @@
                             </div>
                         </div>
                     `;
+                    el.addEventListener('click', () => window.flyToSpot(pt.lat, pt.lng));
                     listContainer.appendChild(el);
                 }
             });
@@ -1107,88 +1933,59 @@
             });
         };
 
-        window.toggleFavorite = async (spotId) => {
-            if(!currentUser) { window.showToast("Favorilere eklemek için giriş yapmalısınız.", "error"); return; }
-            if(checkSpam()) return;
-            const isFav = currentUserData.favorites && currentUserData.favorites.includes(spotId);
-            const userRef = doc(db, 'users', currentUser.uid);
-            const spot = spotsData.find(s => s.id === spotId);
-            try {
-                if(isFav) {
-                    await updateDoc(userRef, { favorites: arrayRemove(spotId) });
-                    currentUserData.favorites = currentUserData.favorites.filter(id => id !== spotId);
-                    document.getElementById('btn-toggle-favorite').innerHTML = '<i class="fa-regular fa-star"></i>';
-                    document.getElementById('btn-toggle-favorite').classList.replace('text-warning', 'text-zinc-500');
-                    window.showToast("Favorilerden çıkarıldı.");
-                } else {
-                    await updateDoc(userRef, { favorites: arrayUnion(spotId) });
-                    if(!currentUserData.favorites) currentUserData.favorites = [];
-                    currentUserData.favorites.push(spotId);
-                    document.getElementById('btn-toggle-favorite').innerHTML = '<i class="fa-solid fa-star"></i>';
-                    document.getElementById('btn-toggle-favorite').classList.replace('text-zinc-500', 'text-warning');
-                    window.showToast("Favorilere eklendi.");
-
-                    // Bildirim Tetikleme (Eğer spotu başkası eklediyse sahibine bildirim at)
-                    if(spot && spot.userId && spot.userId !== currentUser.uid) {
-                        await addNotification(spot.userId, {
-                            id: Date.now().toString(),
-                            text: `${currentUser.displayName || 'Bir kullanıcı'} "${spot.name}" adlı spotunuzu favorilere ekledi!`,
-                            date: Date.now(),
-                            read: false
-                        });
-                    }
-                }
-            } catch(e) { window.showToast("Hata oluştu.", "error"); }
-        };
-
-        // BİLDİRİM EKLEME VE YÖNETME
-        async function addNotification(targetUserId, notifObj) {
-            try {
-                const targetRef = doc(db, 'users', targetUserId);
-                await updateDoc(targetRef, { notifications: arrayUnion(notifObj) });
-            } catch(e) {}
+        // Profile notifications are appended only alongside the verified spot action.
+        function queueSpotNotification(transaction, user, spotId, spot, eventType, eventId) {
+            if (!spot.userId || spot.userId === user.uid) return;
+            const name = communityName(user);
+            const text = eventType === 'favorite'
+                ? `${name} "${spot.name}" adlı spotunuzu favorilere ekledi!`
+                : `${name} "${spot.name}" adlı spotunuza yorum yaptı.`;
+            transaction.update(doc(db, 'users', spot.userId), { notifications: arrayUnion({
+                id: doc(collection(db, 'communityPosts')).id,
+                text, date: Date.now(), read: false,
+                actorId: user.uid, spotId, eventType, eventId
+            }) });
         }
-
-        window.openNotificationsModal = () => {
-            if(!currentUser) { window.showToast("Bildirimler için giriş yapmalısınız.", "error"); return; }
-            const list = document.getElementById('notifications-list');
-            const notifs = currentUserData.notifications || [];
-            notifs.sort((a,b) => b.date - a.date);
-
-            if(notifs.length === 0) {
-                list.innerHTML = '<p class="text-xs text-zinc-500 text-center py-6">Bildiriminiz bulunmuyor.</p>';
-            } else {
-                list.innerHTML = notifs.map(n => `
-                    <div class="bg-obsidian p-3 rounded-xl border border-zinc-800 flex flex-col gap-1">
-                        <p class="text-xs text-zinc-200">${escapeHTML(n.text)}</p>
-                        <span class="text-[9px] text-zinc-500">${new Date(n.date).toLocaleString()}</span>
-                    </div>
-                `).join('');
-            }
-            document.getElementById('notifications-modal').classList.remove('hidden');
-
-            // Bildirimleri okundu olarak güncelle
-            if(notifs.some(n => !n.read)) {
-                const updated = notifs.map(n => ({...n, read: true}));
-                updateDoc(doc(db, 'users', currentUser.uid), { notifications: updated });
-                currentUserData.notifications = updated;
-                updateNotificationBadge();
-            }
+        const legacySpotBusy = new Set();
+        window.toggleFavorite = async (spotId) => {
+            const user = auth.currentUser;
+            if (!user) { window.showToast('Favorilere eklemek için giriş yapmalısınız.', 'error'); return; }
+            if (legacySpotBusy.has(`favorite:${spotId}`) || checkSpam()) return;
+            legacySpotBusy.add(`favorite:${spotId}`);
+            try {
+                const result = await runTransaction(db, async transaction => {
+                    const userRef = doc(db, 'users', user.uid);
+                    const profile = await transaction.get(userRef);
+                    const spotSnap = await transaction.get(doc(db, 'spots', spotId));
+                    if (!profile.exists() || !spotSnap.exists()) throw new Error('spot-missing');
+                    const favorites = Array.isArray(profile.data().favorites) ? profile.data().favorites : [];
+                    const removing = favorites.includes(spotId);
+                    transaction.update(userRef, { favorites: removing ? arrayRemove(spotId) : arrayUnion(spotId) });
+                    if (!removing) queueSpotNotification(transaction, user, spotId, spotSnap.data(), 'favorite', user.uid);
+                    return { removing, favorites: removing ? favorites.filter(id => id !== spotId) : [...favorites, spotId] };
+                });
+                if (auth.currentUser?.uid !== user.uid) return;
+                currentUserData.favorites = result.favorites;
+                if (currentDetailSpotId === spotId) {
+                    const button = document.getElementById('btn-toggle-favorite');
+                    button.innerHTML = result.removing ? '<i class="fa-regular fa-star"></i>' : '<i class="fa-solid fa-star"></i>';
+                    button.classList.toggle('text-warning', !result.removing); button.classList.toggle('text-zinc-500', result.removing);
+                }
+                window.showToast(result.removing ? 'Favorilerden çıkarıldı.' : 'Favorilere eklendi.');
+            } catch (error) { window.showToast('Favori işlemi tamamlanamadı. Profil/spot izinlerini ve bağlantıyı kontrol et.', 'error'); }
+            finally { legacySpotBusy.delete(`favorite:${spotId}`); }
         };
+
+        window.openNotificationsModal = () => openCommunityInbox();
 
         const updateNotificationBadge = () => {
             const badge = document.getElementById('notification-badge');
-            if(!currentUser || !currentUserData.notifications) {
-                badge.classList.add('hidden');
-                return;
-            }
-            const unreadCount = currentUserData.notifications.filter(n => !n.read).length;
-            if(unreadCount > 0) {
-                badge.innerText = unreadCount;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
+            const count = currentUser ? (currentUserData.notifications || []).filter(n => !n.read).length + communityInboxRows.filter(n => !n.read).length : 0;
+            badge.textContent = count > 99 ? '99+' : String(count);
+            badge.classList.toggle('hidden', count === 0);
+            const communityBadge = document.getElementById('community-unread');
+            communityBadge.textContent = count > 99 ? '99+' : String(count); communityBadge.hidden = !count;
+            const headerBadge = document.getElementById('community-header-unread'); headerBadge.textContent = communityBadge.textContent; headerBadge.hidden = !count;
         };
 
         const updateDetailDistance = () => {
@@ -1205,7 +2002,7 @@
             
             if(!photoUrl || !isValidUrl(photoUrl)) { window.showToast("Geçerli bir (http/https) kanıt fotoğrafı bağlantısı giriniz.", "error"); return; }
 
-            const newReport = { id: Date.now().toString(), type: type, photoUrl: photoUrl, userId: currentUser.uid, userName: currentUser.displayName, date: Date.now(), status: 'pending' };
+            const newReport = { id: Date.now().toString(), type: type, photoUrl: photoUrl, userId: currentUser.uid, userName: communityName(currentUser), date: Date.now(), status: 'pending' };
 
             try {
                 await updateDoc(doc(db, 'spots', currentDetailSpotId), { reports: arrayUnion(newReport) });
@@ -1232,7 +2029,7 @@
                         <p class="text-sm font-bold text-white">${escapeHTML(spot.name)}</p>
                         <p class="text-xs text-warning font-bold"><i class="fa-solid fa-triangle-exclamation"></i> ${escapeHTML(r.type)}</p>
                         <p class="text-[10px] text-zinc-400 mt-1">Ekleyen: ${escapeHTML(r.userName)} • ${new Date(r.date).toLocaleString()}</p>
-                        ${safePhoto ? `<img src="${safePhoto}" class="w-full h-32 object-cover mt-2 rounded border border-zinc-800 cursor-pointer report-preview-img">` : ''}
+                        ${safePhoto ? `<img src="${escapeHTML(safePhoto)}" class="w-full h-32 object-cover mt-2 rounded border border-zinc-800 cursor-pointer report-preview-img">` : ''}
                         <div class="flex gap-2 mt-3">
                             <button class="btn-approve bg-neon text-obsidian px-3 py-1.5 rounded text-xs font-bold w-1/2 hover:bg-neonHover transition-colors">Onayla</button>
                             <button class="btn-reject bg-danger text-white px-3 py-1.5 rounded text-xs font-bold w-1/2 hover:bg-red-600 transition-colors">Reddet (Sil)</button>
@@ -1240,7 +2037,7 @@
                     `;
                     
                     if(safePhoto) {
-                        reportItem.querySelector('.report-preview-img').addEventListener('click', () => window.open(safePhoto, '_blank'));
+                        reportItem.querySelector('.report-preview-img').addEventListener('click', () => window.open(safePhoto, '_blank', 'noopener,noreferrer'));
                     }
                     reportItem.querySelector('.btn-approve').addEventListener('click', () => window.approveReport(spot.id, r.id));
                     reportItem.querySelector('.btn-reject').addEventListener('click', () => window.rejectReport(spot.id, r.id));
@@ -1347,7 +2144,7 @@
                 const img = document.createElement('img');
                 img.src = photoUrl;
                 img.className = "w-full h-full object-cover cursor-pointer hover:opacity-80 transition";
-                img.addEventListener('click', () => window.open(photoUrl, '_blank'));
+                img.addEventListener('click', () => window.open(photoUrl, '_blank', 'noopener,noreferrer'));
                 container.appendChild(img);
 
                 if(currentPhotos.length > 1) {
@@ -1442,7 +2239,7 @@
                     
                     const safePhoto = isValidUrl(r.photoUrl) ? r.photoUrl : '';
                     if (safePhoto) {
-                        rDiv.addEventListener('click', () => window.open(safePhoto, '_blank'));
+                        rDiv.addEventListener('click', () => window.open(safePhoto, '_blank', 'noopener,noreferrer'));
                     }
 
                     rDiv.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${escapeHTML(r.type)} <span class="opacity-70 font-normal ml-1">${new Date(r.date).toLocaleDateString()}</span>`;
@@ -1496,13 +2293,13 @@
 
         const generateCommentHTML = (c, s, isReply = false) => {
             const margin = isReply ? 'ml-6 border-l-2 border-cyan/30 pl-3' : 'border border-zinc-800';
-            const delBtn = (isAdmin || (currentUser && c.userId === currentUser.uid)) ? `<button onclick="window.adminDeleteComment('${currentDetailSpotId}', '${escapeHTML(c.id)}')" class="absolute top-2 right-2 text-danger hover:text-white text-xs"><i class="fa-solid fa-trash"></i></button>` : '';
+            const delBtn = (isAdmin || (currentUser && c.userId === currentUser.uid)) ? `<button data-delete-comment="${escapeHTML(c.id)}" data-comment-spot="${escapeHTML(currentDetailSpotId)}" class="absolute top-2 right-2 text-danger hover:text-white text-xs"><i class="fa-solid fa-trash"></i></button>` : '';
             return `
                 <div class="bg-obsidian p-3 rounded-lg ${margin} relative group">
                     <p class="text-xs font-bold text-cyan mb-1">${escapeHTML(c.userName)} ${isReply ? '<span class="text-zinc-500 font-normal">yanıtladı</span>' : ''} <span class="text-[10px] text-zinc-600 font-normal ml-2">${new Date(c.date).toLocaleDateString()}</span></p>
                     <p class="text-sm text-zinc-300 pr-6">${escapeHTML(c.text)}</p>
                     <div class="mt-2 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                        ${!isReply && currentUser ? `<button onclick="window.setReply('${escapeHTML(c.id)}', '${escapeHTML(c.userName)}')" class="text-[10px] text-zinc-400 hover:text-cyan"><i class="fa-solid fa-reply"></i> Cevapla</button>` : ''}
+                        ${!isReply && currentUser ? `<button data-reply-comment="${escapeHTML(c.id)}" data-reply-name="${escapeHTML(c.userName)}" class="text-[10px] text-zinc-400 hover:text-cyan"><i class="fa-solid fa-reply"></i> Cevapla</button>` : ''}
                     </div>
                     ${delBtn}
                 </div>
@@ -1517,45 +2314,47 @@
         };
         window.cancelReply = () => { replyingToCommentId = null; replyingToUsername = null; document.getElementById('reply-indicator').classList.add('hidden'); };
 
+        document.getElementById('detail-comments-list').addEventListener('click', event => {
+            const reply = event.target.closest('[data-reply-comment]');
+            if (reply) window.setReply(reply.dataset.replyComment, reply.dataset.replyName);
+            const remove = event.target.closest('[data-delete-comment]');
+            if (remove) window.adminDeleteComment(remove.dataset.commentSpot, remove.dataset.deleteComment);
+        });
+
         document.getElementById('comment-input').addEventListener('keydown', (e) => {
             if(e.key === 'Enter') { e.preventDefault(); window.submitComment(); }
         });
 
         window.submitComment = async () => {
-            if(!currentUser || !currentDetailSpotId) return;
-            if(checkSpam()) return;
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if(text === '') return;
-
-            const spotData = spotsData.find(s => s.id === currentDetailSpotId);
-            
-            if(!replyingToCommentId) {
-                const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
-                const recentRoots = (spotData.comments || []).filter(c => c.userId === currentUser.uid && !c.replyToId && c.date > oneWeekAgo);
-                if(recentRoots.length >= 5) {
-                    window.showToast("Bu spot için haftalık ana yorum limitini doldurdunuz.", "error"); return;
-                }
-            }
-
-            window.showConfirm("Yorumu göndermek istediğinize emin misiniz?", async () => {
-                const newComment = { id: Date.now().toString(), userId: currentUser.uid, userName: currentUser.displayName, text: text, date: Date.now(), replyToId: replyingToCommentId };
+            const user = auth.currentUser, spotId = currentDetailSpotId, replyToId = replyingToCommentId;
+            if (!user || !spotId || checkSpam()) return;
+            const input = document.getElementById('comment-input'), text = input.value.trim();
+            if (!text || text.length > 1000) { window.showToast('Yorum 1–1000 karakter olmalı.', 'error'); return; }
+            window.showConfirm('Yorumu göndermek istediğinize emin misiniz?', async () => {
+                if (legacySpotBusy.has(`comment:${spotId}`)) return;
+                legacySpotBusy.add(`comment:${spotId}`);
+                const commentId = doc(collection(db, 'communityPosts')).id;
                 try {
-                    await updateDoc(doc(db, 'spots', currentDetailSpotId), { comments: arrayUnion(newComment) });
-                    input.value = ''; window.cancelReply(); window.showToast("Yorum gönderildi.");
-
-                    // Bildirim Tetikleme (Eğer spotu başkası eklediyse sahibine bildirim at)
-                    if(spotData && spotData.userId && spotData.userId !== currentUser.uid) {
-                        await addNotification(spotData.userId, {
-                            id: Date.now().toString(),
-                            text: `${currentUser.displayName || 'Bir kullanıcı'} "${spotData.name}" adlı spotunuza yorum yaptı: "${text.substring(0, 30)}..."`,
-                            date: Date.now(),
-                            read: false
-                        });
+                    await runTransaction(db, async transaction => {
+                        const ref = doc(db, 'spots', spotId), snapshot = await transaction.get(ref);
+                        if (!snapshot.exists()) throw new Error('spot-missing');
+                        const spot = snapshot.data(), comments = Array.isArray(spot.comments) ? spot.comments : [];
+                        if (!replyToId) {
+                            const recent = comments.filter(c => c.userId === user.uid && !c.replyToId && c.date > Date.now() - 7 * 86400000);
+                            if (recent.length >= 5) throw new Error('weekly-comment-limit');
+                        }
+                        const newComment = { id: commentId, userId: user.uid, userName: communityName(user), text, date: Date.now(), replyToId };
+                        transaction.update(ref, { comments: arrayUnion(newComment) });
+                        queueSpotNotification(transaction, user, spotId, spot, 'comment', commentId);
+                    });
+                    if (auth.currentUser?.uid === user.uid && currentDetailSpotId === spotId) {
+                        if (input.value.trim() === text) input.value = '';
+                        window.cancelReply(); window.showToast('Yorum gönderildi.');
+                        const list = document.getElementById('detail-comments-list'); list.scrollTop = list.scrollHeight;
                     }
-
-                    setTimeout(() => { const list = document.getElementById('detail-comments-list'); list.scrollTop = list.scrollHeight; }, 300);
-                } catch(e) { window.showToast("Yorum gönderilemedi.", "error"); }
+                } catch (error) {
+                    window.showToast(error.message === 'weekly-comment-limit' ? 'Bu spot için haftalık ana yorum limitini doldurdunuz.' : 'Yorum gönderilemedi. Profil/spot izinlerini ve bağlantıyı kontrol et.', 'error');
+                } finally { legacySpotBusy.delete(`comment:${spotId}`); }
             });
         };
 
@@ -1569,8 +2368,9 @@
 
         const q = query(collection(db, "spots"), orderBy("createdAt", "desc"));
         onSnapshot(q, (snapshot) => {
-            spotsData = []; snapshot.forEach((doc) => { spotsData.push({ id: doc.id, ...doc.data() }); });
+            spotsData = []; snapshot.forEach((doc) => { spotsData.push({ ...doc.data(), id: doc.id }); });
             initialLoadDone = true;
+            if (typeof communityFillSpots === 'function' && communityIsOpen()) { communityFillSpots(); communityRenderFeed(); }
             renderSpotsToDOM();
             updateAdminReportBadge();
             
@@ -1596,8 +2396,7 @@
                 currentUserData.gender = document.getElementById('profile-gender').value;
                 currentUserData.stance = document.getElementById('profile-stance').value;
                 currentUserData.bio = document.getElementById('profile-bio').value;
-                await setDoc(doc(db, 'users', currentUser.uid), currentUserData);
-                onAuthStateChanged(auth, (user) => { if(user) currentUser = user; }); 
+                await updateDoc(doc(db, 'users', currentUser.uid), { gender: currentUserData.gender, stance: currentUserData.stance, bio: currentUserData.bio });
                 window.closeModals(); window.showToast("Profiliniz başarıyla güncellendi.");
             } catch (error) { window.showToast("Bir hata oluştu.", "error"); } finally { btn.innerText = 'Profili Güncelle'; btn.disabled = false; }
         });
@@ -1608,7 +2407,7 @@
             
             const lat = parseFloat(document.getElementById('spot-lat').value);
             const lng = parseFloat(document.getElementById('spot-lng').value);
-            if(isNaN(lat) || isNaN(lng)) { window.showToast("Lütfen geçerli bir koordinat giriniz.", "error"); return; }
+            if(!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) { window.showToast("Lütfen geçerli bir koordinat giriniz.", "error"); return; }
 
             const btn = e.target.querySelector('button[type="submit"]'); btn.innerText = 'Kaydediliyor...'; btn.disabled = true;
 
@@ -1623,7 +2422,7 @@
                     name: document.getElementById('spot-name').value,
                     category: category, types: checkedTypes, desc: document.getElementById('spot-desc').value,
                     photoUrl: validPhotos.join(','), locationText: locText,
-                    status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: currentUser.displayName, 
+                    status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: communityName(currentUser),
                     comments: [], reports: [], 
                     coords: {lat, lng}
                 };
@@ -1632,6 +2431,567 @@
                 e.target.reset(); window.closeModals(); window.showToast("Spot eklendi!");
             } catch (error) { window.showToast("Bir sorun oluştu.", "error"); } finally { btn.innerText = 'Spotu Kaydet'; btn.disabled = false; }
         });
+
+        // Community: bounded reads, explicit errors and atomic, rule-validated writes.
+        const communityModal = document.getElementById('community-modal');
+        const communityScroll = document.getElementById('community-scroll');
+        const communityFeed = document.getElementById('community-feed');
+        const communityViews = new Map();
+        const communityLikes = new Map();
+        const communityBusy = new Set();
+        let communityHead = [], communityOlder = [], communityPendingHead = null;
+        let communityCursor = null, communityMore = false, communityLoading = false;
+        let communityFeedUnsubscribe = null, communityInboxUnsubscribe = null, communityUserUnsubscribe = null;
+        let communityPinned = null, communityPinnedUnsubscribe = null;
+        const communityOverrides = new Map();
+        let communityCommentsUnsubscribe = null, communityCommentView = null;
+        let communityGeneration = 0, communityAuthGeneration = 0, communityCommentsGeneration = 0;
+        let communityUid = null, communitySelectedSpot = '', communityReturnFocus = null;
+        let communityCooldownUntil = 0, communityCooldownTimer = null, communityInFlight = false;
+        const COMMUNITY_PAGE_SIZE = 20, COMMUNITY_MAX_LOADED = 100;
+        const communityText = document.getElementById('community-text');
+        const communitySpot = document.getElementById('community-spot');
+        const communityPostRef = id => doc(db, 'communityPosts', id);
+        const communityName = user => user.displayName || 'Rider';
+        const communityDate = value => value && typeof value.toMillis === 'function' ? value.toMillis() : (typeof value === 'number' ? value : 0);
+        const communityIsOpen = () => !communityModal.classList.contains('hidden');
+        const communityError = error => {
+            if (error?.code === 'permission-denied') return 'İşleme izin verilmedi. Oturumunu ve topluluk erişim kurallarını kontrol et; art arda işlemlerde 5 saniye bekle.';
+            if (error?.code === 'failed-precondition') return 'Bu sorgu için Firestore dizini eksik. Topluluk kurulumundaki dizini etkinleştir.';
+            if (error?.code === 'unavailable') return 'Bağlantı kurulamadı. İnternet bağlantını kontrol edip yeniden dene.';
+            if (error?.message === 'rate-limit') return 'Çok hızlı ilerliyorsun. Yeni bir işlem için 5 saniye bekle.';
+            if (error?.message === 'post-missing') return 'Bu paylaşım artık mevcut değil.';
+            if (error?.message === 'spot-missing') return 'Bu spot artık mevcut değil. Başka bir spot seç.';
+            if (error?.message === 'name-invalid') return 'Profil adın en fazla 120 karakter olmalı.';
+            return 'İşlem tamamlanamadı. Lütfen yeniden dene.';
+        };
+        const communityElement = (tag, className = '', text) => {
+            const element = document.createElement(tag); element.className = className;
+            if (text !== undefined) element.textContent = text;
+            return element;
+        };
+        function communityIcon(name) { const icon = communityElement('i', `fa-${name}`); icon.setAttribute('aria-hidden', 'true'); return icon; }
+        function communityButton(label, iconName, className = '') {
+            const button = communityElement('button', className); button.type = 'button';
+            if (iconName) button.append(communityIcon(iconName));
+            button.append(communityElement('span', '', label)); return button;
+        }
+        function communityStatus(id, message = '', error = false) {
+            const element = document.getElementById(id); element.textContent = message; element.dataset.error = String(error);
+        }
+        function communityTime(timestamp) {
+            const millis = communityDate(timestamp);
+            if (!millis) return 'Şimdi';
+            const diff = Math.max(0, Date.now() - millis);
+            if (diff < 60000) return 'Şimdi';
+            if (diff < 3600000) return `${Math.floor(diff / 60000)} dk`;
+            if (diff < 86400000) return `${Math.floor(diff / 3600000)} sa`;
+            return new Date(millis).toLocaleDateString('tr-TR', { day:'numeric', month:'short' });
+        }
+        function communityAvatar(name) {
+            const avatar = communityElement('div', 'dz-avatar', Array.from(String(name || 'Rider')).slice(0, 2).join('').toLocaleUpperCase('tr-TR'));
+            avatar.setAttribute('aria-hidden', 'true'); return avatar;
+        }
+        function communityValidateUser(user) {
+            if (!user) throw new Error('auth-required');
+            if (communityName(user).length > 120) throw new Error('name-invalid');
+        }
+        function communityRateRef(user) { return doc(db, 'communityRateLimits', user.uid); }
+        function communityCheckRate(snapshot) {
+            if (snapshot.exists() && Date.now() - communityDate(snapshot.data().lastActionAt) < 5000) throw new Error('rate-limit');
+        }
+        function communityWriteRate(transaction, user, type, postId, eventId) {
+            transaction.set(communityRateRef(user), { lastActionAt:serverTimestamp(), eventType:type, postId, eventId });
+        }
+        function communityWriteNotification(transaction, user, post, postId, type, eventId) {
+            if (post.authorId === user.uid) return;
+            const id = type === 'like' ? `like_${postId}_${user.uid}` : `comment_${eventId}`;
+            transaction.set(doc(db, 'communityInbox', post.authorId, 'notifications', id), {
+                actorId:user.uid, actorName:communityName(user), type, postId, eventId, createdAt:serverTimestamp(), read:false
+            });
+        }
+        function communityBeginAction(undo = false) {
+            if (communityInFlight || (!undo && Date.now() < communityCooldownUntil)) { window.showToast('Yeni bir işlem için 5 saniye bekle.', 'error'); return false; }
+            communityInFlight = true; communityUpdateComposer(); return true;
+        }
+        function communityEndAction(success, positive = true) {
+            communityInFlight = false;
+            if (success && positive) {
+                communityCooldownUntil = Date.now() + 5000;
+                clearTimeout(communityCooldownTimer);
+                communityCooldownTimer = setTimeout(communityUpdateComposer, 5100);
+            }
+            communityUpdateComposer();
+        }
+        function communityUpdateComposer() {
+            const user = auth.currentUser;
+            const length = communityText.value.length;
+            document.getElementById('community-char-count').textContent = `${length} / 1000`;
+            communityText.disabled = !user;
+            communitySpot.disabled = !user;
+            document.getElementById('community-spot-search').disabled = !user;
+            document.getElementById('community-auth-prompt').hidden = !!user;
+            const button = document.getElementById('community-publish');
+            button.disabled = !user || !communityText.value.trim() || communityInFlight || Date.now() < communityCooldownUntil;
+            button.firstChild.textContent = communityInFlight ? 'Gönderiliyor… ' : Date.now() < communityCooldownUntil ? 'Biraz bekle ' : 'Paylaş ';
+            const name = user ? communityName(user) : 'Misafir';
+            document.getElementById('community-compose-avatar').textContent = Array.from(name).slice(0,2).join('').toLocaleUpperCase('tr-TR');
+            const identity = document.getElementById('community-identity'); identity.replaceChildren(communityAvatar(name), communityElement('strong', '', name));
+        }
+        function communityFillSpots() {
+            const search = document.getElementById('community-spot-search').value.toLocaleLowerCase('tr-TR');
+            const previous = communitySpot.value;
+            const eligible = spotsData.filter(s => s.status !== 'deleted' && typeof s.id === 'string' && s.id.length <= 1500 && !s.id.includes('/'));
+            const sorted = [...eligible].sort((a,b) => String(a.name || '').localeCompare(String(b.name || ''), 'tr'));
+            const makeOption = spot => new Option(`${spot.name || 'İsimsiz spot'}${spot.locationText ? ' · ' + spot.locationText : ''}`, spot.id);
+            communitySpot.replaceChildren(new Option('Spotsuz paylaş', ''));
+            const matching = sorted.filter(s => `${s.name || ''} ${s.locationText || ''}`.toLocaleLowerCase('tr-TR').includes(search)).slice(0, 100);
+            const selected = sorted.find(s => s.id === previous);
+            if (selected && !matching.some(s => s.id === previous)) matching.unshift(selected);
+            matching.forEach(s => communitySpot.append(makeOption(s)));
+            communitySpot.value = selected ? previous : '';
+            const filter = document.getElementById('community-filter-spot');
+            filter.replaceChildren(new Option('Tüm spotlar', ''));
+            // Existing map data is reused: no extra query per spot or card.
+            sorted.forEach(s => filter.append(makeOption(s))); filter.value = communitySelectedSpot;
+        }
+        let communitySpotSearchTimer;
+        document.getElementById('community-spot-search').addEventListener('input', () => {
+            clearTimeout(communitySpotSearchTimer); communitySpotSearchTimer = setTimeout(communityFillSpots, 180);
+        });
+        communityText.addEventListener('input', communityUpdateComposer);
+        document.getElementById('community-compose').addEventListener('submit', async event => {
+            event.preventDefault(); const user = auth.currentUser;
+            if (!user) { window.showToast('Paylaşım için giriş yapmalısın.', 'error'); return; }
+            const text = communityText.value.trim(); const spotId = communitySpot.value;
+            if (!text || text.length > 1000) return;
+            if (spotId && !spotsData.some(s => s.id === spotId)) { communityStatus('community-compose-status', 'Geçerli bir spot seç.', true); return; }
+            if (!communityBeginAction()) return;
+            const ref = doc(collection(db, 'communityPosts')); let success = false;
+            try {
+                communityValidateUser(user);
+                await runTransaction(db, async transaction => {
+                    const rate = await transaction.get(communityRateRef(user)); communityCheckRate(rate);
+                    if (spotId) { const spot = await transaction.get(doc(db, 'spots', spotId)); if (!spot.exists()) throw new Error('spot-missing'); }
+                    transaction.set(ref, { authorId:user.uid, authorName:communityName(user), text, spotId, createdAt:serverTimestamp(), deleted:false, likeCount:0, commentCount:0, lastEvent:{type:'post', id:ref.id, actorId:user.uid} });
+                    communityWriteRate(transaction, user, 'post', ref.id, ref.id);
+                });
+                success = true;
+                if (auth.currentUser?.uid === user.uid) {
+                    if (communityText.value.trim() === text) communityText.value = '';
+                    communityStatus('community-compose-status', 'Paylaşımın ekibe ulaştı.');
+                    if (communitySelectedSpot && communitySelectedSpot !== spotId) communityStatus('community-compose-status', 'Paylaşımın gönderildi. Görmek için “Tüm paylaşımlar” filtresine geç.');
+                }
+            } catch (error) { communityStatus('community-compose-status', communityError(error), true); }
+            finally { communityEndAction(success); }
+        });
+        function communityQuery(cursor) {
+            const clauses = [];
+            if (communitySelectedSpot) clauses.push(where('spotId', '==', communitySelectedSpot));
+            clauses.push(orderBy('createdAt', 'desc'));
+            if (cursor) clauses.push(startAfter(cursor));
+            clauses.push(limit(COMMUNITY_PAGE_SIZE));
+            return query(collection(db, 'communityPosts'), ...clauses);
+        }
+        function communityCloseComments() {
+            communityCommentsGeneration++;
+            if (communityCommentsUnsubscribe) communityCommentsUnsubscribe(); communityCommentsUnsubscribe = null;
+            if (communityCommentView) { communityCommentView.comments.hidden = true; communityCommentView.commentButton.setAttribute('aria-expanded', 'false'); }
+            communityCommentView = null;
+        }
+        function communityStopFeed() {
+            communityGeneration++;
+            if (communityFeedUnsubscribe) communityFeedUnsubscribe(); communityFeedUnsubscribe = null;
+            communityPinnedUnsubscribe?.(); communityPinnedUnsubscribe = null; communityPinned = null;
+            communityCloseComments(); communityLoading = false;
+        }
+        function communityStartFeed() {
+            communityStopFeed();
+            communityHead = []; communityOlder = []; communityPendingHead = null; communityCursor = null; communityMore = false;
+            communityViews.clear(); communityOverrides.clear(); communityLikes.clear(); communityFeed.replaceChildren();
+            document.getElementById('community-new-posts').hidden = true;
+            document.getElementById('community-load-more').hidden = true;
+            communityStatus('community-feed-status', 'Ekibin paylaşımları yükleniyor…');
+            const generation = communityGeneration;
+            communityFeedUnsubscribe = onSnapshot(communityQuery(), snapshot => {
+                if (generation !== communityGeneration || !communityIsOpen()) return;
+                const fresh = snapshot.docs;
+                fresh.forEach(d => communityOverrides.delete(d.id));
+                const oldIds = new Set(communityHead.map(d => d.id));
+                const hasNew = communityHead.length && fresh.some(d => !oldIds.has(d.id));
+                if (hasNew && communityScroll.scrollTop > 250) {
+                    communityPendingHead = fresh; document.getElementById('community-new-posts').hidden = false;
+                    const updates = new Map(fresh.map(d => [d.id,d]));
+                    communityHead = communityHead.map(d => updates.get(d.id) || d);
+                } else {
+                    if (hasNew) { communityOlder = []; communityCursor = null; }
+                    communityHead = fresh; communityPendingHead = null;
+                    document.getElementById('community-new-posts').hidden = true;
+                    if (!communityOlder.length) { communityCursor = fresh.at(-1) || null; communityMore = fresh.length === COMMUNITY_PAGE_SIZE; }
+                }
+                communityRenderFeed();
+            }, error => {
+                if (generation === communityGeneration) communityStatus('community-feed-status', communityError(error), true);
+            });
+        }
+        function communityAllDocs() {
+            const records = new Map(); [...(communityPinned ? [communityPinned] : []), ...communityHead, ...communityOlder].forEach(d => { if (!records.has(d.id)) records.set(d.id, d); });
+            return [...records.values()].sort((a,b) => a.id === communityPinned?.id ? -1 : b.id === communityPinned?.id ? 1 : communityDate(b.data().createdAt) - communityDate(a.data().createdAt)).slice(0, COMMUNITY_MAX_LOADED);
+        }
+        function communityRenderFeed() {
+            const docs = communityAllDocs(); const visible = docs.filter(d => !(communityOverrides.get(d.id) || d.data()).deleted);
+            const ids = new Set(visible.map(d => d.id));
+            for (const [id,view] of communityViews) {
+                if (!ids.has(id)) { if (communityCommentView === view) communityCloseComments(); view.article.remove(); communityViews.delete(id); }
+            }
+            visible.forEach((snapshot, index) => {
+                const data = { ...(communityOverrides.get(snapshot.id) || snapshot.data()), id:snapshot.id }; let view = communityViews.get(data.id);
+                if (!view) { view = communityCreatePost(data); communityViews.set(data.id,view); }
+                communityUpdatePost(view, data);
+                const current = communityFeed.children[index];
+                if (current !== view.article) communityFeed.insertBefore(view.article, current || null);
+            });
+            communityStatus('community-feed-status', visible.length ? '' : docs.length ? 'Bu sayfada görünür paylaşım yok. Daha eski paylaşımları yükleyebilirsin.' : 'Henüz paylaşım yok. İlk hikâyeyi sen başlat.');
+            const more = document.getElementById('community-load-more'); more.hidden = !communityMore || docs.length >= COMMUNITY_MAX_LOADED;
+            more.disabled = communityLoading;
+            if (docs.length >= COMMUNITY_MAX_LOADED) communityStatus('community-feed-status', 'Son 100 paylaşım yüklendi. Daha odaklı bir akış için spot filtresini kullan.');
+        }
+        document.getElementById('community-load-more').addEventListener('click', async () => {
+            if (communityLoading || !communityMore || !communityCursor) return;
+            const generation = communityGeneration; communityLoading = true; communityRenderFeed();
+            try {
+                const snapshot = await getDocs(communityQuery(communityCursor));
+                if (generation !== communityGeneration) return;
+                communityOlder.push(...snapshot.docs); communityCursor = snapshot.docs.at(-1) || communityCursor;
+                communityMore = snapshot.docs.length === COMMUNITY_PAGE_SIZE; communityRenderFeed();
+            } catch (error) { if (generation === communityGeneration) { communityStatus('community-feed-status', communityError(error), true); } }
+            finally { if (generation === communityGeneration) { communityLoading = false; document.getElementById('community-load-more').disabled = false; } }
+        });
+        function communityCreatePost(data) {
+            const article = communityElement('article', 'dz-post'); article.dataset.postId = data.id;
+            const heading = communityElement('div', 'dz-post-heading'); const avatar = communityAvatar(data.authorName);
+            const authorBlock = communityElement('div', 'dz-post-author'); const author = communityElement('strong'); const time = communityElement('time');
+            authorBlock.append(author,time); const remove = communityButton('', 'solid fa-ellipsis', 'dz-icon-button'); remove.setAttribute('aria-label', 'Paylaşımı sil');
+            heading.append(avatar,authorBlock,remove);
+            const text = communityElement('p', 'dz-post-text'); const spot = communityButton('', 'solid fa-location-dot', 'dz-post-spot');
+            const actions = communityElement('div', 'dz-post-actions');
+            const like = communityButton('0', 'regular fa-heart'); like.setAttribute('aria-pressed', 'false');
+            const commentsButton = communityButton('0', 'regular fa-comment'); commentsButton.setAttribute('aria-expanded','false');
+            const share = communityButton('Paylaş', 'solid fa-arrow-up-from-bracket'); share.setAttribute('aria-label','Paylaşım bağlantısını kopyala veya paylaş');
+            actions.append(like,commentsButton,share);
+            const comments = communityElement('section', 'dz-comments'); comments.hidden = true;
+            const title = communityElement('h4', '', 'Yorumlar'); const commentStatus = communityElement('p','dz-status'); commentStatus.setAttribute('role','status');
+            const commentList = communityElement('div'); const more = communityButton('Önceki yorumları göster', '', 'dz-comment-more'); more.hidden = true;
+            const form = communityElement('form','dz-comment-form'); const input = communityElement('textarea'); input.maxLength = 500; input.rows = 2; input.placeholder = 'Sohbete katıl…'; input.required = true; input.setAttribute('aria-label','Yorum yaz');
+            const counter = communityElement('small','','0 / 500'); const submit = communityElement('button','dz-primary','Yanıtla'); submit.type='submit';
+            form.append(input,counter,submit); comments.append(title,commentStatus,commentList,more,form);
+            article.append(heading,text,spot,actions,comments);
+            const view = { article,avatar,author,time,remove,text,spot,like,commentButton:commentsButton,share,comments,commentStatus,commentList,more,form,input,counter,submit,data,commentHead:[],commentOlder:[],commentCursor:null,commentLoading:false,commentHasMore:false };
+            like.addEventListener('click', () => communityToggleLike(view));
+            commentsButton.addEventListener('click', () => communityOpenComments(view));
+            remove.addEventListener('click', () => communityDeletePost(view));
+            share.addEventListener('click', () => communitySharePost(view));
+            spot.addEventListener('click', () => communityOpenSpot(view.data.spotId));
+            input.addEventListener('input', () => { counter.textContent = `${input.value.length} / 500`; submit.disabled = !input.value.trim() || !auth.currentUser || communityBusy.has(`comment:${data.id}`); });
+            form.addEventListener('submit', event => { event.preventDefault(); communitySubmitComment(view); });
+            more.addEventListener('click', () => communityLoadComments(view));
+            communityReadLike(view);
+            return view;
+        }
+        function communityUpdatePost(view, data) {
+            view.data = data; view.author.textContent = data.authorName || 'Rider';
+            view.time.textContent = `· ${communityTime(data.createdAt)}`;
+            const millis = communityDate(data.createdAt); if (millis) { view.time.dateTime = new Date(millis).toISOString(); view.time.title = new Date(millis).toLocaleString('tr-TR'); }
+            view.text.textContent = typeof data.text === 'string' ? data.text : '';
+            view.remove.hidden = auth.currentUser?.uid !== data.authorId;
+            view.like.lastChild.textContent = String(Math.max(0, Number(data.likeCount) || 0));
+            view.like.setAttribute('aria-label', `${data.likeCount || 0} beğeni; beğeniyi değiştir`);
+            view.like.setAttribute('aria-pressed', String(communityLikes.get(data.id) === true));
+            view.like.firstChild.className = `${communityLikes.get(data.id) ? 'fa-solid' : 'fa-regular'} fa-heart`;
+            view.commentButton.lastChild.textContent = String(Math.max(0, Number(data.commentCount) || 0));
+            view.commentButton.setAttribute('aria-label',`${data.commentCount || 0} yorum; yorumları aç`);
+            const spot = spotsData.find(s => s.id === data.spotId);
+            view.spot.hidden = !data.spotId; view.spot.disabled = !spot;
+            view.spot.lastChild.textContent = spot ? String(spot.name || 'İsimsiz spot') : 'Spot artık mevcut değil';
+            view.input.disabled = !auth.currentUser; view.input.placeholder = auth.currentUser ? 'Sohbete katıl…' : 'Yorum yapmak için giriş yap';
+            view.submit.disabled = !auth.currentUser || !view.input.value.trim() || communityBusy.has(`comment:${data.id}`);
+        }
+        async function communityReadLike(view) {
+            const user = auth.currentUser; if (!user || communityLikes.has(view.data.id)) return;
+            const generation = communityAuthGeneration;
+            try {
+                const snapshot = await getDoc(doc(db,'communityPosts',view.data.id,'likes',user.uid));
+                if (generation !== communityAuthGeneration || communityViews.get(view.data.id) !== view) return;
+                communityLikes.set(view.data.id, snapshot.exists() && snapshot.data().active === true); communityUpdatePost(view,view.data);
+            } catch (error) { if (generation === communityAuthGeneration && communityIsOpen()) communityStatus('community-compose-status',communityError(error),true); }
+        }
+        async function communityToggleLike(view) {
+            const user = auth.currentUser; if (!user) { window.showToast('Beğenmek için giriş yapmalısın.', 'error'); return; }
+            if (communityBusy.has(`like:${view.data.id}`) || !communityBeginAction(communityLikes.get(view.data.id) === true)) return;
+            const postId = view.data.id; communityBusy.add(`like:${postId}`); view.like.disabled = true;
+            let success = false, active = false;
+            try {
+                communityValidateUser(user);
+                const result = await runTransaction(db, async transaction => {
+                    const ref = communityPostRef(postId), likeRef = doc(db,'communityPosts',postId,'likes',user.uid);
+                    const postSnap = await transaction.get(ref), likeSnap = await transaction.get(likeRef);
+                    if (!postSnap.exists() || postSnap.data().deleted) throw new Error('post-missing');
+                    const post = postSnap.data(); const next = !(likeSnap.exists() && likeSnap.data().active);
+                    if (next) { const rate = await transaction.get(communityRateRef(user)); communityCheckRate(rate); }
+                    const likeData = { active:next, updatedAt:serverTimestamp() };
+                    if (!likeSnap.exists()) transaction.set(likeRef,{...likeData,authorId:user.uid,createdAt:serverTimestamp()});
+                    else transaction.update(likeRef,likeData);
+                    transaction.update(ref, { likeCount:post.likeCount + (next ? 1 : -1), lastEvent:{type:'like',id:user.uid,actorId:user.uid} });
+                    if (next) {
+                        communityWriteRate(transaction,user,'like',postId,user.uid);
+                        if (!likeSnap.exists()) communityWriteNotification(transaction,user,post,postId,'like',user.uid);
+                    }
+                    return {active:next,post:{...post,likeCount:post.likeCount+(next?1:-1)}};
+                });
+                active = result.active; success = true;
+                if (auth.currentUser?.uid === user.uid) { communityLikes.set(postId,active); communityOverrides.set(postId,result.post); communityUpdatePost(view,{...result.post,id:postId}); }
+            } catch (error) { window.showToast(communityError(error),'error'); }
+            finally { communityBusy.delete(`like:${postId}`); view.like.disabled = false; communityEndAction(success,active); }
+        }
+        function communityOpenSpot(id) {
+            const spot = spotsData.find(s => s.id === id);
+            if (!spot || !Number.isFinite(spot.coords?.lat) || !Number.isFinite(spot.coords?.lng) || Math.abs(spot.coords.lat)>90 || Math.abs(spot.coords.lng)>180) { window.showToast('Spot konumu bulunamadı.','error'); return; }
+            window.closeModals(); window.flyToSpot(spot.coords.lat,spot.coords.lng); window.openSpotDetail(id);
+        }
+        async function communitySharePost(view) {
+            const url = new URL(window.location.href); url.hash = `community/${encodeURIComponent(view.data.id)}`;
+            try {
+                if (navigator.share) await navigator.share({title:'DropZone · Topluluk',url:url.href});
+                else { await navigator.clipboard.writeText(url.href); window.showToast('Paylaşım bağlantısı kopyalandı.'); }
+            } catch (error) { if (error.name !== 'AbortError') window.showToast('Bağlantı kopyalanamadı. Tarayıcının paylaş seçeneğini kullan.','error'); }
+        }
+        function communityDeletePost(view) {
+            const user = auth.currentUser; if (!user || view.data.authorId !== user.uid) return;
+            window.showConfirm('Paylaşımını kaldırmak istiyor musun? Akıştan gizlenir ve yeni etkileşimlere kapanır.', async () => {
+                if (communityBusy.has(`delete:${view.data.id}`)) return;
+                communityBusy.add(`delete:${view.data.id}`);
+                try { await updateDoc(communityPostRef(view.data.id),{deleted:true,text:''}); communityOverrides.set(view.data.id,{...view.data,deleted:true,text:''}); view.article.remove(); if (communityCommentView === view) communityCloseComments(); window.showToast('Paylaşım kaldırıldı.'); }
+                catch (error) { window.showToast(communityError(error),'error'); }
+                finally { communityBusy.delete(`delete:${view.data.id}`); }
+            });
+        }
+        function communityOpenComments(view) {
+            if (communityCommentView === view) { communityCloseComments(); return; }
+            communityCloseComments(); communityCommentView = view; view.comments.hidden = false; view.commentButton.setAttribute('aria-expanded','true');
+            view.commentHead = []; view.commentOlder = []; view.commentCursor = null; view.commentLoading = false;
+            view.commentStatus.textContent = 'Yorumlar yükleniyor…'; view.commentList.replaceChildren(); view.more.hidden = true;
+            const generation = communityCommentsGeneration;
+            communityCommentsUnsubscribe = onSnapshot(query(collection(db,'communityPosts',view.data.id,'comments'),orderBy('createdAt','desc'),limit(20)), snapshot => {
+                if (generation !== communityCommentsGeneration) return;
+                const previousHead = view.commentHead;
+                const freshIds = new Set(snapshot.docs.map(d => d.id));
+                // Preserve the moving live-query boundary while older pages are loaded.
+                if (view.commentOlder.length) {
+                    const older = new Map(view.commentOlder.map(d => [d.id,d]));
+                    previousHead.filter(d => !freshIds.has(d.id)).forEach(d => older.set(d.id,d));
+                    view.commentOlder = [...older.values()].sort((a,b) => communityDate(b.data().createdAt)-communityDate(a.data().createdAt)).slice(0,80);
+                }
+                view.commentHead = snapshot.docs;
+                if (!view.commentOlder.length) { view.commentCursor = snapshot.docs.at(-1) || null; view.commentHasMore = snapshot.docs.length === 20; }
+                communityRenderComments(view);
+            }, error => { if (generation === communityCommentsGeneration) { view.commentStatus.textContent = communityError(error); view.commentStatus.dataset.error='true'; } });
+        }
+        function communityRenderComments(view) {
+            const records = new Map(); [...view.commentHead,...view.commentOlder].forEach(d => records.set(d.id,d));
+            const docs = [...records.values()].sort((a,b) => communityDate(b.data().createdAt)-communityDate(a.data().createdAt)).slice(0,100);
+            view.commentList.replaceChildren();
+            docs.forEach(snapshot => {
+                const data = snapshot.data(); const item = communityElement('div','dz-comment');
+                const time = communityElement('time','',communityTime(data.createdAt)); const millis = communityDate(data.createdAt); if (millis) time.dateTime = new Date(millis).toISOString();
+                item.append(communityElement('strong','',data.authorName || 'Rider'),time,communityElement('p','',data.text || '')); view.commentList.append(item);
+            });
+            view.commentStatus.textContent = docs.length ? '' : 'İlk yorumu sen yaz.'; view.commentStatus.dataset.error = 'false';
+            view.more.hidden = !view.commentHasMore || docs.length >=100; view.more.disabled = view.commentLoading;
+        }
+        async function communityLoadComments(view) {
+            if (view.commentLoading || !view.commentCursor) return;
+            const generation = communityCommentsGeneration; view.commentLoading = true; view.more.disabled = true;
+            try {
+                const snapshot = await getDocs(query(collection(db,'communityPosts',view.data.id,'comments'),orderBy('createdAt','desc'),startAfter(view.commentCursor),limit(20)));
+                if (generation !== communityCommentsGeneration) return;
+                view.commentOlder.push(...snapshot.docs); view.commentCursor = snapshot.docs.at(-1) || view.commentCursor; view.commentHasMore = snapshot.docs.length ===20;
+                communityRenderComments(view);
+            } catch (error) { if (generation === communityCommentsGeneration) view.commentStatus.textContent = communityError(error); }
+            finally { if (generation === communityCommentsGeneration) { view.commentLoading = false; view.more.disabled = false; } }
+        }
+        async function communitySubmitComment(view) {
+            const user = auth.currentUser; if (!user) { window.showToast('Yorum için giriş yapmalısın.','error'); return; }
+            const text = view.input.value.trim(); if (!text || text.length >500 || communityBusy.has(`comment:${view.data.id}`) || !communityBeginAction()) return;
+            const postId = view.data.id; const ref = doc(collection(db,'communityPosts',postId,'comments')); let success = false;
+            communityBusy.add(`comment:${postId}`); view.submit.disabled = true;
+            try {
+                communityValidateUser(user);
+                const updatedPost = await runTransaction(db, async transaction => {
+                    const postSnap = await transaction.get(communityPostRef(postId)); const rate = await transaction.get(communityRateRef(user));
+                    if (!postSnap.exists() || postSnap.data().deleted) throw new Error('post-missing'); communityCheckRate(rate);
+                    const post = postSnap.data();
+                    transaction.set(ref,{authorId:user.uid,authorName:communityName(user),text,createdAt:serverTimestamp()});
+                    transaction.update(communityPostRef(postId),{commentCount:post.commentCount+1,lastEvent:{type:'comment',id:ref.id,actorId:user.uid}});
+                    communityWriteRate(transaction,user,'comment',postId,ref.id);
+                    communityWriteNotification(transaction,user,post,postId,'comment',ref.id);
+                    return {...post,commentCount:post.commentCount+1};
+                });
+                success = true;
+                if (auth.currentUser?.uid === user.uid) { communityOverrides.set(postId,updatedPost); communityUpdatePost(view,{...updatedPost,id:postId}); }
+                if (auth.currentUser?.uid === user.uid) { if (view.input.value.trim() === text) view.input.value = ''; view.counter.textContent=`${view.input.value.length} / 500`; view.commentStatus.textContent = 'Yorumun gönderildi.'; view.commentStatus.dataset.error = 'false'; }
+            } catch (error) { view.commentStatus.textContent = communityError(error); view.commentStatus.dataset.error='true'; }
+            finally { communityBusy.delete(`comment:${postId}`); view.submit.disabled=!auth.currentUser || !view.input.value.trim(); communityEndAction(success); }
+        }
+        window.openCommunity = async postId => {
+            if (!communityIsOpen()) {
+                communityReturnFocus = document.activeElement;
+                document.getElementById('notifications-modal').classList.add('hidden');
+                communityModal.classList.remove('hidden'); communityFillSpots(); communityUpdateComposer(); communityStartFeed();
+                communityModal.querySelector('[data-community-action="close"]').focus();
+            }
+            if (typeof postId === 'string' && /^[A-Za-z0-9_-]{1,128}$/.test(postId)) await communityOpenSinglePost(postId);
+        };
+        window.closeCommunity = () => {
+            if (!communityIsOpen() && !communityFeedUnsubscribe) return;
+            communityModal.classList.add('hidden'); communityStopFeed();
+            if (window.location.hash.startsWith('#community/')) history.replaceState(null,'',window.location.pathname + window.location.search);
+            if (communityReturnFocus?.isConnected) communityReturnFocus.focus();
+        };
+        async function communityOpenSinglePost(postId) {
+            const generation = communityGeneration;
+            try {
+                const snapshot = await getDoc(communityPostRef(postId)); if (generation !== communityGeneration) return;
+                if (!snapshot.exists() || snapshot.data().deleted) { window.showToast('Bu paylaşım artık mevcut değil.','error'); return; }
+                communityPinnedUnsubscribe?.(); communityPinned = snapshot;
+                communityOverrides.delete(postId); communityRenderFeed();
+                let view = communityViews.get(postId);
+                if (view) { view.article.scrollIntoView({block:'start',behavior:'instant'}); if (communityCommentView !== view) communityOpenComments(view); }
+                communityPinnedUnsubscribe = onSnapshot(communityPostRef(postId), fresh => {
+                    if (generation !== communityGeneration) return;
+                    communityPinned = fresh.exists() ? fresh : null; communityOverrides.delete(postId); communityRenderFeed();
+                }, error => { if (generation === communityGeneration) window.showToast(communityError(error),'error'); });
+            } catch (error) { window.showToast(communityError(error),'error'); }
+        }
+        function communityAcceptNew() {
+            if (!communityPendingHead) return;
+            communityCloseComments(); communityHead = communityPendingHead; communityPendingHead=null; communityOlder=[];
+            communityCursor=communityHead.at(-1)||null;communityMore=communityHead.length===20;
+            document.getElementById('community-new-posts').hidden=true;communityRenderFeed();communityScroll.scrollTop=0;
+        }
+        communityModal.addEventListener('click', event => {
+            const action = event.target.closest('[data-community-action]')?.dataset.communityAction;
+            if (action === 'close' || action === 'map') window.closeCommunity();
+            if (action === 'login') window.loginWithGoogle();
+            if (action === 'notifications') window.openNotificationsModal();
+            if (action === 'all' || action === 'feed') {
+                communitySelectedSpot=''; document.getElementById('community-filter-spot').value=''; document.getElementById('community-tab-all').setAttribute('aria-pressed','true');document.getElementById('community-tab-spot').setAttribute('aria-pressed','false');
+                document.getElementById('community-filter-panel').hidden=true;communityStartFeed();communityScroll.scrollTop=0;
+            }
+            if (action === 'filter') document.getElementById('community-filter-panel').hidden=!document.getElementById('community-filter-panel').hidden;
+            if (action === 'refresh') { communityStartFeed(); communityScroll.scrollTop=0; }
+            if (action === 'new-posts') communityAcceptNew();
+        });
+        document.getElementById('community-filter-spot').addEventListener('change', event => {
+            communitySelectedSpot = event.target.value;
+            document.getElementById('community-tab-all').setAttribute('aria-pressed',String(!communitySelectedSpot));document.getElementById('community-tab-spot').setAttribute('aria-pressed',String(!!communitySelectedSpot));
+            communityStartFeed();
+        });
+        communityModal.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && document.getElementById('confirm-modal').classList.contains('hidden') && document.getElementById('notifications-modal').classList.contains('hidden')) { event.preventDefault();window.closeCommunity();return; }
+            if (event.key !== 'Tab' || !document.getElementById('notifications-modal').classList.contains('hidden') || !document.getElementById('confirm-modal').classList.contains('hidden')) return;
+            const focusable=[...communityModal.querySelectorAll('button:not(:disabled), textarea:not(:disabled), input:not(:disabled), select:not(:disabled), [tabindex="0"]')].filter(el=>el.getClientRects().length);
+            const first=focusable[0], last=focusable.at(-1);
+            if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
+            if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+        });
+        function communityNotificationText(data) {
+            return `${data.actorName || 'Bir sürücü'} ${data.type === 'like' ? 'paylaşımını beğendi.' : 'paylaşımına yorum yaptı.'}`;
+        }
+        function communityRenderInbox() {
+            const list=document.getElementById('notifications-list');list.replaceChildren();
+            const legacy = (currentUserData.notifications || []).map(n=>({...n,legacy:true,createdAt:n.date}));
+            const all=[...communityInboxRows,...legacy].sort((a,b)=>communityDate(b.createdAt)-communityDate(a.createdAt)).slice(0,75);
+            if(!all.length){list.append(communityElement('p','text-xs text-zinc-500 text-center py-6','Henüz bildirimin yok.'));return;}
+            all.forEach(data=>{
+                const item=communityElement(data.legacy?'div':'button','dz-inbox-item');if(!data.legacy)item.type='button';item.dataset.unread=String(!data.read);
+                const time=communityElement('time','',communityDate(data.createdAt)?new Date(communityDate(data.createdAt)).toLocaleString('tr-TR'):'Şimdi');
+                item.append(communityElement('p','',data.legacy?data.text:communityNotificationText(data)),time);
+                if(!data.legacy)item.addEventListener('click',()=>{document.getElementById('notifications-modal').classList.add('hidden');window.openCommunity(data.postId);});
+                list.append(item);
+            });
+        }
+        const communityMarkingInbox = new Set();
+        async function communityMarkInboxRead() {
+            const user=auth.currentUser;if(!user||communityMarkingInbox.has(user.uid))return;
+            const unread=communityInboxRows.filter(n=>!n.read);
+            const legacyIds=new Set((currentUserData.notifications||[]).filter(n=>!n.read).map(n=>n.id));
+            if(!unread.length&&!legacyIds.size)return;
+            communityMarkingInbox.add(user.uid); let success=false;
+            try{
+                if (unread.length) {
+                    const batch=writeBatch(db);
+                    unread.forEach(n=>batch.update(doc(db,'communityInbox',user.uid,'notifications',n.id),{read:true}));
+                    await batch.commit();
+                }
+                if (legacyIds.size) {
+                    // Read the latest profile inside a transaction so arriving spot notifications survive.
+                    await runTransaction(db, async transaction => {
+                        const ref=doc(db,'users',user.uid);const snapshot=await transaction.get(ref);
+                        if(!snapshot.exists())return;
+                        const latest=Array.isArray(snapshot.data().notifications)?snapshot.data().notifications:[];
+                        if(latest.some(n=>legacyIds.has(n.id)&&!n.read)) transaction.update(ref,{notifications:latest.map(n=>legacyIds.has(n.id)?{...n,read:true}:n)});
+                    });
+                }
+                success=true;
+                if(auth.currentUser?.uid===user.uid&&legacyIds.size){currentUserData.notifications=(currentUserData.notifications||[]).map(n=>legacyIds.has(n.id)?{...n,read:true}:n);updateNotificationBadge();}
+            }catch(error){if(auth.currentUser?.uid===user.uid)window.showToast(communityError(error),'error');}
+            finally{
+                communityMarkingInbox.delete(user.uid);
+                if(success&&auth.currentUser?.uid===user.uid&&!document.getElementById('notifications-modal').classList.contains('hidden')&&communityInboxRows.some(n=>!n.read))queueMicrotask(communityMarkInboxRead);
+            }
+        }
+        function openCommunityInbox() {
+            if(!auth.currentUser){window.showToast('Bildirimler için giriş yapmalısın.','error');return;}
+            communityRenderInbox();document.getElementById('notifications-modal').classList.remove('hidden');document.querySelector('#notifications-modal button').focus();communityMarkInboxRead();
+        }
+        window.closeNotifications = () => {
+            document.getElementById('notifications-modal').classList.add('hidden');
+            if (communityIsOpen()) communityModal.querySelector('.dz-header-actions [data-community-action="notifications"]').focus();
+        };
+        document.getElementById('notifications-modal').addEventListener('keydown', event => {
+            if(event.key==='Escape'){event.preventDefault();window.closeNotifications();}
+            if(event.key==='Tab'){
+                const items=[...event.currentTarget.querySelectorAll('button')].filter(el=>el.getClientRects().length);
+                if(event.shiftKey&&document.activeElement===items[0]){event.preventDefault();items.at(-1)?.focus();}
+                else if(!event.shiftKey&&document.activeElement===items.at(-1)){event.preventDefault();items[0]?.focus();}
+            }
+        });
+        onAuthStateChanged(auth, user => {
+            const previousUid=communityUid;communityUid=user?.uid||null;communityAuthGeneration++;
+            communityInboxUnsubscribe?.();communityUserUnsubscribe?.();communityInboxUnsubscribe=null;communityUserUnsubscribe=null;
+            communityInboxRows=[];communityLikes.clear();communityCooldownUntil=0;clearTimeout(communityCooldownTimer);
+            if(previousUid!==communityUid){currentUserData.notifications=[];communityText.value='';communityStatus('community-compose-status');for(const view of communityViews.values()){view.input.value='';view.counter.textContent='0 / 500';}}
+            communityUpdateComposer();updateNotificationBadge();
+            for(const view of communityViews.values()){communityUpdatePost(view,view.data);communityReadLike(view);}
+            if(!user){if(!document.getElementById('notifications-modal').classList.contains('hidden'))document.getElementById('notifications-modal').classList.add('hidden');return;}
+            const generation=communityAuthGeneration;
+            communityInboxUnsubscribe=onSnapshot(query(collection(db,'communityInbox',user.uid,'notifications'),orderBy('createdAt','desc'),limit(50)),snapshot=>{
+                if(generation!==communityAuthGeneration)return;
+                communityInboxRows=snapshot.docs.map(d=>({...d.data(),id:d.id}));updateNotificationBadge();
+                if(!document.getElementById('notifications-modal').classList.contains('hidden')){communityRenderInbox();communityMarkInboxRead();}
+            },error=>{if(generation===communityAuthGeneration)communityStatus('community-compose-status',`Bildirimler alınamadı. ${communityError(error)}`,true);});
+            // Keep existing spot notifications live without allowing community code to write another user's profile.
+            communityUserUnsubscribe=onSnapshot(doc(db,'users',user.uid),snapshot=>{
+                if(generation!==communityAuthGeneration||!snapshot.exists())return;
+                currentUserData.notifications=Array.isArray(snapshot.data().notifications)?snapshot.data().notifications:[];updateNotificationBadge();
+                if(!document.getElementById('notifications-modal').classList.contains('hidden'))communityRenderInbox();
+            },()=>{});
+        });
+        function communityFollowHash() {
+            const match=window.location.hash.match(/^#community\/([A-Za-z0-9_-]{1,128})$/);
+            if(match)window.openCommunity(match[1]);
+        }
+        window.addEventListener('hashchange',communityFollowHash);communityFollowHash();
 
     </script>
 </body>
