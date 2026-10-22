@@ -1,8 +1,29 @@
 rules_version = '2';
+
+// DROPZONE — TAM FIRESTORE GÜVENLİK KURALLARI
+// Firebase Console > Firestore Database > Rules bölümündeki mevcut metnin
+// TAMAMINI bu dosyayla değiştirip Publish / Yayımla düğmesine basın.
+// Profil, spot, paylaşım, beğeni, yorum, bildirim ve anket izinleri bu dosyadadır.
+// Rotalar, kişisel sürüş günlüğü ve indirilen spot paketleri cihazda saklanır;
+// bunlar için herkese açık yeni bir Firestore yazma izni gerekmez.
+//
+// BEĞENİ SIRALAMASI İÇİN AYRI KURULUM:
+// Dizinler güvenlik kuralı değildir; bu dosyayı yayımlamak onları oluşturmaz.
+// Firestore Database > Indexes > Composite > Create index bölümünde aşağıdaki
+// dört tanımı ekleyin. Collection ID: communityPosts. Query scope: Collection.
+// ASC = Ascending (artan), DESC = Descending (azalan). Alan sırasını koruyun.
+// 1. deleted ASC + likeCount DESC + createdAt DESC
+// 2. spotId ASC + deleted ASC + likeCount DESC + createdAt DESC
+// 3. deleted ASC + createdAt DESC
+// 4. spotId ASC + deleted ASC + createdAt DESC
+// Dizinlerin Enabled durumuna gelmesini bekleyin. JSON tanımları:
+// https://github.com/toti1111/DropZone/blob/main/community.firestore.indexes.json
+// Kurulum: https://github.com/toti1111/DropZone/blob/main/NEW_FEATURES_SETUP.md
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Full application rules: replace the old rules as one complete document.
-    // Never retain another overlapping broad allow rule (grants are additive).
+    // Tam dosyayı eski kuralların yerine yapıştırın; eski geniş izinleri eklemeyin.
+    // Eşleşen allow izinleri birlikte uygulanır; geniş bir izin diğerlerini geçersiz kılabilir.
     function signedIn() { return request.auth != null; }
     function actorName() {
       return request.auth.token.get('name', '') != ''
