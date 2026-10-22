@@ -1,0 +1,1 @@
+module.exports = {content:[require('node:path').resolve(__dirname,'../index.html')],theme:{extend:{colors:{obsidian:'#09090b',charcoal:'#18181b',neon:'#84cc16',neonHover:'#a3e635',cyan:'#06b6d4',danger:'#ef4444',warning:'#f59e0b'},fontFamily:{sans:['Inter','system-ui','sans-serif']}}}};

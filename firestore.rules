@@ -1,0 +1,516 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Full application rules: replace the old rules as one complete document.
+    // Never retain another overlapping broad allow rule (grants are additive).
+    function signedIn() { return request.auth != null; }
+    function actorName() {
+      return request.auth.token.get('name', '') != ''
+        ? request.auth.token.name : 'Rider';
+    }
+    function validName(name) {
+      return name is string && name.size() > 0 && name.size() <= 120
+        && name == actorName();
+    }
+    function validId(id) {
+      return id is string && id.matches('^[A-Za-z0-9_-]{1,128}$');
+    }
+    function boundedList(maximum) {
+      return request.query.limit != null && request.query.limit <= maximum;
+    }
+    function postPath(postId) {
+      return /databases/$(database)/documents/communityPosts/$(postId);
+    }
+    function likePath(postId, uid) {
+      return /databases/$(database)/documents/communityPosts/$(postId)/likes/$(uid);
+    }
+    function commentPath(postId, commentId) {
+      return /databases/$(database)/documents/communityPosts/$(postId)/comments/$(commentId);
+    }
+    function ratePath() {
+      return /databases/$(database)/documents/communityRateLimits/$(request.auth.uid);
+    }
+    function notificationPath(recipient, notificationId) {
+      return /databases/$(database)/documents/communityInbox/$(recipient)/notifications/$(notificationId);
+    }
+    function eventMatches(event, type, id) {
+      return event is map && event.keys().hasAll(['type', 'id', 'actorId'])
+        && event.keys().hasOnly(['type', 'id', 'actorId'])
+        && event.type == type && event.id == id && event.actorId == request.auth.uid;
+    }
+    function rateMatches(type, postId, eventId) {
+      let rate = getAfter(ratePath()).data;
+      return rate.lastActionAt == request.time && rate.eventType == type
+        && rate.postId == postId && rate.eventId == eventId
+        && (!exists(ratePath())
+          || get(ratePath()).data.lastActionAt <= request.time - duration.value(5, 's'));
+    }
+    function notificationMatches(postId, eventId, type, recipient) {
+      let notificationId = type == 'like'
+        ? 'like_' + postId + '_' + request.auth.uid : 'comment_' + eventId;
+      let notification = getAfter(notificationPath(recipient, notificationId)).data;
+      return notification.actorId == request.auth.uid && notification.actorName == actorName()
+        && notification.type == type && notification.postId == postId
+        && notification.eventId == eventId && notification.createdAt == request.time
+        && notification.read == false;
+    }
+    function notificationRequired(postId, eventId, type) {
+      let owner = get(postPath(postId)).data.authorId;
+      return owner == request.auth.uid || notificationMatches(postId, eventId, type, owner);
+    }
+    function activeLikeBefore(postId) {
+      return exists(likePath(postId, request.auth.uid))
+        && get(likePath(postId, request.auth.uid)).data.active == true;
+    }
+    function validLikeCounter(postId) {
+      let after = getAfter(likePath(postId, request.auth.uid)).data;
+      let wasActive = activeLikeBefore(postId);
+      return eventMatches(request.resource.data.lastEvent, 'like', request.auth.uid)
+        && after.authorId == request.auth.uid && after.updatedAt == request.time
+        && after.active is bool && after.active != wasActive
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likeCount', 'lastEvent'])
+        && request.resource.data.likeCount is int && request.resource.data.likeCount >= 0
+        && request.resource.data.likeCount == resource.data.likeCount + (after.active ? 1 : -1);
+    }
+    function validCommentCounter(postId) {
+      let eventId = request.resource.data.lastEvent.id;
+      let after = getAfter(commentPath(postId, eventId)).data;
+      return validId(eventId) && eventMatches(request.resource.data.lastEvent, 'comment', eventId)
+        && !exists(commentPath(postId, eventId))
+        && after.authorId == request.auth.uid && after.createdAt == request.time
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['commentCount', 'lastEvent'])
+        && request.resource.data.commentCount is int
+        && request.resource.data.commentCount == resource.data.commentCount + 1;
+    }
+    function parentLikeChanged(postId, active) {
+      let before = get(postPath(postId)).data;
+      let after = getAfter(postPath(postId)).data;
+      return before.deleted == false && after.deleted == false
+        && eventMatches(after.lastEvent, 'like', request.auth.uid)
+        && after.likeCount == before.likeCount + (active ? 1 : -1);
+    }
+    function parentCommentChanged(postId, commentId) {
+      let before = get(postPath(postId)).data;
+      let after = getAfter(postPath(postId)).data;
+      return before.deleted == false && after.deleted == false
+        && eventMatches(after.lastEvent, 'comment', commentId)
+        && after.commentCount == before.commentCount + 1;
+    }
+
+    function votePath(postId, uid) {
+      return /databases/$(database)/documents/communityPosts/$(postId)/votes/$(uid);
+    }
+    function nonblankText(value, maximum) {
+      return value is string && value.size() > 0 && value.size() <= maximum
+        && value.matches('.*\\S.*');
+    }
+    function validPollOptions(options) {
+      return options is list && options.size() >= 2 && options.size() <= 4
+        && options.toSet().size() == options.size()
+        && nonblankText(options[0], 80) && nonblankText(options[1], 80)
+        && (options.size() < 3 || nonblankText(options[2], 80))
+        && (options.size() < 4 || nonblankText(options[3], 80));
+    }
+    function validPollCounts(poll) {
+      return poll.counts is list && poll.counts.size() == poll.options.size()
+        && poll.totalVotes is int && poll.totalVotes >= 0
+        && poll.counts[0] is int && poll.counts[0] >= 0
+        && poll.counts[1] is int && poll.counts[1] >= 0
+        && (poll.counts.size() < 3 || (poll.counts[2] is int && poll.counts[2] >= 0))
+        && (poll.counts.size() < 4 || (poll.counts[3] is int && poll.counts[3] >= 0))
+        && poll.totalVotes == poll.counts[0] + poll.counts[1]
+          + (poll.counts.size() > 2 ? poll.counts[2] : 0)
+          + (poll.counts.size() > 3 ? poll.counts[3] : 0);
+    }
+    function validPollShape(poll) {
+      return poll is map
+        && poll.keys().hasAll(['question', 'options', 'endsAt', 'totalVotes', 'counts'])
+        && poll.keys().hasOnly(['question', 'options', 'endsAt', 'totalVotes', 'counts'])
+        && nonblankText(poll.question, 160) && validPollOptions(poll.options)
+        && poll.endsAt is timestamp && validPollCounts(poll);
+    }
+    function validNewPoll(poll) {
+      return validPollShape(poll) && poll.totalVotes == 0
+        // UI offers 1/6/24/72 hours. Tolerance covers client clock/network delay.
+        && poll.endsAt >= request.time + duration.value(55, 'm')
+        && poll.endsAt <= request.time + duration.value(4325, 'm');
+    }
+    function counterAt(before, after, index, selected) {
+      return after[index] is int && after[index] == before[index] + (selected == index ? 1 : 0);
+    }
+    function pollChangedOnce(before, after, option) {
+      return validPollShape(before) && after is map
+        && after.counts is list && after.counts.size() == before.options.size()
+        && after.totalVotes is int
+        && option is int && option >= 0 && option < before.options.size()
+        && before.endsAt > request.time
+        && after.diff(before).affectedKeys().hasOnly(['counts', 'totalVotes'])
+        && after.totalVotes == before.totalVotes + 1
+        && counterAt(before.counts, after.counts, 0, option)
+        && counterAt(before.counts, after.counts, 1, option)
+        && (before.options.size() < 3 || counterAt(before.counts, after.counts, 2, option))
+        && (before.options.size() < 4 || counterAt(before.counts, after.counts, 3, option));
+    }
+    function parentVoteChanged(postId, option) {
+      let before = get(postPath(postId)).data;
+      let after = getAfter(postPath(postId)).data;
+      return before.deleted == false && after.deleted == false
+        && eventMatches(after.lastEvent, 'vote', request.auth.uid)
+        && pollChangedOnce(before.poll, after.poll, option);
+    }
+    function validVoteCounter(postId) {
+      let vote = getAfter(votePath(postId, request.auth.uid)).data;
+      return !exists(votePath(postId, request.auth.uid))
+        && vote.authorId == request.auth.uid && vote.createdAt == request.time
+        && eventMatches(request.resource.data.lastEvent, 'vote', request.auth.uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['poll', 'lastEvent'])
+        && pollChangedOnce(resource.data.poll, request.resource.data.poll, vote.option);
+    }
+
+    match /communityPosts/{postId} {
+      allow get: if true;
+      allow list: if boundedList(20);
+      allow create: if signedIn() && validId(postId)
+        && request.resource.data.keys().hasAll(['authorId', 'authorName', 'text', 'spotId', 'createdAt', 'deleted', 'likeCount', 'commentCount', 'lastEvent'])
+        && request.resource.data.keys().hasOnly(['authorId', 'authorName', 'text', 'spotId', 'createdAt', 'deleted', 'likeCount', 'commentCount', 'lastEvent', 'poll'])
+        && request.resource.data.authorId == request.auth.uid
+        && validName(request.resource.data.authorName)
+        && request.resource.data.text is string && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 1000
+        && request.resource.data.spotId is string && request.resource.data.spotId.size() <= 1500
+        && (request.resource.data.spotId == ''
+          || (request.resource.data.spotId.matches('^[^/]+$')
+            && exists(/databases/$(database)/documents/spots/$(request.resource.data.spotId))))
+        && request.resource.data.createdAt == request.time
+        && (!('poll' in request.resource.data) || validNewPoll(request.resource.data.poll))
+        && request.resource.data.deleted == false
+        && request.resource.data.likeCount is int && request.resource.data.likeCount == 0
+        && request.resource.data.commentCount is int && request.resource.data.commentCount == 0
+        && eventMatches(request.resource.data.lastEvent, 'post', postId)
+        && rateMatches('post', postId, postId);
+      allow update: if signedIn() && resource.data.deleted == false && (
+        (request.auth.uid == resource.data.authorId
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['deleted', 'text', 'poll'])
+          && request.resource.data.deleted == true && request.resource.data.text == ''
+          && !('poll' in request.resource.data))
+        || (request.resource.data.deleted == false
+          && (validLikeCounter(postId) || validCommentCounter(postId)
+            || ('poll' in resource.data && validVoteCounter(postId))))
+      );
+      allow delete: if false;
+
+      match /likes/{uid} {
+        allow get: if signedIn() && uid == request.auth.uid;
+        allow list: if false;
+        allow create: if signedIn() && uid == request.auth.uid
+          && request.resource.data.keys().hasAll(['authorId', 'active', 'createdAt', 'updatedAt'])
+          && request.resource.data.keys().hasOnly(['authorId', 'active', 'createdAt', 'updatedAt'])
+          && request.resource.data.authorId == uid && request.resource.data.active == true
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.updatedAt == request.time
+          && parentLikeChanged(postId, true)
+          && rateMatches('like', postId, uid)
+          && notificationRequired(postId, uid, 'like');
+        allow update: if signedIn() && uid == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['active', 'updatedAt'])
+          && request.resource.data.active is bool
+          && request.resource.data.active != resource.data.active
+          && request.resource.data.updatedAt == request.time
+          && parentLikeChanged(postId, request.resource.data.active)
+          && (!request.resource.data.active || rateMatches('like', postId, uid));
+        allow delete: if false;
+      }
+
+      match /votes/{uid} {
+        allow get: if signedIn() && uid == request.auth.uid;
+        allow list: if false;
+        allow create: if signedIn() && uid == request.auth.uid
+          && request.resource.data.keys().hasAll(['authorId', 'option', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['authorId', 'option', 'createdAt'])
+          && request.resource.data.authorId == uid
+          && request.resource.data.option is int
+          && request.resource.data.createdAt == request.time
+          && parentVoteChanged(postId, request.resource.data.option)
+          && rateMatches('vote', postId, uid);
+        allow update, delete: if false;
+      }
+
+      match /comments/{commentId} {
+        allow get: if get(postPath(postId)).data.deleted == false;
+        allow list: if boundedList(20) && get(postPath(postId)).data.deleted == false;
+        allow create: if signedIn() && validId(commentId)
+          && request.resource.data.keys().hasAll(['authorId', 'authorName', 'text', 'createdAt'])
+          && request.resource.data.keys().hasOnly(['authorId', 'authorName', 'text', 'createdAt'])
+          && request.resource.data.authorId == request.auth.uid
+          && validName(request.resource.data.authorName)
+          && request.resource.data.text is string && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 500
+          && request.resource.data.createdAt == request.time
+          && parentCommentChanged(postId, commentId)
+          && rateMatches('comment', postId, commentId)
+          && notificationRequired(postId, commentId, 'comment');
+        allow update, delete: if false;
+      }
+    }
+
+    match /communityRateLimits/{uid} {
+      allow get: if signedIn() && uid == request.auth.uid;
+      allow list, delete: if false;
+      allow create, update: if signedIn() && uid == request.auth.uid
+        && request.resource.data.keys().hasAll(['lastActionAt', 'eventType', 'postId', 'eventId'])
+        && request.resource.data.keys().hasOnly(['lastActionAt', 'eventType', 'postId', 'eventId'])
+        && validId(request.resource.data.postId) && validId(request.resource.data.eventId)
+        && rateMatches(request.resource.data.eventType, request.resource.data.postId, request.resource.data.eventId)
+        && validRateEvent(request.resource.data);
+    }
+    function validRateEvent(rate) {
+      let parent = getAfter(postPath(rate.postId)).data;
+      return eventMatches(parent.lastEvent, rate.eventType, rate.eventId) && (
+        (rate.eventType == 'post' && rate.eventId == rate.postId
+          && !exists(postPath(rate.postId))
+          && parent.authorId == request.auth.uid && parent.createdAt == request.time)
+        || (rate.eventType == 'like' && rate.eventId == request.auth.uid
+          && !activeLikeBefore(rate.postId)
+          && getAfter(likePath(rate.postId, request.auth.uid)).data.active == true
+          && getAfter(likePath(rate.postId, request.auth.uid)).data.updatedAt == request.time
+          && parentLikeChanged(rate.postId, true))
+        || (rate.eventType == 'comment' && !exists(commentPath(rate.postId, rate.eventId))
+          && getAfter(commentPath(rate.postId, rate.eventId)).data.authorId == request.auth.uid
+          && getAfter(commentPath(rate.postId, rate.eventId)).data.createdAt == request.time
+          && parentCommentChanged(rate.postId, rate.eventId))
+        || (rate.eventType == 'vote' && rate.eventId == request.auth.uid
+          && !exists(votePath(rate.postId, request.auth.uid))
+          && getAfter(votePath(rate.postId, request.auth.uid)).data.authorId == request.auth.uid
+          && getAfter(votePath(rate.postId, request.auth.uid)).data.createdAt == request.time
+          && parentVoteChanged(rate.postId, getAfter(votePath(rate.postId, request.auth.uid)).data.option))
+      );
+    }
+
+    match /communityInbox/{recipient}/notifications/{notificationId} {
+      allow get: if signedIn() && recipient == request.auth.uid;
+      allow list: if signedIn() && recipient == request.auth.uid && boundedList(50);
+      allow create: if signedIn() && recipient != request.auth.uid
+        && request.resource.data.keys().hasAll(['actorId', 'actorName', 'type', 'postId', 'eventId', 'createdAt', 'read'])
+        && request.resource.data.keys().hasOnly(['actorId', 'actorName', 'type', 'postId', 'eventId', 'createdAt', 'read'])
+        && request.resource.data.actorId == request.auth.uid
+        && validName(request.resource.data.actorName)
+        && request.resource.data.read == false && request.resource.data.createdAt == request.time
+        && validId(request.resource.data.postId) && validId(request.resource.data.eventId)
+        && get(postPath(request.resource.data.postId)).data.authorId == recipient
+        && get(postPath(request.resource.data.postId)).data.deleted == false
+        && validNotificationEvent(notificationId, request.resource.data);
+      allow update: if signedIn() && recipient == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read'])
+        && request.resource.data.read == true;
+      allow delete: if false;
+    }
+    function validNotificationEvent(notificationId, notification) {
+      return (
+        notification.type == 'like' && notification.eventId == request.auth.uid
+        && notificationId == 'like_' + notification.postId + '_' + request.auth.uid
+        && !exists(likePath(notification.postId, request.auth.uid))
+        && getAfter(likePath(notification.postId, request.auth.uid)).data.active == true
+        && getAfter(likePath(notification.postId, request.auth.uid)).data.updatedAt == request.time
+        && parentLikeChanged(notification.postId, true)
+      ) || (
+        notification.type == 'comment' && notificationId == 'comment_' + notification.eventId
+        && !exists(commentPath(notification.postId, notification.eventId))
+        && getAfter(commentPath(notification.postId, notification.eventId)).data.authorId == request.auth.uid
+        && getAfter(commentPath(notification.postId, notification.eventId)).data.createdAt == request.time
+        && parentCommentChanged(notification.postId, notification.eventId)
+      );
+    }
+
+    // Existing application collections: private profiles and narrowly scoped writes.
+    function admin() {
+      return signedIn() && (
+        request.auth.token.get('admin', false) == true
+        || (request.auth.token.get('email', '') == 'delidereliler@gmail.com'
+          && request.auth.token.get('email_verified', false) == true)
+      );
+    }
+    function recentMillis(value) {
+      return value is int && value >= request.time.toMillis() - 60000
+        && value <= request.time.toMillis() + 10000;
+    }
+    function shortString(value, maximum) {
+      return value is string && value.size() <= maximum;
+    }
+    function ownProfileValues(data) {
+      return shortString(data.get('bio', ''), 1000)
+        && shortString(data.get('gender', ''), 80)
+        && shortString(data.get('stance', ''), 120)
+        && data.get('favorites', []) is list && data.get('favorites', []).size() <= 1000
+        && data.get('notifications', []) is list && data.get('notifications', []).size() <= 2000;
+    }
+    function legacySpotPath(spotId) {
+      return /databases/$(database)/documents/spots/$(spotId);
+    }
+    function legacyUserPath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+    function validLegacyComment(comment) {
+      return comment is map
+        && comment.keys().hasAll(['id', 'userId', 'userName', 'text', 'date', 'replyToId'])
+        && comment.keys().hasOnly(['id', 'userId', 'userName', 'text', 'date', 'replyToId'])
+        && validId(comment.id) && comment.userId == request.auth.uid
+        && validName(comment.userName)
+        && comment.text is string && comment.text.size() > 0 && comment.text.size() <= 1000
+        && recentMillis(comment.date)
+        && (comment.replyToId == null || validId(comment.replyToId));
+    }
+    function appendedComment(before, after) {
+      return before is list && after is list && after.size() == before.size() + 1
+        && after.size() <= 1000
+        && after == before.concat([after[before.size()]])
+        && validLegacyComment(after[before.size()]);
+    }
+    function removedOwnComment(before, after) {
+      let removed = before.removeAll(after);
+      return before is list && after is list && after.size() == before.size() - 1
+        && before.hasAll(after) && removed.size() == 1
+        && (admin() || removed[0].userId == request.auth.uid);
+    }
+    function validLegacyReport(report) {
+      return report is map
+        && report.keys().hasAll(['id', 'type', 'photoUrl', 'userId', 'userName', 'date', 'status'])
+        && report.keys().hasOnly(['id', 'type', 'photoUrl', 'userId', 'userName', 'date', 'status'])
+        && validId(report.id) && report.userId == request.auth.uid
+        && validName(report.userName)
+        && report.type in ['Güvenlik / Zabıta 👮', 'Zemin Islak / Bozuk 💧', 'Tadilat / Yıkım 🚧']
+        && report.photoUrl is string && report.photoUrl.size() <= 2000
+        && report.photoUrl.matches('^https?://[^"<>]+$')
+        && recentMillis(report.date) && report.status == 'pending';
+    }
+    function appendedReport(before, after) {
+      return before is list && after is list && after.size() == before.size() + 1
+        && after.size() <= 1000
+        && after == before.concat([after[before.size()]])
+        && validLegacyReport(after[before.size()]);
+    }
+    function validLegacyNotification(notification, recipient) {
+      let source = get(legacySpotPath(notification.spotId)).data;
+      return notification is map
+        && notification.keys().hasAll(['id', 'text', 'date', 'read', 'actorId', 'spotId', 'eventType', 'eventId'])
+        && notification.keys().hasOnly(['id', 'text', 'date', 'read', 'actorId', 'spotId', 'eventType', 'eventId'])
+        && validId(notification.id) && validId(notification.eventId)
+        && notification.actorId == request.auth.uid
+        && notification.text is string && notification.text.size() > 0 && notification.text.size() <= 300
+        && recentMillis(notification.date) && notification.read == false
+        && notification.spotId is string && notification.spotId.matches('^[^/]+$')
+        && notification.spotId.size() <= 1500
+        && source.userId == recipient
+        && ((notification.eventType == 'favorite'
+            && notification.text == actorName() + ' "' + source.name + '" adlı spotunuzu favorilere ekledi!')
+          || (notification.eventType == 'comment'
+            && notification.text == actorName() + ' "' + source.name + '" adlı spotunuza yorum yaptı.'));
+    }
+    function favoriteNotificationProof(notification) {
+      let before = get(legacyUserPath(request.auth.uid)).data.get('favorites', []);
+      let after = getAfter(legacyUserPath(request.auth.uid)).data.get('favorites', []);
+      return notification.eventId == request.auth.uid
+        && !before.hasAny([notification.spotId]) && after.hasAny([notification.spotId]);
+    }
+    function commentNotificationProof(notification) {
+      let before = get(legacySpotPath(notification.spotId)).data.get('comments', []);
+      let after = getAfter(legacySpotPath(notification.spotId)).data.get('comments', []);
+      return appendedComment(before, after)
+        && after[after.size() - 1].id == notification.eventId;
+    }
+    function legacyNotificationAppend(recipient) {
+      let before = resource.data.get('notifications', []);
+      let after = request.resource.data.get('notifications', []);
+      let notification = after[after.size() - 1];
+      return recipient != request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['notifications'])
+        && before is list && after is list && after.size() == before.size() + 1
+        && after.size() <= 2000 && after == before.concat([notification])
+        && validLegacyNotification(notification, recipient)
+        && ((notification.eventType == 'favorite' && favoriteNotificationProof(notification))
+          || (notification.eventType == 'comment' && commentNotificationProof(notification)));
+    }
+
+    match /users/{userId} {
+      // Private favorites and notifications must not be exposed as public profiles.
+      allow get: if signedIn() && request.auth.uid == userId;
+      allow list: if false;
+      allow create: if signedIn() && request.auth.uid == userId
+        && request.resource.data.keys().hasAll(['bio', 'gender', 'stance', 'favorites', 'notifications'])
+        && request.resource.data.keys().hasOnly(['bio', 'gender', 'stance', 'favorites', 'notifications'])
+        && ownProfileValues(request.resource.data)
+        && request.resource.data.notifications.size() == 0;
+      allow update: if signedIn() && (
+        (request.auth.uid == userId
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['bio', 'gender', 'stance', 'favorites', 'notifications'])
+          && ownProfileValues(request.resource.data))
+        || legacyNotificationAppend(userId)
+      );
+      allow delete: if signedIn() && request.auth.uid == userId;
+    }
+
+    function validSpotFeatures(features) {
+      return features is map
+        && features.keys().hasAll(['difficulty', 'dropHeight', 'landing', 'surface'])
+        && features.keys().hasOnly(['difficulty', 'dropHeight', 'landing', 'surface'])
+        && features.difficulty in ['beginner', 'intermediate', 'advanced', 'unknown']
+        && (features.dropHeight == null
+          || (features.dropHeight is number && features.dropHeight >= 0 && features.dropHeight <= 30))
+        && features.landing in ['wide', 'medium', 'narrow', 'unknown']
+        && features.surface in ['concrete', 'asphalt', 'dirt', 'wood', 'mixed', 'unknown'];
+    }
+
+    match /spots/{spotId} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.keys().hasAll(['name', 'category', 'types', 'desc', 'photoUrl', 'locationText', 'status', 'createdAt', 'userId', 'userName', 'comments', 'reports', 'coords'])
+        && request.resource.data.keys().hasOnly(['name', 'category', 'types', 'desc', 'photoUrl', 'locationText', 'status', 'createdAt', 'userId', 'userName', 'comments', 'reports', 'coords', 'features'])
+        && request.resource.data.userId == request.auth.uid && validName(request.resource.data.userName)
+        && (!('features' in request.resource.data) || validSpotFeatures(request.resource.data.features))
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 120
+        && request.resource.data.category in ['Urban', 'DirtJump']
+        && request.resource.data.types is list && request.resource.data.types.size() <= 4
+        && request.resource.data.types.hasOnly(['Merdiven', 'Drop', 'Transfer', 'Air'])
+        && shortString(request.resource.data.desc, 5000)
+        && shortString(request.resource.data.photoUrl, 8000)
+        && request.resource.data.photoUrl.matches('^[^"<>]*$')
+        && shortString(request.resource.data.locationText, 200)
+        && request.resource.data.status == 'active' && recentMillis(request.resource.data.createdAt)
+        && request.resource.data.comments is list && request.resource.data.comments.size() == 0
+        && request.resource.data.reports is list && request.resource.data.reports.size() == 0
+        && request.resource.data.coords is map
+        && request.resource.data.coords.keys().hasAll(['lat', 'lng']) && request.resource.data.coords.keys().hasOnly(['lat', 'lng'])
+        && request.resource.data.coords.lat is number && request.resource.data.coords.lat >= -90 && request.resource.data.coords.lat <= 90
+        && request.resource.data.coords.lng is number && request.resource.data.coords.lng >= -180 && request.resource.data.coords.lng <= 180;
+      allow update: if signedIn() && (
+        ((request.auth.uid == resource.data.userId || admin())
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['desc', 'features'])
+          && shortString(request.resource.data.desc, 5000)
+          && (!('features' in request.resource.data) || validSpotFeatures(request.resource.data.features)))
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['comments'])
+          && (appendedComment(resource.data.get('comments', []), request.resource.data.comments)
+            || removedOwnComment(resource.data.get('comments', []), request.resource.data.comments)))
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reports'])
+          && request.resource.data.reports is list && request.resource.data.reports.size() <= 1000
+          && (admin() || appendedReport(resource.data.get('reports', []), request.resource.data.reports)))
+      );
+      allow delete: if signedIn() && (request.auth.uid == resource.data.userId || admin());
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow create, update: if admin()
+        && request.resource.data.keys().hasAll(['title', 'desc', 'createdAt', 'expiresAt'])
+        && request.resource.data.keys().hasOnly(['title', 'desc', 'createdAt', 'expiresAt'])
+        && request.resource.data.title is string && request.resource.data.title.size() > 0 && request.resource.data.title.size() <= 200
+        && shortString(request.resource.data.desc, 5000)
+        && recentMillis(request.resource.data.createdAt)
+        && request.resource.data.expiresAt is int
+        && request.resource.data.expiresAt > request.resource.data.createdAt
+        && request.resource.data.expiresAt <= request.resource.data.createdAt + 30 * 24 * 60 * 60 * 1000;
+      allow delete: if admin();
+    }
+
+    // Deny all undeclared collections.
+    match /{document=**} { allow read, write: if false; }
+  }
+}

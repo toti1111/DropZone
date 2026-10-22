@@ -3,7 +3,7 @@
   "name": "DropZone",
   "short_name": "DropZone",
   "description": "Türkiye'nin en büyük extreme spor haritası.",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#09090b",
@@ -34,5 +34,6 @@
       "type": "image/png",
       "form_factor": "narrow"
     }
-  ]
+  ],
+  "scope": "./"
 }

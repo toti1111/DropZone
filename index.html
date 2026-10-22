@@ -12,7 +12,7 @@
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/854/854878.png">
 
     <!-- PWA Manifest Bağlantısı -->
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="./manifest.json">
 
     <!-- Leaflet & MarkerCluster CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -321,6 +321,170 @@
         @media(prefers-reduced-motion:reduce) {
             .dz *,.dz *::before,.dz *::after { scroll-behavior:auto!important; transition:none!important; animation:none!important; }
         }
+        /* Shared discovery tools use the existing dark/light palette. */
+        .dz-tools{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.dz-tools button{display:grid;justify-items:center;gap:7px;border:1px solid #3f4b33;border-radius:12px;background:#84cc1608;color:inherit;padding:12px 5px;font-size:11px;min-height:64px}.dz-tools i{font-size:17px;color:#a3e635}.dz-tools button:hover{border-color:#84cc16;background:#84cc1612}.dz-tools button:focus-visible,.dzx button:focus-visible,.dzx input:focus-visible,.dzx select:focus-visible,.dzx textarea:focus-visible{outline:2px solid #a3e635;outline-offset:3px}
+        .dz-advanced{border:1px solid #3f3f46;border-radius:12px;padding:12px;font-size:12px}.dz-advanced summary{cursor:pointer;font-weight:700;color:#cbd5b1;min-height:24px}.dz-feature-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.dz-feature-fields label{display:flex;flex-direction:column;gap:6px;font-size:11px;color:#a1a1aa}.dz-feature-fields input,.dz-feature-fields select{width:100%;min-width:0;padding:10px;border:1px solid #3f3f46;border-radius:9px;background:#09090b;color:#f4f4f5;font-size:12px;min-height:42px}.dz-feature-fields .dz-wide{grid-column:1/-1}.dz-filter-reset{background:transparent;color:#a3e635;border:0;min-height:40px;font-size:11px;padding:8px 0}.dz-feature-summary{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.dz-feature-summary span{border:1px solid #3f4b33;background:#84cc1608;border-radius:8px;padding:5px 8px;font-size:10px;color:#cbd5b1}.dz-detail-tools{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.dz-detail-tools button{border:1px solid #3f4b33;background:#84cc1608;color:#bef264;border-radius:10px;padding:9px 12px;font-size:11px;min-height:40px}.dz-inline-status{font-size:12px;line-height:1.7;color:#a1a1aa;white-space:pre-line;overflow-wrap:anywhere}.dz-inline-status:empty{display:none}.dz-inline-status[data-error=true]{color:#fda4af}
+        .dzx-modal{position:fixed;inset:0;z-index:4500;background:#000b;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;overscroll-behavior:contain}.dzx-modal[hidden],.dzx [hidden]{display:none!important}.dzx-card{width:100%;max-width:490px;max-height:90dvh;overflow-y:auto;background:#121713;color:#eff4ef;border:1px solid #465839;border-radius:22px;padding:24px;box-shadow:0 24px 100px #0008}.dzx-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.dzx-heading h2{margin:0;font-size:20px;font-weight:800}.dzx-heading>button{background:transparent;border:1px solid #ffffff15;color:#b4c5af;border-radius:50%;height:40px;width:40px;flex-shrink:0}.dzx-actions{display:flex;gap:10px;margin-top:18px}.dzx-actions button,.dzx-link-button{flex:1;border:1px solid #84cc1644;border-radius:11px;min-height:44px;background:#84cc1610;color:#bef264;padding:10px 14px;font-size:12px;font-weight:700}.dzx-actions .dzx-primary{background:#bef264;color:#17230c}.dzx button:disabled{opacity:.45;cursor:default}.dz-duplicate-list{display:grid;gap:8px;margin-top:16px}.dz-duplicate-list button{display:flex;flex-direction:column;gap:5px;align-items:flex-start;background:#090d0a;border:1px solid #ffffff12;border-radius:12px;color:#eff4ef;padding:13px;text-align:left}.dz-duplicate-list small{font-size:11px;color:#a1a1aa}.dz-offline-banner{position:absolute;top:76px;left:50%;transform:translateX(-50%);max-width:90%;z-index:450;border:1px solid #fbbf2444;background:#181810ed;border-radius:12px;padding:10px 14px;font-size:11px;color:#fef3c7;box-shadow:0 8px 20px #0004}.dz-offline-banner[hidden]{display:none}
+        .day-mode .dz-advanced,.day-mode .dzx-card{background:#fff;color:#1d2815;border-color:#cdd8c5}.day-mode .dz-feature-fields label,.day-mode .dz-inline-status{color:#59664f}.day-mode .dz-feature-summary span,.day-mode .dz-detail-tools button,.day-mode .dz-filter-reset,.day-mode .dz-tools i{color:#507c12}.day-mode .dzx-heading>button{color:#507c12;border-color:#dce3d2}
+        @media(max-width:600px){.dzx-modal{padding:14px}.dzx-card{padding:20px;border-radius:18px;max-height:calc(100dvh - 28px)}.dz-feature-fields input,.dz-feature-fields select{font-size:16px}.dz-tools button{min-height:68px}.dz-offline-banner{top:80px}.dz-detail-tools button{min-height:44px}}
+        @media(prefers-reduced-motion:reduce){.dzx *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* Routes and journal use their own scope, without adding a front-end dependency. */
+.dzx-modal { --dzt-bg:#121713;--dzt-field:#0b100c;--dzt-line:#ffffff15;--dzt-text:#eff4ef;--dzt-muted:#9bac9d;--dzt-accent:#bef264;position:fixed;inset:0;z-index:3500;display:flex;align-items:center;justify-content:center;padding:20px;background:#000b;backdrop-filter:blur(8px);color:var(--dzt-text); }
+.dzx-modal.hidden,.dzx-modal [hidden] { display:none!important; }
+.dzx-modal * { box-sizing:border-box; }
+.dzt-card { width:100%;max-width:720px;max-height:calc(100vh - 40px);max-height:calc(100dvh - 40px);display:flex;flex-direction:column;background:var(--dzt-bg);border:1px solid var(--dzt-line);border-radius:22px;box-shadow:0 20px 80px #0006;overflow:hidden; }
+.dzt-header { display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 24px 16px; }
+.dzt-eyebrow { color:var(--dzt-accent);font-size:10px;font-weight:750;letter-spacing:1px; }
+.dzt-header h2 { margin:3px 0 0;font-size:23px;font-weight:800;letter-spacing:-.5px; }
+.dzt-icon { width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--dzt-line);border-radius:12px;background:transparent;color:var(--dzt-muted);flex-shrink:0; }
+.dzt-tabs { display:flex;gap:22px;padding:0 24px;border-bottom:1px solid var(--dzt-line); }
+.dzt-tabs button { padding:13px 0;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--dzt-muted);font-weight:650;font-size:13px;min-height:46px; }
+.dzt-tabs button[aria-selected=true] { color:var(--dzt-text);border-bottom-color:var(--dzt-accent); }
+.dzt-status { font-size:12px;line-height:1.6;color:var(--dzt-muted);padding:0 24px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere; }
+.dzt-status:not(:empty) { padding-block:12px;border-bottom:1px solid var(--dzt-line); }
+.dzt-status[data-error=true] { color:#fda4af; }
+.dzt-scroll { padding:20px 24px 28px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch; }
+.dzt-section-heading { display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px; }
+.dzt-section-heading h3 { margin:0;font-size:14px;font-weight:750; }
+.dzt-section-heading>span { font-size:10px;color:var(--dzt-muted);text-align:right; }
+.dzx-modal input,.dzx-modal select,.dzx-modal textarea { width:100%;min-width:0;max-width:100%;padding:11px 12px;border:1px solid var(--dzt-line);border-radius:10px;background:var(--dzt-field);color:var(--dzt-text);font:inherit;font-size:13px; }
+.dzx-modal textarea { resize:vertical;min-height:90px;max-height:260px; }
+.dzx-modal button,.dzx-modal a { font:inherit;touch-action:manipulation;-webkit-tap-highlight-color:transparent; }
+.dzx-modal button { cursor:pointer; }
+.dzx-modal button:disabled,.dzx-modal a[aria-disabled=true] { opacity:.4;cursor:default; }
+.dzx-modal a[aria-disabled=true] { pointer-events:none; }
+.dzx-modal :is(button,a,input,select,textarea):focus-visible { outline:2px solid var(--dzt-accent);outline-offset:3px; }
+.dzt-route-picker { display:grid;grid-template-columns:1fr 1.2fr auto;gap:8px;margin-bottom:16px; }
+.dzt-primary,.dzt-secondary,.dzt-text { display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:10px 14px;border:1px solid transparent;border-radius:11px;font-size:12px!important;font-weight:700!important;text-decoration:none; }
+.dzt-primary { background:var(--dzt-accent);color:#17230c; }
+.dzt-secondary { background:transparent;color:var(--dzt-text);border-color:var(--dzt-line); }
+.dzt-text { background:transparent;color:var(--dzt-muted);padding-inline:8px; }
+.dzt-secondary:hover,.dzt-icon:hover { border-color:#bef26460;color:var(--dzt-accent); }
+.dzt-stops { list-style:none;margin:0 0 16px;padding:0;display:grid;gap:8px; }
+.dzt-stop { display:flex;gap:10px;align-items:center;padding:12px;border:1px solid var(--dzt-line);border-radius:12px;background:var(--dzt-field); }
+.dzt-stop-index { width:26px;height:26px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center;background:#bef26415;color:var(--dzt-accent);font-size:11px;font-weight:750; }
+.dzt-stop-name { min-width:0;flex:1; }
+.dzt-stop-name strong { display:block;font-size:12px;overflow-wrap:anywhere; }
+.dzt-stop-name small { display:block;font-size:10px;color:var(--dzt-muted);margin-top:4px; }
+.dzt-stop-controls { display:flex;gap:3px; }
+.dzt-stop-controls .dzt-icon { width:34px;height:36px;font-size:11px;border:0; }
+.dzt-summary { padding:14px 16px;border:1px solid #bef26430;background:#bef26408;border-radius:12px;font-size:13px;font-weight:650; }
+.dzt-muted { color:var(--dzt-muted);font-size:11px;line-height:1.7;margin:10px 0 0; }
+.dzt-actions { display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:14px 0 20px; }
+.dzt-save-form { border-top:1px solid var(--dzt-line);padding-top:18px;margin:0 0 24px; }
+.dzt-save-form>label,.dzt-filter-label { display:block;color:var(--dzt-muted);font-size:11px;margin-bottom:8px; }
+.dzt-save-form>div { display:flex;gap:8px; }
+.dzt-saved,.dzt-journal-list { display:grid;gap:10px; }
+.dzt-saved-item,.dzt-journal-entry { border:1px solid var(--dzt-line);border-radius:13px;padding:14px; }
+.dzt-saved-item { display:flex;gap:10px;align-items:center; }
+.dzt-saved-info { flex:1;min-width:0; }
+.dzt-saved-info strong { display:block;font-size:12px;overflow-wrap:anywhere; }
+.dzt-saved-info small { display:block;font-size:10px;color:var(--dzt-muted);margin-top:5px; }
+.dzt-saved-item .dzt-secondary,.dzt-saved-item .dzt-icon { min-height:36px;height:36px;padding:7px 10px; }
+.dzt-notice { padding:20px;background:#bef26408;border:1px solid #bef26420;border-radius:14px;font-size:13px;line-height:1.8;color:var(--dzt-muted); }
+.dzt-journal-form { display:grid;gap:13px;border-bottom:1px solid var(--dzt-line);padding-bottom:12px;margin-bottom:24px; }
+.dzt-journal-form label { display:grid;gap:7px;font-size:11px;color:var(--dzt-muted); }
+.dzt-journal-form .dzt-section-heading { margin-bottom:0; }
+.dzt-journal-form .dzt-muted { margin:0; }
+.dzt-grid { display:grid;grid-template-columns:1fr 1fr;gap:12px; }
+.dzt-journal-list { margin-top:14px; }
+.dzt-entry-heading { display:flex;justify-content:space-between;align-items:flex-start;gap:12px; }
+.dzt-entry-heading h4 { margin:0;font-size:13px;font-weight:750;overflow-wrap:anywhere; }
+.dzt-entry-heading time { font-size:10px;color:var(--dzt-muted);white-space:nowrap; }
+.dzt-entry-badge { display:inline-block;font-size:9px;padding:3px 6px;color:var(--dzt-accent);background:#bef2640b;border:1px solid #bef26420;border-radius:6px;margin-top:8px; }
+.dzt-entry-tricks { font-size:11px;color:var(--dzt-text);margin:12px 0 0;white-space:pre-wrap;overflow-wrap:anywhere; }
+.dzt-entry-notes { font-size:12px;line-height:1.8;margin:8px 0 0;color:var(--dzt-muted);white-space:pre-wrap;overflow-wrap:anywhere; }
+.dzt-entry-actions { display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:10px; }
+.dzt-entry-actions .dzt-text { padding:6px 8px;min-height:38px;font-size:11px!important; }
+.dzt-danger:hover { color:#fda4af; }
+.dzt-empty { padding:14px 0;margin:0;font-size:12px;line-height:1.7;color:var(--dzt-muted); }
+.dzt-sr { position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%); }
+.day-mode .dzx-modal { --dzt-bg:#fff;--dzt-field:#f5f8f2;--dzt-line:#1d38141c;--dzt-text:#1e2c20;--dzt-muted:#667567;--dzt-accent:#507d16; }
+.day-mode .dzt-primary { color:#fff; }
+@media(max-width:600px) {
+  .dzx-modal { padding:10px;align-items:center; }
+  .dzt-card { max-height:calc(100dvh - 20px);border-radius:18px; }
+  .dzt-header { padding:18px 16px 14px; }
+  .dzt-header h2 { font-size:21px; }
+  .dzt-tabs { padding:0 16px;gap:24px; }
+  .dzt-scroll { padding:18px 16px 24px; }
+  .dzt-status { padding-inline:16px; }
+  .dzt-route-picker { grid-template-columns:1fr auto; }
+  .dzt-route-picker input { grid-column:1/-1; }
+  .dzt-route-picker select { min-width:0; }
+  .dzx-modal input,.dzx-modal select,.dzx-modal textarea { font-size:16px; }
+  .dzt-stop { padding:10px;gap:8px; }
+  .dzt-stop-controls { gap:0; }
+  .dzt-stop-controls .dzt-icon { width:30px;min-height:42px; }
+  .dzt-grid { grid-template-columns:1fr; }
+  .dzt-saved-item { flex-wrap:wrap; }
+  .dzt-saved-info { flex-basis:60%; }
+  .dzt-section-heading>span { max-width:130px; }
+}
+
+.dzt-nav-segments { display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-10px 0 20px; }
+.dzt-nav-segments p { flex-basis:100%;margin:0; }
+        .dzo-modal { --dzo-bg:#111712;--dzo-text:#eff5ef;--dzo-muted:#a1afa2;--dzo-line:#ffffff17;--dzo-accent:#bef264;position:fixed;inset:0;z-index:3600;display:flex;align-items:center;justify-content:center;padding:24px;background:#000b;backdrop-filter:blur(8px);color:var(--dzo-text);overscroll-behavior:contain; }
+        .dzo-modal[hidden],.dzo-modal [hidden] {display:none!important}
+        .dzo-modal * {box-sizing:border-box}
+        .dzo-card {width:100%;max-width:700px;max-height:92dvh;overflow-y:auto;background:var(--dzo-bg);border:1px solid var(--dzo-line);border-radius:22px;box-shadow:0 25px 90px #0007;-webkit-overflow-scrolling:touch}
+        .dzo-header {display:flex;align-items:flex-start;gap:18px;padding:24px;border-bottom:1px solid var(--dzo-line)}
+        .dzo-header>div {flex:1}.dzo-header h2 {font-size:23px;font-weight:800;letter-spacing:-.5px;margin:0 0 8px}.dzo-header p,.dzo-muted {font-size:12px;line-height:1.7;color:var(--dzo-muted);margin:0}
+        .dzo-body {padding:24px;display:grid;gap:24px}.dzo-body h3 {font-size:14px;font-weight:750;margin:0 0 12px}
+        .dzo-modal button,.dzo-modal input,.dzo-modal select {font:inherit}.dzo-modal button {cursor:pointer;touch-action:manipulation}.dzo-modal button:disabled {opacity:.5;cursor:default}.dzo-modal :focus-visible {outline:2px solid var(--dzo-accent);outline-offset:3px}
+        .dzo-icon {min-width:40px;height:40px;border:1px solid var(--dzo-line);border-radius:50%;background:transparent;color:var(--dzo-muted);font-size:24px!important}.dzo-icon:hover {color:var(--dzo-text)}
+        .dzo-readiness {border:1px solid #bef26425;border-radius:14px;padding:16px;background:#bef26407;display:grid;gap:12px}.dzo-readiness p {font-size:12px;line-height:1.7;margin:0;color:var(--dzo-muted)}
+        .dzo-primary,.dzo-secondary {min-height:42px;border-radius:10px;padding:10px 14px;font-size:12px!important;font-weight:650!important;display:inline-flex;align-items:center;justify-content:center;gap:8px}.dzo-primary {background:var(--dzo-accent);color:#17230c;border:1px solid transparent}.dzo-secondary {background:transparent;border:1px solid var(--dzo-line);color:var(--dzo-text)}.dzo-secondary:hover {border-color:#bef26455;color:var(--dzo-accent)}
+        .dzo-form {display:grid;gap:10px}.dzo-form h3 {margin-bottom:2px}.dzo-form label {display:block;font-size:11px;color:var(--dzo-muted);margin-bottom:6px}.dzo-form>label {margin-bottom:0}.dzo-modal input,.dzo-modal select {width:100%;min-width:0;min-height:44px;background:#090d0a;border:1px solid var(--dzo-line);border-radius:10px;color:var(--dzo-text);padding:11px;font-size:13px}.dzo-grid {display:grid;grid-template-columns:1fr 1fr;gap:12px}.dzo-grid>div {min-width:0}
+        .dzo-feedback {font-size:12px;line-height:1.7;color:var(--dzo-muted);margin:0}.dzo-feedback:empty {display:none}.dzo-feedback[data-error=true] {color:#fda4af}
+        .dzo-pack {display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px;border:1px solid var(--dzo-line);border-radius:12px;margin-top:10px}.dzo-pack-content {min-width:0;flex:1}.dzo-pack strong {font-size:13px;display:block;overflow-wrap:anywhere}.dzo-pack small {display:block;color:var(--dzo-muted);font-size:10px;line-height:1.7;margin-top:4px}.dzo-pack-actions {display:flex;gap:6px;flex-shrink:0}.dzo-pack-actions button {padding:8px 10px;min-height:40px}.dzo-pack-actions [data-offline-action=delete] {color:#fda4af}
+        .dzo-detail {padding-top:20px;border-top:1px solid var(--dzo-line)}.dzo-detail-heading {display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px}.dzo-detail-heading h3 {margin:0;overflow-wrap:anywhere}.dzo-spot {display:block;width:100%;text-align:left;padding:13px 0;border:0;border-bottom:1px solid var(--dzo-line);background:transparent;color:var(--dzo-text)}.dzo-spot strong {display:block;font-size:12px;overflow-wrap:anywhere}.dzo-spot span {display:block;color:var(--dzo-muted);font-size:10px;line-height:1.8}.dzo-detail>#offline-pack-more {margin-top:14px}
+        .day-mode .dzo-modal {--dzo-bg:#fff;--dzo-text:#203021;--dzo-muted:#647565;--dzo-line:#183a171c;--dzo-accent:#507d16}.day-mode .dzo-primary {color:#fff}.day-mode .dzo-modal input,.day-mode .dzo-modal select {background:#f4f8f1}
+        @media(max-width:600px) {.dzo-modal{padding:12px}.dzo-card{max-height:94dvh;border-radius:18px}.dzo-header{padding:20px}.dzo-body{padding:18px}.dzo-grid{grid-template-columns:1fr}.dzo-modal input,.dzo-modal select{font-size:16px}.dzo-pack{align-items:flex-start;flex-direction:column;gap:10px}.dzo-pack-actions{align-self:flex-end}.dzo-detail-heading{align-items:flex-start;flex-direction:column}}
+        .dz-community-search { padding:14px 26px; border-bottom:1px solid var(--dz-line); }
+        .dz-community-search-field { display:flex; align-items:center; gap:10px; border:1px solid var(--dz-line); border-radius:12px; background:var(--dz-field); padding:0 12px; color:var(--dz-muted); }
+        .dz .dz-community-search-field input { flex:1; border:0; background:transparent!important; padding:12px 0; min-width:0; font-size:12px; }
+        .dz-community-search-field>i { font-size:12px; }
+        .dz .dz-community-search-field .dz-icon-button { border:0; min-width:32px; height:32px; font-size:11px; }
+        .dz-search-scope { color:var(--dz-muted); font-size:10px; line-height:1.6; margin:8px 0 0; }
+        .dz-hashtag { display:inline; padding:0; border:0; background:transparent; color:var(--dz-accent); font:inherit!important; text-align:left; white-space:normal; overflow-wrap:anywhere; }
+        .dz-hashtag:hover { text-decoration:underline; }
+        .dz .dz-hashtag:not(:disabled):active { transform:none; }
+        .dz-poll-builder { padding:16px; margin-top:14px; border:1px solid var(--dz-line); border-radius:14px; background:var(--dz-field); animation:dz-reveal .2s ease both; }
+        .dz-poll-builder-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
+        .dz-poll-builder-heading strong { font-size:12px; }
+        .dz-poll-builder>label { display:block; color:var(--dz-muted); font-size:11px; margin-bottom:7px; }
+        .dz .dz-poll-builder input { display:block; width:100%; min-width:0; padding:11px; border:1px solid var(--dz-line); border-radius:9px; background:var(--dz-card); color:var(--dz-text); font-size:13px; }
+        .dz-poll-option-inputs { display:grid; gap:8px; margin-top:10px; }
+        .dz-poll-option-row { display:flex; align-items:center; gap:6px; }
+        .dz-poll-option-row .dz-icon-button { border:0; min-width:32px; height:40px; }
+        .dz-poll-builder-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-top:8px; }
+        .dz-poll-builder-footer>label { display:flex; align-items:center; gap:8px; color:var(--dz-muted); font-size:11px; }
+        .dz .dz-poll-builder-footer select { width:auto; padding:8px; }
+        .dz-poll-hint { font-size:10px; color:var(--dz-muted); margin:10px 0 0; }
+        .dz-poll { margin-top:16px; border:1px solid var(--dz-line); border-radius:14px; padding:14px; background:#bef26403; }
+        .dz-poll h4 { color:var(--dz-text); font-size:13px; font-weight:700; line-height:1.6; margin:0 0 11px; overflow-wrap:anywhere; }
+        .dz-poll-choices { display:grid; gap:8px; }
+        .dz-poll-choice { position:relative; isolation:isolate; display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:44px; padding:11px 12px; overflow:hidden; border:1px solid var(--dz-line); border-radius:10px; background:transparent; color:var(--dz-text); font-size:12px!important; text-align:left; }
+        .dz .dz-poll-choice:disabled { opacity:1; cursor:default; }
+        .dz-poll-choice:not(:disabled):hover { border-color:#bef26466; }
+        .dz-poll-choice[aria-pressed=true] { border-color:#bef26477; }
+        .dz-poll-choice>span:first-child { position:absolute; inset:0 auto 0 0; width:var(--dz-vote-width,0%); background:#bef26413; z-index:-1; transition:width .28s ease; pointer-events:none; }
+        .dz-poll-choice>span:nth-child(2) { min-width:0; overflow-wrap:anywhere; }
+        .dz-poll-choice>strong { flex-shrink:0; color:var(--dz-muted); font-size:10px; font-variant-numeric:tabular-nums; }
+        .dz-poll-choice[aria-pressed=true]>strong { color:var(--dz-accent); }
+        .dz-poll-stats { font-size:10px; color:var(--dz-muted); line-height:1.6; margin:10px 0 0; }
+        .dz-poll-status { font-size:11px; line-height:1.6; margin:8px 0 0; color:var(--dz-muted); }
+        .dz-poll-status:empty { display:none; }
+        .dz-poll-status[data-error=true] { color:#fda4af; }
+        @media(max-width:600px) {
+            .dz-community-search { padding:12px 18px; }
+            .dz .dz-community-search-field input,.dz .dz-poll-builder input,.dz .dz-poll-builder select { font-size:16px; }
+            .dz-attachment { flex-wrap:wrap; }
+            #community-poll-toggle { max-width:125px; }
+            .dz-compose-footer { flex-wrap:wrap; }
+            .dz-publish-actions { margin-left:auto; }
+        }
     </style>
 </head>
 <body class="antialiased font-sans">
@@ -357,10 +521,18 @@
             <div id="community-auth-prompt" class="dz-signin" hidden><p>Paylaşım yapmak için giriş yap.</p><button type="button" data-community-action="login">Giriş yap</button></div>
             <div class="dz-compose-content"><div id="community-compose-avatar" class="dz-avatar" aria-hidden="true">DZ</div><div class="dz-compose-body"><div id="community-identity" class="dz-identity"></div><label class="dz-sr" for="community-text">Paylaşımın</label><textarea id="community-text" maxlength="1000" rows="3" placeholder="Ne paylaşmak istersin?" required></textarea></div></div>
             <div id="community-spot-panel" class="dz-spot-panel" hidden><div class="dz-spot-panel-heading"><label for="community-spot">Hangi spottasın?</label><span>İsteğe bağlı</span></div><input id="community-spot-search" type="search" placeholder="Spot adı veya şehir ara" maxlength="100" aria-label="Paylaşıma eklenecek spotu ara"><select id="community-spot" aria-label="Paylaşımın spotu"><option value="">Spot seç</option></select></div>
-            <div class="dz-compose-footer"><div class="dz-attachment"><button id="community-attach-spot" type="button" class="dz-spot-chip" data-community-action="attach-spot" aria-controls="community-spot-panel" aria-expanded="false"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>Spot ekle</span></button><button id="community-remove-spot" type="button" class="dz-icon-button" data-community-action="remove-spot" aria-label="Seçilen spotu kaldır" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div><div class="dz-publish-actions"><small id="community-char-count" aria-label="Karakter sayısı">0 / 1000</small><button id="community-publish" class="dz-primary" type="submit"><span>Paylaş</span><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button></div></div>
+<section id="community-poll-builder" class="dz-poll-builder" aria-label="Anket oluştur" hidden>
+  <div class="dz-poll-builder-heading"><strong>Anket</strong><button id="community-poll-remove" type="button" class="dz-text-button">Anketi kaldır</button></div>
+  <label for="community-poll-question">Sorun</label><input id="community-poll-question" type="text" maxlength="160" placeholder="Örn. Hafta sonu hangi spot?">
+  <div id="community-poll-options" class="dz-poll-option-inputs"></div>
+  <div class="dz-poll-builder-footer"><button id="community-poll-add-option" type="button" class="dz-text-button"><i class="fa-solid fa-plus" aria-hidden="true"></i> Seçenek ekle</button><label for="community-poll-duration">Süre <select id="community-poll-duration"><option value="1">1 saat</option><option value="6">6 saat</option><option value="24" selected>24 saat</option><option value="72">3 gün</option></select></label></div>
+  <p class="dz-poll-hint">2–4 seçenek · Kişi başına tek oy</p>
+</section>
+            <div class="dz-compose-footer"><div class="dz-attachment"><button id="community-poll-toggle" type="button" class="dz-spot-chip" aria-controls="community-poll-builder" aria-expanded="false"><i class="fa-solid fa-square-poll-horizontal" aria-hidden="true"></i><span>Anket ekle</span></button><button id="community-attach-spot" type="button" class="dz-spot-chip" data-community-action="attach-spot" aria-controls="community-spot-panel" aria-expanded="false"><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span>Spot ekle</span></button><button id="community-remove-spot" type="button" class="dz-icon-button" data-community-action="remove-spot" aria-label="Seçilen spotu kaldır" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div><div class="dz-publish-actions"><small id="community-char-count" aria-label="Karakter sayısı">0 / 1000</small><button id="community-publish" class="dz-primary" type="submit"><span>Paylaş</span><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button></div></div>
             <p id="community-compose-status" class="dz-status" role="status"></p>
           </form>
           <div class="dz-tabs" aria-label="Akış filtreleri"><button type="button" id="community-tab-all" aria-pressed="true" data-community-action="all">Tüm paylaşımlar</button><button type="button" id="community-tab-spot" aria-pressed="false" data-community-action="filter" aria-controls="community-filter-panel" aria-expanded="false">Spot filtresi <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button><button type="button" class="dz-refresh" data-community-action="refresh" aria-label="Akışı yenile"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button></div>
+<div class="dz-community-search"><div class="dz-community-search-field"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><label class="dz-sr" for="community-search">Yüklenen paylaşımlarda ara</label><input id="community-search" type="search" maxlength="120" placeholder="Paylaşım veya #etiket ara" autocomplete="off"><button id="community-search-clear" type="button" class="dz-icon-button" aria-label="Topluluk aramasını temizle" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div><p id="community-search-scope" class="dz-search-scope" role="status" aria-live="polite" hidden></p></div>
           <div id="community-filter-panel" class="dz-filter-panel" hidden><label for="community-filter-spot">Paylaşımlarını görmek istediğin spot</label><select id="community-filter-spot"><option value="">Tüm spotlar</option></select></div>
           <div id="community-new-posts" class="dz-new-posts" hidden><button type="button" data-community-action="new-posts">Yeni paylaşımlar <i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button></div>
           <p id="community-feed-status" class="dz-feed-status" role="status" aria-live="polite"></p>
@@ -452,6 +624,8 @@
                 </button>
             </div>
 
+            <nav class="dz-tools" aria-label="Sürüş araçları"><button id="dz-tools-routes" type="button"><i class="fa-solid fa-route" aria-hidden="true"></i> Rotalarım</button><button id="dz-tools-journal" type="button"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Sürüş günlüğüm</button><button id="dz-tools-offline" type="button"><i class="fa-solid fa-download" aria-hidden="true"></i> Çevrimdışı</button></nav>
+
             <div class="flex flex-col gap-2">
                 <h2 class="text-xs font-bold text-zinc-500 uppercase tracking-wider">Filtrele</h2>
                 <div class="flex flex-wrap gap-2" id="filter-buttons">
@@ -460,6 +634,8 @@
                     <button data-filter="DirtJump" class="filter-btn bg-zinc-800 text-zinc-300 hover:text-neon px-3 py-1 rounded-full text-xs font-bold transition-colors">Dirt Jump</button>
                 </div>
             </div>
+
+            <details class="dz-advanced"><summary>Gelişmiş spot filtreleri</summary><div class="dz-feature-fields"><label>Seviye<select id="dz-filter-difficulty"><option value="">Tümü</option><option value="beginner">Başlangıç</option><option value="intermediate">Orta</option><option value="advanced">İleri</option><option value="unknown">Belirtilmemiş</option></select></label><label>Zemin<select id="dz-filter-surface"><option value="">Tümü</option><option value="concrete">Beton</option><option value="asphalt">Asfalt</option><option value="dirt">Toprak</option><option value="wood">Ahşap</option><option value="mixed">Karışık</option><option value="unknown">Belirtilmemiş</option></select></label><label>En az drop (m)<input id="dz-filter-drop-min" type="number" min="0" max="30" step="0.1" inputmode="decimal" placeholder="Sınır yok"></label><label>En fazla drop (m)<input id="dz-filter-drop-max" type="number" min="0" max="30" step="0.1" inputmode="decimal" placeholder="Sınır yok"></label><label class="dz-wide">İniş alanı<select id="dz-filter-landing"><option value="">Tümü</option><option value="wide">Geniş</option><option value="medium">Orta</option><option value="narrow">Dar</option><option value="unknown">Belirtilmemiş</option></select></label></div><button id="dz-filter-reset" class="dz-filter-reset" type="button">Filtreleri sıfırla</button><p id="dz-filter-status" class="dz-inline-status" role="status"></p></details>
 
             <div class="flex-grow flex flex-col gap-3 min-h-0">
                 <h2 class="text-sm font-bold text-zinc-400 uppercase tracking-wider flex justify-between items-center">
@@ -483,6 +659,7 @@
 
         <main id="map-container">
             <div id="map" class="w-full h-full"></div>
+            <div id="dz-offline-banner" class="dz-offline-banner" role="status" hidden></div>
             
             <div class="absolute top-4 left-1/2 transform -translate-x-1/2 z-[400] w-[85%] max-w-md">
                 <div class="relative glass-panel rounded-full flex items-center px-4 py-2 shadow-lg">
@@ -600,12 +777,74 @@
                     <input type="text" id="spot-photo" placeholder="örn: resim1.jpg, resim2.jpg" class="bg-obsidian border border-zinc-700 text-sm rounded-lg focus:ring-neon focus:border-neon block w-full p-2.5 text-zinc-100">
                 </div>
 
+                <details class="dz-advanced"><summary>Bildirilen spot özellikleri (isteğe bağlı)</summary><div class="dz-feature-fields"><label>Seviye<select id="dz-spot-difficulty"><option value="unknown">Belirtilmemiş</option><option value="beginner">Başlangıç</option><option value="intermediate">Orta</option><option value="advanced">İleri</option></select></label><label>Drop yüksekliği (m)<input id="dz-spot-dropHeight" type="number" min="0" max="30" step="0.1" inputmode="decimal" placeholder="Bilinmiyor"></label><label>İniş alanı<select id="dz-spot-landing"><option value="unknown">Belirtilmemiş</option><option value="wide">Geniş</option><option value="medium">Orta</option><option value="narrow">Dar</option></select></label><label>Zemin<select id="dz-spot-surface"><option value="unknown">Belirtilmemiş</option><option value="concrete">Beton</option><option value="asphalt">Asfalt</option><option value="dirt">Toprak</option><option value="wood">Ahşap</option><option value="mixed">Karışık</option></select></label></div></details>
+                <p id="dz-duplicate-warning" class="dz-inline-status" role="status"></p>
                 <button type="submit" class="w-full mt-2 bg-neon hover:bg-neonHover text-obsidian font-bold rounded-lg text-sm px-5 py-3 transition-all">
                     Spotu Kaydet
                 </button>
             </form>
         </div>
     </div>
+
+    <div id="dz-duplicate-modal" class="dzx dzx-modal" role="alertdialog" aria-modal="true" aria-labelledby="dz-duplicate-title" hidden><section class="dzx-card"><div class="dzx-heading"><h2 id="dz-duplicate-title">Bu spot zaten eklenmiş olabilir</h2><button type="button" data-dz-close="duplicate" aria-label="Uyarıyı kapat">×</button></div><p class="dz-inline-status">Yakında kayıtlı spotlar var. Aynı yerse mevcut kaydı kullanabilir veya farklı bir noktaysa devam edebilirsin.</p><div id="dz-duplicate-list" class="dz-duplicate-list"></div><div class="dzx-actions"><button id="dz-duplicate-cancel" type="button">Vazgeç</button><button id="dz-duplicate-continue" type="button" class="dzx-primary">Farklı bir spot, devam et</button></div></section></div>
+    <div id="dz-features-modal" class="dzx dzx-modal" role="dialog" aria-modal="true" aria-labelledby="dz-features-title" hidden><section class="dzx-card"><div class="dzx-heading"><h2 id="dz-features-title">Spot özellikleri</h2><button type="button" data-dz-close="features" aria-label="Özellikleri kapat">×</button></div><form id="dz-features-form"><div class="dz-feature-fields"><label>Seviye<select id="dz-edit-difficulty"><option value="unknown">Belirtilmemiş</option><option value="beginner">Başlangıç</option><option value="intermediate">Orta</option><option value="advanced">İleri</option></select></label><label>Drop yüksekliği (m)<input id="dz-edit-dropHeight" type="number" min="0" max="30" step="0.1" inputmode="decimal" placeholder="Bilinmiyor"></label><label>İniş alanı<select id="dz-edit-landing"><option value="unknown">Belirtilmemiş</option><option value="wide">Geniş</option><option value="medium">Orta</option><option value="narrow">Dar</option></select></label><label>Zemin<select id="dz-edit-surface"><option value="unknown">Belirtilmemiş</option><option value="concrete">Beton</option><option value="asphalt">Asfalt</option><option value="dirt">Toprak</option><option value="wood">Ahşap</option><option value="mixed">Karışık</option></select></label></div><p id="dz-features-status" class="dz-inline-status" role="status"></p><div class="dzx-actions"><button id="dz-save-features" type="submit" class="dzx-primary">Özellikleri kaydet</button></div></form></section></div>
+
+<!-- Routes and personal ride journal: local device data, scoped per account. -->
+<section id="ride-tools-modal" class="dzx-modal hidden" role="dialog" aria-modal="true" aria-labelledby="ride-tools-title">
+  <div class="dzt-card">
+    <header class="dzt-header"><div><span class="dzt-eyebrow">DropZone</span><h2 id="ride-tools-title">Sürüş araçları</h2></div><button type="button" class="dzt-icon" data-ride-action="close" aria-label="Sürüş araçlarını kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
+    <div class="dzt-tabs" role="tablist" aria-label="Sürüş araçları"><button id="ride-route-tab" type="button" role="tab" aria-selected="true" aria-controls="ride-route-panel" data-ride-action="routes">Rotam</button><button id="ride-journal-tab" type="button" role="tab" aria-selected="false" aria-controls="ride-journal-panel" data-ride-action="journal">Sürüş günlüğüm</button></div>
+    <p id="ride-tools-status" class="dzt-status" role="status" aria-live="polite"></p>
+    <div class="dzt-scroll">
+      <section id="ride-route-panel" role="tabpanel" aria-labelledby="ride-route-tab">
+        <div class="dzt-section-heading"><h3>Duraklarını seç</h3><span id="ride-route-count">0 / 10 spot</span></div>
+        <form id="ride-route-add-form" class="dzt-route-picker"><label class="dzt-sr" for="ride-route-search">Rota için spot ara</label><input id="ride-route-search" type="search" maxlength="100" placeholder="Spot veya şehir ara"><label class="dzt-sr" for="ride-route-spot">Rotaya eklenecek spot</label><select id="ride-route-spot"><option value="">Spot seç</option></select><button id="ride-route-add" type="submit" class="dzt-primary">Durak ekle</button></form>
+        <ol id="ride-route-stops" class="dzt-stops"></ol>
+        <div id="ride-route-summary" class="dzt-summary" hidden></div>
+        <p class="dzt-muted dzt-route-note">Mesafe duraklar arasında kuş uçuşudur. Süre 15 km/sa hızla tahmin edilir; yol, trafik ve sürüş molalarını içermez.</p>
+        <div class="dzt-actions"><button id="ride-route-preview" type="button" class="dzt-secondary" data-ride-action="preview">Haritada göster</button><a id="ride-route-navigate" class="dzt-primary" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">Navigasyonda aç <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a><button type="button" class="dzt-text" data-ride-action="clear-route">Temizle</button></div>
+        <div id="ride-route-nav-segments" class="dzt-nav-segments" hidden></div>
+        <form id="ride-route-save-form" class="dzt-save-form"><label for="ride-route-name">Rotayı kaydet</label><div><input id="ride-route-name" type="text" maxlength="80" placeholder="Rotana bir ad ver" required><button id="ride-route-save" type="submit" class="dzt-secondary">Kaydet</button></div></form>
+        <div class="dzt-section-heading"><h3>Kaydedilen rotalar</h3><span>Bu cihazda saklanır</span></div><div id="ride-route-saved" class="dzt-saved"></div>
+      </section>
+      <section id="ride-journal-panel" role="tabpanel" aria-labelledby="ride-journal-tab" hidden>
+        <div id="ride-journal-auth" class="dzt-notice" hidden>Günlüğünü kullanmak için Google hesabınla giriş yap.</div>
+        <div id="ride-journal-content">
+          <form id="ride-journal-form" class="dzt-journal-form">
+            <div class="dzt-section-heading"><h3 id="ride-journal-form-title">Yeni sürüş kaydı</h3><span>Bu cihazda saklanır</span></div>
+            <div class="dzt-grid"><label>Spot<select id="ride-journal-spot" required><option value="">Spot seç</option></select></label><label>Tarih<input id="ride-journal-date" type="date" required></label></div>
+            <label>Denediğin hareketler<input id="ride-journal-tricks" type="text" maxlength="200" placeholder="Örn. bunny hop, manual"></label>
+            <label>Notların<textarea id="ride-journal-notes" rows="3" maxlength="2000" placeholder="Ne iyi gitti, bir sonraki sürüşte ne deneyeceksin?"></textarea></label>
+            <label>Paylaşım tercihi<select id="ride-journal-visibility"><option value="private">Özel — yalnızca günlükte</option><option value="shareable">Paylaşılabilir — topluluk taslağına aktarılabilir</option></select></label>
+            <p class="dzt-muted">Kaydın otomatik paylaşılmaz. Paylaşılabilir kayıtları ayrıca topluluk taslağına aktarabilirsin.</p>
+            <div class="dzt-actions"><button id="ride-journal-save" type="submit" class="dzt-primary">Kaydı ekle</button><button id="ride-journal-cancel" type="button" class="dzt-secondary" data-ride-action="cancel-edit" hidden>Düzenlemeyi iptal et</button></div>
+          </form>
+          <div class="dzt-section-heading"><h3>Sürüş geçmişin</h3><span id="ride-journal-count">0 kayıt</span></div>
+          <label class="dzt-filter-label" for="ride-journal-filter">Spota göre filtrele</label><select id="ride-journal-filter"><option value="">Tüm spotlar</option></select>
+          <div id="ride-journal-list" class="dzt-journal-list"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+    <section id="offline-modal" class="dzo-modal" role="dialog" aria-modal="true" aria-labelledby="offline-title" hidden>
+      <div class="dzo-card" tabindex="-1">
+        <header class="dzo-header"><div><h2 id="offline-title">Çevrimdışı spotlar</h2><p>Spot bilgilerini bu cihazda sakla. Harita döşemeleri ve fotoğraflar indirilmez.</p></div><button type="button" class="dzo-icon" data-offline-action="close" aria-label="Çevrimdışı spotları kapat">×</button></header>
+        <div class="dzo-body">
+          <div class="dzo-readiness"><p id="offline-status" role="status" aria-live="polite">Çevrimdışı açılış durumu kontrol ediliyor.</p><button id="offline-prepare" type="button" class="dzo-secondary">Çevrimdışı açılışı hazırla</button></div>
+          <form id="offline-pack-form" class="dzo-form">
+            <h3>Spot paketi oluştur</h3>
+            <label for="offline-pack-name">Paket adı</label><input id="offline-pack-name" maxlength="60" required placeholder="Örn. İzmir hafta sonu">
+            <div class="dzo-grid"><div><label for="offline-pack-source">Kaydedilecek bölge</label><select id="offline-pack-source"><option value="bounds">Haritada görünen spotlar</option><option value="city">Bir şehirdeki spotlar</option></select></div><div id="offline-city-field" hidden><label for="offline-pack-city">Şehir</label><select id="offline-pack-city"></select></div></div>
+            <p id="offline-pack-count" class="dzo-muted"></p>
+            <button id="offline-pack-save" type="submit" class="dzo-primary">Spotları cihaza kaydet</button>
+            <p id="offline-pack-status" class="dzo-feedback" role="status" aria-live="polite"></p>
+          </form>
+          <section class="dzo-saved"><h3>Kaydedilen paketler</h3><div id="offline-pack-list"></div></section>
+          <section id="offline-pack-detail" class="dzo-detail" hidden><div class="dzo-detail-heading"><h3 id="offline-pack-detail-title"></h3><button id="offline-pack-use" type="button" class="dzo-secondary">Bu paketi haritada aç</button></div><p class="dzo-muted">Kaydedilmiş bilgiler güncel olmayabilir. İnternet yoksa harita zemini görünmeyebilir; spot listesi ve detayları kullanılabilir.</p><div id="offline-pack-spots"></div><button id="offline-pack-more" type="button" class="dzo-secondary" hidden>Daha fazla spot göster</button></section>
+        </div>
+      </div>
+    </section>
 
     <!-- PROFILE MODAL -->
     <div id="profile-modal" class="hidden fixed inset-0 z-[3000] modal-overlay flex items-center justify-center p-4 custom-scroll overflow-y-auto">
@@ -734,6 +973,7 @@
                 </div>
                 
                 <div id="detail-types" class="flex flex-wrap gap-2 mb-4"></div>
+                <div id="dz-detail-features" class="dz-feature-summary" aria-label="Bildirilen spot özellikleri"></div><div class="dz-detail-tools"><button id="dz-route-add-spot" type="button"><i class="fa-solid fa-route" aria-hidden="true"></i> Rotaya ekle</button><button id="dz-journal-log-spot" type="button"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Günlüğe ekle</button><button id="dz-edit-features" type="button" hidden>Özellikleri düzenle</button></div>
 
                 <div class="mb-6 relative">
                     <div class="flex justify-between items-center mb-2">
@@ -795,9 +1035,705 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
+    <script>
+    // Local records stay in this origin's IndexedDB. Failed writes are reported, never faked.
+    window.DropZoneStore = (() => {
+        let opening;
+        function database() {
+            if (opening) return opening;
+            opening = new Promise((resolve,reject) => {
+                if (!window.indexedDB) { reject(new Error('Bu tarayıcı cihazda kayıt özelliğini desteklemiyor.')); return; }
+                const request = indexedDB.open('dropzone-tools-v1',1);
+                request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains('records')) request.result.createObjectStore('records'); };
+                request.onsuccess = () => { const db=request.result;db.onversionchange=()=>{db.close();opening=null;};resolve(db); };
+                request.onerror = () => { opening=null;reject(new Error('Cihaz depolaması açılamadı. Tarayıcı izinlerini kontrol et.')); };
+                request.onblocked = () => { opening=null;reject(new Error('Kayıt için diğer DropZone sekmelerini kapatıp yeniden dene.')); };
+            });
+            return opening;
+        }
+        async function operation(mode,key,value) {
+            if (typeof key !== 'string' || key.length>600) throw new Error('Geçersiz kayıt anahtarı.');
+            const db=await database();
+            return new Promise((resolve,reject) => {
+                const transaction=db.transaction('records',mode==='get'?'readonly':'readwrite'),store=transaction.objectStore('records');
+                const request=mode==='get'?store.get(key):mode==='set'?store.put(value,key):store.delete(key);
+                let result;
+                request.onsuccess=()=>{result=request.result;};
+                transaction.oncomplete=()=>resolve(result);
+                transaction.onerror=transaction.onabort=()=>reject(new Error('Kayıt tamamlanamadı. Cihaz alanını ve depolama izinlerini kontrol et.'));
+            });
+        }
+        return {get:key=>operation('get',key),set:(key,value)=>operation('set',key,value),remove:key=>operation('remove',key)};
+    })();
+    </script>
+
+    <script>
+        // Local, account-scoped ride tools. No journal entry is published automatically.
+        // Local, account-scoped ride tools. No journal entry is published automatically.
+        window.DropZoneRideTools = (() => {
+            const root = document.getElementById('ride-tools-modal');
+            const el = id => document.getElementById(id);
+            let config = null, uid = null, generation = 0, ready = false, loading = false, busy = false, activeTab = 'routes';
+            let routeIds = [], routes = [], journal = [], routeEditId = null, journalEditId = null, previewLine = null, returnFocus = null;
+            const MAX_STOPS = 10, MAX_ROUTES = 30, MAX_ENTRIES = 300;
+            const routeKey = () => `route:${uid || 'guest'}`;
+            const journalKey = () => `journal:${uid}`;
+            const getSpots = () => config?.getSpots?.() || [];
+            const getUser = () => config?.getUser?.() || null;
+            const node = (tag, cls = '', text) => { const n = document.createElement(tag); n.className = cls; if (text !== undefined) n.textContent = text; return n; };
+            const validSpotId = id => typeof id === 'string' && id.length > 0 && id.length <= 1500 && !id.includes('/');
+            const validId = id => typeof id === 'string' && id.length > 0 && id.length <= 100;
+            const validCoords = spot => Number.isFinite(spot?.coords?.lat) && Number.isFinite(spot?.coords?.lng) && Math.abs(spot.coords.lat) <= 90 && Math.abs(spot.coords.lng) <= 180;
+            const spotFor = id => getSpots().find(spot => spot.id === id);
+            const today = () => { const date = new Date(); date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); return date.toISOString().slice(0, 10); };
+            function validDate(value) {
+                if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+                const date = new Date(`${value}T12:00:00`);
+                return Number.isFinite(date.getTime()) && date.getFullYear() === Number(value.slice(0,4)) && date.getMonth()+1 === Number(value.slice(5,7)) && date.getDate() === Number(value.slice(8,10)) && value <= today();
+            }
+            const newId = () => typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : `ride_${Date.now()}_${Math.random().toString(36).slice(2,12)}`;
+            function status(message = '', error = false) { el('ride-tools-status').textContent = message; el('ride-tools-status').dataset.error = String(error); }
+            function button(label, action, id, cls = 'dzt-secondary') {
+                const b = node('button', cls, label); b.type = 'button'; b.dataset.rideAction = action;
+                if (id !== undefined) b.dataset.id = id;
+                b.disabled = busy; return b;
+            }
+            function iconButton(icon, label, action, id) {
+                const b = button('', action, id, 'dzt-icon'); b.setAttribute('aria-label', label); b.title = label;
+                const i = node('i', `fa-solid ${icon}`); i.setAttribute('aria-hidden','true'); b.append(i); return b;
+            }
+            function normalizeRoutes(value) {
+                if (!Array.isArray(value)) return [];
+                return value.filter(r => r && validId(r.id) && typeof r.name === 'string' && r.name.length > 0 && r.name.length <= 80 && Array.isArray(r.spotIds) && r.spotIds.length >= 2 && r.spotIds.length <= MAX_STOPS && r.spotIds.every(validSpotId) && new Set(r.spotIds).size === r.spotIds.length).slice(0, MAX_ROUTES).map(r => ({id:r.id,name:r.name,spotIds:[...r.spotIds],updatedAt:Number(r.updatedAt)||0}));
+            }
+            function normalizeJournal(value) {
+                if (!Array.isArray(value)) return [];
+                return value.filter(r => r && validId(r.id) && validSpotId(r.spotId) && validDate(r.date) && typeof r.tricks === 'string' && r.tricks.length <= 200 && typeof r.notes === 'string' && r.notes.length <= 2000 && ['private','shareable'].includes(r.visibility)).slice(0, MAX_ENTRIES).map(r => ({id:r.id,spotId:r.spotId,spotName:typeof r.spotName === 'string'?r.spotName.slice(0,120):'',date:r.date,tricks:r.tricks,notes:r.notes,visibility:r.visibility,updatedAt:Number(r.updatedAt)||0}));
+            }
+            async function readStore(key) {
+                if (!window.DropZoneStore || typeof window.DropZoneStore.get !== 'function') throw new Error('storage-unavailable');
+                return window.DropZoneStore.get(key);
+            }
+            async function writeStore(key, value) {
+                if (!window.DropZoneStore || typeof window.DropZoneStore.set !== 'function') throw new Error('storage-unavailable');
+                await window.DropZoneStore.set(key, value);
+            }
+            function clearPreview() { if (previewLine && config?.map) config.map.removeLayer(previewLine); previewLine = null; }
+            function resetJournalForm() {
+                journalEditId = null; el('ride-journal-form').reset(); el('ride-journal-date').value = today(); el('ride-journal-date').max = today();
+                el('ride-journal-form-title').textContent = 'Yeni sürüş kaydı'; el('ride-journal-save').textContent = 'Kaydı ekle'; el('ride-journal-cancel').hidden = true;
+            }
+            async function onAuthChange() {
+                const token = ++generation; uid = getUser()?.uid || null; ready = false; loading = true; busy = false;
+                routeIds = []; routes = []; journal = []; routeEditId = null; clearPreview();
+                el('ride-route-name').value = ''; el('ride-route-search').value = ''; el('ride-journal-filter').value = ''; resetJournalForm(); refresh();
+                try {
+                    const [savedRoutes, savedJournal] = await Promise.all([readStore(routeKey()), uid ? readStore(journalKey()) : Promise.resolve([])]);
+                    if (token !== generation) return;
+                    routes = normalizeRoutes(savedRoutes); journal = normalizeJournal(savedJournal); ready = true; loading = false; status(); refresh();
+                } catch (error) {
+                    if (token === generation) { ready = false; loading = false; status('Cihaz depolaması açılamadı. Tarayıcı izinlerini kontrol edip yeniden dene; kayıtlar kaydedilmiş gibi gösterilmez.', true); refresh(); }
+                }
+            }
+            async function ensureAccount() {
+                if ((getUser()?.uid || null) !== uid || (!ready && !loading)) await onAuthChange();
+            }
+            function fillSelect(id, spots, firstText, preferred) {
+                const select = el(id), old = preferred === undefined ? select.value : preferred;
+                select.replaceChildren(new Option(firstText, ''));
+                spots.forEach(spot => select.append(new Option(`${spot.name || 'İsimsiz spot'}${spot.locationText ? ' · '+spot.locationText : ''}`, spot.id)));
+                if ([...select.options].some(option => option.value === old)) select.value = old;
+            }
+            function sortedSpots() { return getSpots().filter(s => validSpotId(s.id)).sort((a,b) => String(a.name || '').localeCompare(String(b.name || ''),'tr')); }
+            function refreshSpotOptions() {
+                const all = sortedSpots(); const search = el('ride-route-search').value.toLocaleLowerCase('tr-TR');
+                fillSelect('ride-route-spot', all.filter(spot => validCoords(spot) && `${spot.name || ''} ${spot.locationText || ''}`.toLocaleLowerCase('tr-TR').includes(search)).slice(0,100), 'Spot seç');
+                const currentJournal = el('ride-journal-spot').value;
+                fillSelect('ride-journal-spot', all, 'Spot seç');
+                if (journalEditId && currentJournal && !spotFor(currentJournal)) {
+                    const entry = journal.find(r => r.id === journalEditId);
+                    if (entry) { el('ride-journal-spot').append(new Option(`${entry.spotName || 'Eski spot'} · artık haritada yok`, entry.spotId)); el('ride-journal-spot').value = entry.spotId; }
+                }
+                const distinct = new Map(all.map(s => [s.id,s]));
+                journal.forEach(entry => { if (!distinct.has(entry.spotId)) distinct.set(entry.spotId,{id:entry.spotId,name:entry.spotName || 'Eski spot'}); });
+                fillSelect('ride-journal-filter',[...distinct.values()], 'Tüm spotlar');
+            }
+            function distanceMeters(a,b) {
+                const rad = value => value * Math.PI / 180, R = 6371000;
+                const dLat = rad(b.lat-a.lat), dLng = rad(b.lng-a.lng);
+                const hav = Math.sin(dLat/2)**2 + Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLng/2)**2;
+                return 2*R*Math.atan2(Math.sqrt(Math.max(0,Math.min(1,hav))),Math.sqrt(Math.max(0,1-hav)));
+            }
+            function navigationURL(spots) {
+                const coordinate = s => `${s.coords.lat},${s.coords.lng}`;
+                const url = new URL('https://www.google.com/maps/dir/');
+                url.searchParams.set('api','1'); url.searchParams.set('travelmode','bicycling');
+                url.searchParams.set('origin',coordinate(spots[0])); url.searchParams.set('destination',coordinate(spots.at(-1)));
+                if (spots.length > 2) url.searchParams.set('waypoints', spots.slice(1,-1).map(coordinate).join('|'));
+                return url.href;
+            }
+            function renderRoute() {
+                el('ride-route-count').textContent = `${routeIds.length} / ${MAX_STOPS} spot`;
+                const list = el('ride-route-stops'); list.replaceChildren();
+                routeIds.forEach((id,index) => {
+                    const spot = spotFor(id), item = node('li','dzt-stop');
+                    const info = node('div','dzt-stop-name'); info.append(node('strong','',spot?.name || 'Spot artık haritada yok'),node('small','',spot?.locationText || id));
+                    const controls = node('div','dzt-stop-controls');
+                    const up = iconButton('fa-arrow-up','Durağı yukarı taşı','up',id), down = iconButton('fa-arrow-down','Durağı aşağı taşı','down',id);
+                    up.disabled = busy || index === 0; down.disabled = busy || index === routeIds.length-1;
+                    controls.append(up,down,iconButton('fa-xmark','Durağı kaldır','remove-stop',id));
+                    item.append(node('span','dzt-stop-index',String(index+1)),info,controls); list.append(item);
+                });
+                if (!routeIds.length) list.append(node('li','dzt-empty','İlk durağını seçerek rotanı oluşturmaya başla.'));
+                const spots = routeIds.map(spotFor), complete = spots.length >= 2 && spots.every(validCoords);
+                const summary = el('ride-route-summary'); summary.hidden = routeIds.length < 2;
+                if (routeIds.length >= 2 && !complete) summary.textContent = 'Bir veya daha fazla spot artık mevcut değil. Rotayı kullanmak için bu durakları kaldır.';
+                if (complete) {
+                    const km = spots.slice(1).reduce((sum,s,i) => sum + distanceMeters(spots[i].coords,s.coords),0)/1000;
+                    const minutes = Math.max(1,Math.round(km/15*60));
+                    summary.textContent = `${km.toLocaleString('tr-TR',{maximumFractionDigits:1})} km kuş uçuşu · yaklaşık ${minutes < 60 ? `${minutes} dk` : `${Math.floor(minutes/60)} sa ${minutes%60} dk`}`;
+                }
+                const nav = el('ride-route-navigate'); nav.setAttribute('aria-disabled',String(!complete));
+                const segments = el('ride-route-nav-segments'); segments.replaceChildren(); segments.hidden = true;
+                nav.removeAttribute('href'); nav.textContent = 'Navigasyonda aç';
+                if (complete) {
+                    // Mobile Google Maps URLs support up to three intermediate waypoints.
+                    const chunks = []; for(let i=0;i<spots.length-1;i+=4) chunks.push(spots.slice(i,Math.min(spots.length,i+5)));
+                    nav.href = navigationURL(chunks[0]);
+                    if (chunks.length > 1) {
+                        nav.textContent = `Navigasyon · 1 / ${chunks.length}`; segments.hidden = false;
+                        segments.append(node('p','dzt-muted','Uzun rotan navigasyonda bölümler halinde açılır.'));
+                        chunks.slice(1).forEach((chunk,index) => {
+                            const a = node('a','dzt-secondary',`${index+2}. bölümü aç`); a.href = navigationURL(chunk); a.target = '_blank'; a.rel = 'noopener noreferrer'; segments.append(a);
+                        });
+                    }
+                }
+                el('ride-route-preview').disabled = busy || !complete;
+                el('ride-route-save').disabled = busy || !complete || !ready;
+                el('ride-route-save').textContent = routeEditId ? 'Güncelle' : 'Kaydet';
+                el('ride-route-add').disabled = busy || routeIds.length >= MAX_STOPS;
+                el('ride-route-search').disabled = busy; el('ride-route-spot').disabled = busy; el('ride-route-name').disabled = busy;
+                const saved = el('ride-route-saved'); saved.replaceChildren();
+                routes.slice().sort((a,b) => b.updatedAt-a.updatedAt).forEach(route => {
+                    const item = node('div','dzt-saved-item'), info = node('div','dzt-saved-info');
+                    info.append(node('strong','',route.name),node('small','',`${route.spotIds.length} durak`));
+                    item.append(info,button('Yükle','load-route',route.id),iconButton('fa-trash-can','Kaydedilen rotayı sil','delete-route',route.id)); saved.append(item);
+                });
+                if (!routes.length) saved.append(node('p','dzt-empty','Henüz kaydedilmiş rotan yok.'));
+            }
+            function renderJournal() {
+                const user = getUser(); el('ride-journal-auth').hidden = !!user; el('ride-journal-content').hidden = !user;
+                const filter = el('ride-journal-filter').value;
+                const entries = journal.filter(entry => !filter || entry.spotId === filter).slice().sort((a,b) => b.date.localeCompare(a.date) || b.updatedAt-a.updatedAt);
+                el('ride-journal-count').textContent = `${journal.length} kayıt`; const list = el('ride-journal-list'); list.replaceChildren();
+                entries.forEach(entry => {
+                    const item = node('article','dzt-journal-entry'); item.dataset.entryId = entry.id;
+                    const heading = node('div','dzt-entry-heading'), date = node('time','',new Date(`${entry.date}T12:00:00`).toLocaleDateString('tr-TR')); date.dateTime = entry.date;
+                    heading.append(node('h4','',spotFor(entry.spotId)?.name || entry.spotName || 'Eski spot'),date);
+                    item.append(heading,node('span','dzt-entry-badge',entry.visibility === 'private' ? 'Özel not' : 'Paylaşılabilir not'));
+                    if (entry.tricks) item.append(node('p','dzt-entry-tricks',entry.tricks));
+                    if (entry.notes) item.append(node('p','dzt-entry-notes',entry.notes));
+                    const actions = node('div','dzt-entry-actions'); actions.append(button('Düzenle','edit-entry',entry.id,'dzt-text'));
+                    if (entry.visibility === 'shareable') actions.append(button('Toplulukta paylaş','share-entry',entry.id,'dzt-text'));
+                    actions.append(button('Sil','delete-entry',entry.id,'dzt-text dzt-danger')); item.append(actions); list.append(item);
+                });
+                if (!entries.length) list.append(node('p','dzt-empty',filter ? 'Bu spot için kayıt bulunmuyor.' : 'İlk sürüş kaydını yukarıdan ekleyebilirsin.'));
+                el('ride-journal-form').querySelectorAll('input,select,textarea,button').forEach(field => { field.disabled = busy; });
+                el('ride-journal-save').disabled = busy || !ready;
+            }
+            function refresh() { if (!config) return; refreshSpotOptions(); renderRoute(); renderJournal(); }
+            function setTab(tab) {
+                activeTab = tab === 'journal' ? 'journal' : 'routes';
+                el('ride-route-panel').hidden = activeTab !== 'routes'; el('ride-journal-panel').hidden = activeTab !== 'journal';
+                el('ride-route-tab').setAttribute('aria-selected',String(activeTab==='routes')); el('ride-journal-tab').setAttribute('aria-selected',String(activeTab==='journal'));
+                el('ride-route-tab').tabIndex = activeTab==='routes'?0:-1; el('ride-journal-tab').tabIndex = activeTab==='journal'?0:-1;
+            }
+            async function open(tab='routes') {
+                if (!config) return;
+                await ensureAccount();
+                if (root.classList.contains('hidden')) {
+                    returnFocus = document.activeElement;
+                    if (typeof window.closeModals === 'function') window.closeModals();
+                    root.classList.remove('hidden');
+                }
+                setTab(tab); refresh(); if(ready)status();else if(loading)status('Cihazdaki kayıtlar yükleniyor…');else status('Cihaz depolaması kullanılamıyor. Tarayıcı izinlerini kontrol edip yeniden dene.',true); el(activeTab==='routes'?'ride-route-tab':'ride-journal-tab').focus();
+            }
+            function close(options={}) {
+                const wasOpen = !root.classList.contains('hidden'); root.classList.add('hidden');
+                if (!options.keepPreview) clearPreview();
+                if (wasOpen && returnFocus?.isConnected) returnFocus.focus();
+            }
+            function appendStop(id) {
+                if (!validSpotId(id) || !validCoords(spotFor(id))) { status('Geçerli koordinatları olan bir spot seç.',true); return; }
+                if (routeIds.includes(id)) { status('Bu spot zaten rotanda.',true); return; }
+                if (routeIds.length >= MAX_STOPS) { status('Bir rotaya en fazla 10 durak ekleyebilirsin.',true); return; }
+                routeIds.push(id); clearPreview(); status(); renderRoute();
+            }
+            async function addStop(id) { await open('routes'); appendStop(id); }
+            async function logSpot(id) { await open('journal'); if (getUser() && spotFor(id)) { resetJournalForm(); el('ride-journal-spot').value=id; el('ride-journal-tricks').focus(); } }
+            async function saveRoute(event) {
+                event.preventDefault(); if (busy || !ready) return;
+                const name = el('ride-route-name').value.trim();
+                if (!name || name.length > 80 || routeIds.length < 2 || !routeIds.every(id=>validCoords(spotFor(id)))) { status('Rota adı ve en az iki geçerli durak gerekli.',true); return; }
+                if (!routeEditId && routes.length >= MAX_ROUTES) { status('En fazla 30 rota saklanabilir. Önce eski bir rotayı kaldır.',true); return; }
+                const token = generation, key = routeKey(), record = {id:routeEditId || newId(),name,spotIds:[...routeIds],updatedAt:Date.now()};
+                const next = routeEditId ? routes.map(route=>route.id===routeEditId?record:route) : [...routes,record]; busy = true; renderRoute();
+                try { await writeStore(key,next); if(token===generation){routes=next;routeEditId=record.id;status('Rota bu cihaza kaydedildi.');} }
+                catch { if(token===generation)status('Rota kaydedilemedi. Cihaz depolamasını kontrol edip yeniden dene.',true); }
+                finally { if(token===generation){busy=false;renderRoute();} }
+            }
+            async function saveJournal(event) {
+                event.preventDefault(); if (busy || !ready || !getUser()) return;
+                const spotId = el('ride-journal-spot').value, date = el('ride-journal-date').value, tricks = el('ride-journal-tricks').value.trim(), notes = el('ride-journal-notes').value.trim(), visibility = el('ride-journal-visibility').value;
+                const existing = journal.find(entry=>entry.id===journalEditId), spot = spotFor(spotId);
+                if ((!spot && !(existing && existing.spotId === spotId)) || !validDate(date) || tricks.length>200 || notes.length>2000 || !['private','shareable'].includes(visibility)) { status('Spot, tarih ve not alanlarını kontrol et.',true); return; }
+                if (!journalEditId && journal.length >= MAX_ENTRIES) { status('Günlükte en fazla 300 kayıt saklanabilir. Önce eski bir kaydı kaldır.',true); return; }
+                const token = generation, key = journalKey(), record = {id:journalEditId || newId(),spotId,spotName:String(spot?.name || existing?.spotName || '').slice(0,120),date,tricks,notes,visibility,updatedAt:Date.now()};
+                const next = journalEditId ? journal.map(entry=>entry.id===journalEditId?record:entry) : [...journal,record]; busy=true;renderJournal();
+                try { await writeStore(key,next); if(token===generation){journal=next;resetJournalForm();refreshSpotOptions();status('Sürüş kaydın bu cihaza kaydedildi.');} }
+                catch { if(token===generation)status('Kayıt saklanamadı. Notların formda korundu; yeniden deneyebilirsin.',true); }
+                finally { if(token===generation){busy=false;renderJournal();} }
+            }
+            async function removeRecord(type,id) {
+                if (busy || !ready) return;
+                const token=generation, isRoute=type==='route', key=isRoute?routeKey():journalKey(), next=(isRoute?routes:journal).filter(record=>record.id!==id);
+                busy=true; refresh();
+                try {
+                    await writeStore(key,next); if(token!==generation)return;
+                    if(isRoute){routes=next;if(routeEditId===id)routeEditId=null;}
+                    else{journal=next;if(journalEditId===id)resetJournalForm();}
+                    status(isRoute?'Kaydedilmiş rota kaldırıldı.':'Sürüş kaydı kaldırıldı.');
+                } catch { if(token===generation)status('Silme işlemi tamamlanamadı; kayıt korundu.',true); }
+                finally {if(token===generation){busy=false;refresh();}}
+            }
+            function editEntry(id) {
+                const entry=journal.find(record=>record.id===id);if(!entry)return;journalEditId=id;refreshSpotOptions();
+                if(!spotFor(entry.spotId)){el('ride-journal-spot').append(new Option(entry.spotName || 'Eski spot',entry.spotId));}
+                el('ride-journal-spot').value=entry.spotId;el('ride-journal-date').value=entry.date;el('ride-journal-tricks').value=entry.tricks;el('ride-journal-notes').value=entry.notes;el('ride-journal-visibility').value=entry.visibility;
+                el('ride-journal-form-title').textContent='Sürüş kaydını düzenle';el('ride-journal-save').textContent='Değişiklikleri kaydet';el('ride-journal-cancel').hidden=false;
+                el('ride-journal-form').scrollIntoView({block:'start'});el('ride-journal-tricks').focus();status();
+            }
+            function preview() {
+                const spots=routeIds.map(spotFor);if(spots.length<2||!spots.every(validCoords)||!config.map)return;
+                clearPreview();previewLine=L.polyline(spots.map(s=>[s.coords.lat,s.coords.lng]),{color:'#bef264',weight:4,dashArray:'8 9',opacity:.9}).addTo(config.map);
+                config.map.fitBounds(previewLine.getBounds(),{padding:[35,35],maxZoom:16});close({keepPreview:true});
+                config.showToast?.('Duraklar düz çizgiyle gösteriliyor; yol rotası için Navigasyonda aç seçeneğini kullan.');
+            }
+            function shareEntry(id) {
+                const entry=journal.find(record=>record.id===id);if(!entry||entry.visibility!=='shareable'||!getUser())return;
+                const spotName=spotFor(entry.spotId)?.name || entry.spotName || 'Spot';
+                const text=[`${spotName} · ${new Date(`${entry.date}T12:00:00`).toLocaleDateString('tr-TR')}`,entry.tricks?`Denediğim hareketler: ${entry.tricks}`:'',entry.notes].filter(Boolean).join('\n\n');
+                if(text.length>1000){status('Bu kayıt 1000 karakterlik paylaşım sınırını aşıyor. Notunu kısaltıp yeniden dene.',true);return;}
+                if(!spotFor(entry.spotId)){status('Bu spot artık haritada yok. Kaydını düzenleyip mevcut bir spot seç.',true);return;}
+                close();config.shareEntry?.(text,entry.spotId);
+            }
+            function initialize(options) {
+                if(config)return;config=options;
+                el('ride-route-add-form').addEventListener('submit',event=>{event.preventDefault();if(!busy)appendStop(el('ride-route-spot').value);});
+                el('ride-route-save-form').addEventListener('submit',saveRoute);el('ride-journal-form').addEventListener('submit',saveJournal);
+                let searchTimer;el('ride-route-search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(refreshSpotOptions,160);});
+                el('ride-journal-filter').addEventListener('change',renderJournal);
+                el('ride-route-navigate').addEventListener('click',event=>{if(event.currentTarget.getAttribute('aria-disabled')==='true')event.preventDefault();});
+                root.addEventListener('click',event=>{
+                    if(event.target===root){close();return;}
+                    const target=event.target.closest('[data-ride-action]');if(!target)return;const action=target.dataset.rideAction,id=target.dataset.id;
+                    if(action==='close')close();
+                    if(action==='routes'||action==='journal'){setTab(action);status();}
+                    if(action==='preview')preview();
+                    if(action==='cancel-edit'){resetJournalForm();status();}
+                    if(busy)return;
+                    if(action==='up'||action==='down'){const index=routeIds.indexOf(id),other=index+(action==='up'?-1:1);if(index>=0&&other>=0&&other<routeIds.length){[routeIds[index],routeIds[other]]=[routeIds[other],routeIds[index]];clearPreview();renderRoute();}}
+                    if(action==='remove-stop'){routeIds=routeIds.filter(value=>value!==id);clearPreview();renderRoute();}
+                    if(action==='clear-route'){routeIds=[];routeEditId=null;el('ride-route-name').value='';clearPreview();status();renderRoute();}
+                    if(action==='load-route'){const route=routes.find(record=>record.id===id);if(route){routeIds=[...route.spotIds];routeEditId=id;el('ride-route-name').value=route.name;clearPreview();status();renderRoute();}}
+                    if(action==='delete-route')removeRecord('route',id);
+                    if(action==='edit-entry')editEntry(id);
+                    if(action==='delete-entry')removeRecord('journal',id);
+                    if(action==='share-entry')shareEntry(id);
+                });
+                root.addEventListener('keydown',event=>{
+                    if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();return;}
+                    if(event.target.matches('[role=tab]')&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){event.preventDefault();setTab(event.key==='Home'?'routes':event.key==='End'?'journal':activeTab==='routes'?'journal':'routes');el(activeTab==='routes'?'ride-route-tab':'ride-journal-tab').focus();}
+                    if(event.key!=='Tab')return;
+                    const focusable=[...root.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled)')].filter(element=>element.tabIndex>=0&&element.getClientRects().length&&element.getAttribute('aria-disabled')!=='true');
+                    const first=focusable[0],last=focusable.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
+                });
+                onAuthChange();
+            }
+            return {initialize,refresh,open,close,addStop,logSpot,onAuthChange};
+        })();
+
+        window.DropZoneOffline = (() => {
+            const PACK_KEY = 'offline:packs:v1', ACTIVE_KEY = 'offline:active:v1';
+            const MAX_PACKS = 10, MAX_SPOTS = 500;
+            const sizeCache = new Map();
+            let config = null, packs = [], selectedId = null, visibleCount = 20, returnFocus = null, busy = false;
+            let lastStatus = {ready:false,shellReady:false,preparedAt:0,missing:[]};
+            const root = () => document.getElementById('offline-modal');
+            const element = (tag, className='', text) => { const item=document.createElement(tag);item.className=className;if(text!==undefined)item.textContent=text;return item; };
+            const tell = (text,error=false) => { const item=document.getElementById('offline-pack-status');item.textContent=text;item.dataset.error=String(error); };
+            const supported = () => window.isSecureContext && 'serviceWorker' in navigator;
+            const str = (value, limit) => typeof value === 'string' ? value.slice(0,limit) : '';
+            const validCoords = value => value && Number.isFinite(value.lat) && Number.isFinite(value.lng) && Math.abs(value.lat)<=90 && Math.abs(value.lng)<=180;
+            function snapshotSpot(spot) {
+                if (!spot || typeof spot.id!=='string' || !spot.id || spot.id.length>1500 || spot.id.includes('/') || !validCoords(spot.coords)) return null;
+                const feature=spot.features||{};
+                return {
+                    id:spot.id,name:str(spot.name,120)||'İsimsiz spot',category:['Urban','DirtJump'].includes(spot.category)?spot.category:'Urban',
+                    types:Array.isArray(spot.types)?spot.types.filter(t=>['Merdiven','Drop','Transfer','Air'].includes(t)).slice(0,4):[],
+                    desc:str(spot.desc,5000),locationText:str(spot.locationText,200),coords:{lat:spot.coords.lat,lng:spot.coords.lng},
+                    status:'active',createdAt:Number.isFinite(spot.createdAt)?spot.createdAt:0,userName:str(spot.userName,120),photoUrl:'',comments:[],reports:[],
+                    features:{difficulty:['beginner','intermediate','advanced','unknown'].includes(feature.difficulty)?feature.difficulty:'unknown',
+                        dropHeight:Number.isFinite(feature.dropHeight)&&feature.dropHeight>=0&&feature.dropHeight<=30?feature.dropHeight:null,
+                        landing:['wide','medium','narrow','unknown'].includes(feature.landing)?feature.landing:'unknown',
+                        surface:['concrete','asphalt','dirt','wood','mixed','unknown'].includes(feature.surface)?feature.surface:'unknown'}
+                };
+            }
+            function cleanPack(value) {
+                if (!value || typeof value.id!=='string' || !value.id || !Array.isArray(value.spots) || value.spots.length>MAX_SPOTS || !Number.isFinite(value.savedAt)) return null;
+                const unique=new Map();value.spots.forEach(spot=>{const clean=snapshotSpot(spot);if(clean)unique.set(clean.id,clean);});
+                if (!unique.size) return null;
+                return {id:value.id.slice(0,100),name:str(value.name,60)||'Spot paketi',savedAt:value.savedAt,spots:[...unique.values()]};
+            }
+            async function loadPacks() {
+                const saved=await window.DropZoneStore.get(PACK_KEY);
+                packs=Array.isArray(saved)?saved.slice(0,MAX_PACKS).map(cleanPack).filter(Boolean):[];
+                return packs;
+            }
+            function candidateSpots() {
+                if(!config)return[];
+                const all=config.getSpots(), unique=new Map();
+                const source=document.getElementById('offline-pack-source').value;
+                const city=document.getElementById('offline-pack-city').value;
+                const bounds=source==='bounds'&&config.map?config.map.getBounds():null;
+                for(const raw of all){
+                    if(!validCoords(raw?.coords))continue;
+                    if(source==='city'&&str(raw.locationText,200).split(',')[0].trim()!==city)continue;
+                    if(bounds&&!bounds.contains([raw.coords.lat,raw.coords.lng]))continue;
+                    const spot=snapshotSpot(raw);if(spot)unique.set(spot.id,spot);
+                }
+                return [...unique.values()];
+            }
+            function updateCandidates() {
+                const source=document.getElementById('offline-pack-source').value;
+                document.getElementById('offline-city-field').hidden=source!=='city';
+                const count=candidateSpots().length;
+                document.getElementById('offline-pack-count').textContent=count?`${count} spot bulundu${count>MAX_SPOTS?`; en fazla ${MAX_SPOTS} spot için haritayı daralt veya şehir seç`:''}.`:'Bu bölgede kaydedilecek spot yok.';
+                document.getElementById('offline-pack-save').disabled=busy||!navigator.onLine||!count||count>MAX_SPOTS||packs.length>=MAX_PACKS;
+            }
+            function updateCities() {
+                const input=document.getElementById('offline-pack-city'), previous=input.value;
+                const cities=[...new Set(config.getSpots().map(s=>str(s.locationText,200).split(',')[0].trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'tr')).slice(0,200);
+                input.replaceChildren(...cities.map(city=>new Option(city,city)));
+                if(cities.includes(previous))input.value=previous;
+            }
+            function button(text,action,id) {
+                const item=element('button','dzo-secondary',text);item.type='button';item.dataset.offlineAction=action;if(id)item.dataset.packId=id;return item;
+            }
+            function renderPacks() {
+                const list=document.getElementById('offline-pack-list');list.replaceChildren();
+                if(!packs.length)list.append(element('p','dzo-muted','Henüz paket kaydetmedin.'));
+                packs.forEach(pack=>{
+                    const row=element('article','dzo-pack'),content=element('div','dzo-pack-content');
+                    const sizeKey=`${pack.id}:${pack.savedAt}`;
+                    if(!sizeCache.has(sizeKey))sizeCache.set(sizeKey,Math.ceil(new TextEncoder().encode(JSON.stringify(pack)).byteLength/1024));
+                    const kb=sizeCache.get(sizeKey);
+                    content.append(element('strong','',pack.name),element('small','',`${pack.spots.length} spot · ${kb} KB · ${new Date(pack.savedAt).toLocaleString('tr-TR')}`));
+                    const actions=element('div','dzo-pack-actions');actions.append(button('Aç','view',pack.id),button('Sil','delete',pack.id));row.append(content,actions);list.append(row);
+                });
+                renderDetail();updateCandidates();
+            }
+            function renderDetail() {
+                const pack=packs.find(p=>p.id===selectedId),detail=document.getElementById('offline-pack-detail');detail.hidden=!pack;
+                const list=document.getElementById('offline-pack-spots');list.replaceChildren();
+                if(!pack)return;
+                document.getElementById('offline-pack-detail-title').textContent=pack.name;
+                pack.spots.slice(0,visibleCount).forEach(spot=>{
+                    const item=element('button','dzo-spot');item.type='button';item.dataset.offlineAction='spot';item.dataset.packId=pack.id;item.dataset.spotId=spot.id;
+                    item.append(element('strong','',spot.name),element('span','',`${spot.locationText||'Konum bilgisi yok'} · ${spot.coords.lat.toFixed(5)}, ${spot.coords.lng.toFixed(5)}`));list.append(item);
+                });
+                document.getElementById('offline-pack-more').hidden=visibleCount>=pack.spots.length;
+            }
+            function renderReadiness() {
+                const message=document.getElementById('offline-status'), prepareButton=document.getElementById('offline-prepare');
+                if(!supported()){message.textContent='Bu tarayıcı veya bağlantı çevrimdışı açılışı desteklemiyor. HTTPS ya da localhost üzerinden kullan.';prepareButton.disabled=true;return;}
+                if(lastStatus.ready)message.textContent=`Uygulama çevrimdışı açılmaya hazır. Hazırlanma: ${new Date(lastStatus.preparedAt).toLocaleString('tr-TR')}.`;
+                else if(!navigator.onLine)message.textContent='Çevrimdışısın. Hazırlığı tamamlamak için internete bağlan; kaydedilmiş paketlerini aşağıdan açabilirsin.';
+                else if(lastStatus.missing?.includes('worker-not-ready')||lastStatus.missing?.includes('worker-timeout'))message.textContent='Çevrimdışı bileşen henüz etkinleşmedi. İnternet açıkken sayfayı yenileyip tekrar dene.';
+                else if(lastStatus.missing?.length)message.textContent=`Spot bilgileri saklanabilir; uygulamanın ${lastStatus.missing.length} kaynağı henüz indirilemedi. Çevrimdışı açılışı yeniden hazırla.`;
+                else message.textContent='Spot paketini kaydetmeden önce uygulamanın çevrimdışı açılışını da hazırlayabilirsin.';
+                prepareButton.disabled=busy||!navigator.onLine;prepareButton.textContent=busy?'Hazırlanıyor…':'Çevrimdışı açılışı hazırla';
+            }
+            async function workerMessage(type,timeout=60000) {
+                if(!supported())return {ready:false,shellReady:false,preparedAt:0,missing:['unsupported']};
+                const registration=await Promise.race([navigator.serviceWorker.ready,new Promise(resolve=>setTimeout(()=>resolve(null),12000))]);
+                if(!registration?.active)return {ready:false,shellReady:false,preparedAt:0,missing:['worker-not-ready']};
+                return new Promise(resolve=>{
+                    const channel=new MessageChannel(), timer=setTimeout(()=>{channel.port1.close();resolve({ready:false,shellReady:false,preparedAt:0,missing:['worker-timeout']});},timeout);
+                    channel.port1.onmessage=event=>{clearTimeout(timer);channel.port1.close();resolve(event.data||{ready:false});};
+                    registration.active.postMessage({type},[channel.port2]);
+                });
+            }
+            async function status() {
+                lastStatus=await workerMessage('OFFLINE_STATUS',5000);renderReadiness();return lastStatus;
+            }
+            async function prepare() {
+                if(busy)return lastStatus;
+                busy=true;renderReadiness();updateCandidates();
+                try{lastStatus=await workerMessage('PREPARE_OFFLINE');return lastStatus;}
+                catch{lastStatus={ready:false,shellReady:false,preparedAt:0,missing:['preparation-failed']};return lastStatus;}
+                finally{busy=false;renderReadiness();updateCandidates();}
+            }
+            async function getActivePack() {
+                try{
+                    await loadPacks();const id=await window.DropZoneStore.get(ACTIVE_KEY);
+                    return packs.find(pack=>pack.id===id)||packs[0]||null;
+                }catch{return null;}
+            }
+            async function usePack(pack,spotId) {
+                if(!pack)return;
+                try{await window.DropZoneStore.set(ACTIVE_KEY,pack.id);}catch{tell('Bu paket açılabilir; son paket tercihi cihazda kaydedilemedi.',true);}
+                close(false);await config.onUsePack({...pack,spots:pack.spots.map(snapshotSpot)},spotId||null);
+            }
+            async function savePack(event) {
+                event.preventDefault();if(busy)return;
+                const name=document.getElementById('offline-pack-name').value.trim(), spots=candidateSpots();
+                if(!navigator.onLine){tell('Yeni paket oluşturmak için internete bağlan.',true);return;}
+                if(!name||name.length>60||!spots.length||spots.length>MAX_SPOTS){tell('Paket adı ve en fazla 500 spot içeren bir bölge seç.',true);return;}
+                if(packs.length>=MAX_PACKS){tell('En fazla 10 paket saklanabilir. Önce eski bir paketi sil.',true);return;}
+                const pack={id:crypto.randomUUID?.()||`pack-${Date.now()}-${Math.random().toString(36).slice(2)}`,name,savedAt:Date.now(),spots};
+                busy=true;updateCandidates();renderReadiness();
+                try{
+                    await window.DropZoneStore.set(PACK_KEY,[pack,...packs]);
+                    packs=[pack,...packs];selectedId=pack.id;visibleCount=20;
+                    try { await window.DropZoneStore.set(ACTIVE_KEY,pack.id); } catch { /* The saved data remains available even if the preference could not be saved. */ }
+                    tell(`${spots.length} spot bu cihaza kaydedildi. Uygulama kaynakları hazırlanıyor…`);renderPacks();
+                }catch(error){tell('Paket kaydedilemedi. Cihaz depolamasını kontrol et veya eski bir paketi sil.',true);busy=false;updateCandidates();renderReadiness();return;}
+                busy=false;const ready=await prepare();
+                tell(ready.ready?'Spot paketi ve uygulama çevrimdışı kullanıma hazır.':'Spot paketi kaydedildi; uygulamanın çevrimdışı açılış hazırlığı tamamlanamadı. İnternet açıkken yeniden dene.',!ready.ready);
+            }
+            async function refresh() {
+                if(!config)return;
+                updateCities();updateCandidates();
+                try{await loadPacks();renderPacks();}catch{tell('Kaydedilmiş paketler okunamadı. Bu tarayıcıda cihaz depolaması kullanılamıyor.',true);}
+            }
+            async function onNetworkChange() {
+                if(!config)return;
+                renderReadiness();updateCandidates();
+                if(!navigator.onLine){const pack=await getActivePack();if(pack)await config.onUsePack(pack,null);}
+            }
+            function close(restoreFocus=true) {root().hidden=true;if(restoreFocus&&returnFocus?.isConnected)returnFocus.focus();}
+            async function open() {
+                returnFocus=document.activeElement;root().hidden=false;root().querySelector('.dzo-card').focus();
+                await refresh();status();
+            }
+            function init(options) {
+                if(config)return;config=options;
+                document.getElementById('offline-pack-form').addEventListener('submit',savePack);
+                document.getElementById('offline-pack-source').addEventListener('change',updateCandidates);
+                document.getElementById('offline-pack-city').addEventListener('change',updateCandidates);
+                document.getElementById('offline-prepare').addEventListener('click',()=>prepare());
+                document.getElementById('offline-pack-more').addEventListener('click',()=>{visibleCount=Math.min(MAX_SPOTS,visibleCount+20);renderDetail();});
+                document.getElementById('offline-pack-use').addEventListener('click',()=>usePack(packs.find(pack=>pack.id===selectedId)));
+                root().addEventListener('click',async event=>{
+                    if(event.target===root()){close();return;}
+                    const action=event.target.closest('[data-offline-action]');if(!action)return;
+                    if(action.dataset.offlineAction==='close')close();
+                    const pack=packs.find(p=>p.id===action.dataset.packId);
+                    if(action.dataset.offlineAction==='view'&&pack){selectedId=pack.id;visibleCount=20;renderDetail();document.getElementById('offline-pack-detail').scrollIntoView({block:'nearest'});}
+                    if(action.dataset.offlineAction==='spot'&&pack)usePack(pack,action.dataset.spotId);
+                    if(action.dataset.offlineAction==='delete'&&pack){
+                        if(busy)return;busy=true;
+                        try{
+                            const next=packs.filter(p=>p.id!==pack.id);await window.DropZoneStore.set(PACK_KEY,next);packs=next;
+                            if(await window.DropZoneStore.get(ACTIVE_KEY)===pack.id)await window.DropZoneStore.remove(ACTIVE_KEY);
+                            if(selectedId===pack.id)selectedId=null;tell('Paket cihazdan silindi.');renderPacks();
+                        }catch{tell('Paket silinemedi. Cihaz depolamasını kontrol et.',true);}finally{busy=false;updateCandidates();}
+                    }
+                });
+                root().addEventListener('keydown',event=>{
+                    if(event.key==='Escape'){event.preventDefault();close();return;}
+                    if(event.key!=='Tab')return;
+                    const items=[...root().querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled)')].filter(item=>item.getClientRects().length);
+                    const first=items[0],last=items.at(-1);
+                    if(event.shiftKey&&(document.activeElement===first||!items.includes(document.activeElement))){event.preventDefault();last?.focus();}
+                    else if(!event.shiftKey&&(document.activeElement===last||!items.includes(document.activeElement))){event.preventDefault();first?.focus();}
+                });
+                options.map?.on('moveend',()=>{if(!root().hidden)updateCandidates();});
+            }
+            return {init,open,close,refresh,onNetworkChange,getActivePack,prepare,status};
+        })();
+
+        // Loaded-feed search and rule-validated timed polls. This factory adds no network service.
+        window.DropZoneCommunityExtras = {
+            create(options) {
+                const sdk = options.sdk, db = options.db;
+                const input = document.getElementById('community-search');
+                const clear = document.getElementById('community-search-clear');
+                const searchScope = document.getElementById('community-search-scope');
+                const toggle = document.getElementById('community-poll-toggle');
+                const builder = document.getElementById('community-poll-builder');
+                const question = document.getElementById('community-poll-question');
+                const optionList = document.getElementById('community-poll-options');
+                const addOption = document.getElementById('community-poll-add-option');
+                const duration = document.getElementById('community-poll-duration');
+                const pollViews = new Map(), ownVotes = new Map(), pendingVotes = new Set(), searchCache = new Map();
+                let searchTimer, closeTimer, authGeneration = 0, lastUserId = options.getUser()?.uid || null;
+                const normalize = value => String(value || '').normalize('NFKC').toLocaleLowerCase('tr-TR').replace(/ı/g,'i').normalize('NFKD').replace(/\p{M}/gu,'');
+                const tagPattern = () => /#([\p{L}\p{N}_]{1,40})/gu;
+                const millis = value => typeof value?.toMillis === 'function' ? value.toMillis() : typeof value?.seconds === 'number' ? value.seconds * 1000 : 0;
+                function el(tag, className = '', text) { const node = document.createElement(tag); node.className = className; if (text !== undefined) node.textContent = text; return node; }
+                function icon(className) { const node=el('i',className);node.setAttribute('aria-hidden','true');return node; }
+                function status(state, message = '', error = false) { state.status.textContent=message;state.status.dataset.error=String(error); }
+                function changed() { options.onComposerChange?.(); options.onDraftChange?.(); }
+                function setSearch(value) {
+                    clearTimeout(searchTimer); input.value=String(value || '').slice(0,120);clear.hidden=!input.value;
+                    options.onSearchChange?.();
+                }
+                input.addEventListener('input', () => { clear.hidden=!input.value;clearTimeout(searchTimer);searchTimer=setTimeout(()=>options.onSearchChange?.(),160); });
+                clear.addEventListener('click', () => { setSearch('');input.focus(); });
+                function cachedSearch(data) {
+                    const source=[data.text,data.authorName,data.poll?.question,...(Array.isArray(data.poll?.options)?data.poll.options:[])].map(v=>typeof v==='string'?v:'').join('\n');
+                    const existing=searchCache.get(data.id);if(existing?.source===source)return existing;
+                    const entry={source,text:normalize(source),tags:new Set([...source.matchAll(tagPattern())].map(match=>normalize(match[1])))};
+                    if(searchCache.size>=200)searchCache.delete(searchCache.keys().next().value);searchCache.set(data.id,entry);return entry;
+                }
+                function matchesSearch(data) {
+                    const query=normalize(input.value).trim();if(!query)return true;
+                    const record=cachedSearch(data);return query.split(/\s+/).filter(Boolean).slice(0,12).every(term=>term.startsWith('#')?record.tags.has(term.slice(1)):record.text.includes(term));
+                }
+                function updateSearchScope(loaded, found, canLoadMore) {
+                    searchScope.hidden=!input.value.trim();
+                    if(!searchScope.hidden)searchScope.textContent=`Yüklenen ${Math.min(100,loaded)} paylaşımda ${found} sonuç.${canLoadMore?' Daha eski paylaşımları yükleyerek aramayı genişletebilirsin.':''}`;
+                }
+                function decorateText(node, value) {
+                    const text=typeof value==='string'?value:''; if(node.dataset.renderedText===text)return;
+                    node.dataset.renderedText=text;node.replaceChildren();let cursor=0;
+                    for(const match of text.matchAll(tagPattern())){
+                        node.append(document.createTextNode(text.slice(cursor,match.index)));
+                        const button=el('button','dz-hashtag',match[0]);button.type='button';button.setAttribute('aria-label',`${match[0]} etiketiyle ara`);button.addEventListener('click',()=>setSearch(match[0]));node.append(button);cursor=match.index+match[0].length;
+                    }
+                    node.append(document.createTextNode(text.slice(cursor)));
+                }
+                function readOptionValues() {return [...optionList.querySelectorAll('input')].map(node=>node.value.trim());}
+                function redrawOptionLabels(){
+                    const rows=[...optionList.children];rows.forEach((row,index)=>{
+                        const field=row.querySelector('input');field.placeholder=`${index+1}. seçenek`;field.setAttribute('aria-label',`${index+1}. anket seçeneği`);
+                        const remove=row.querySelector('button');remove.hidden=rows.length<=2;remove.setAttribute('aria-label',`${index+1}. seçeneği kaldır`);
+                    });addOption.hidden=rows.length>=4;
+                }
+                function appendOption(value=''){
+                    if(optionList.children.length>=4)return;
+                    const row=el('div','dz-poll-option-row'),field=el('input','dz-poll-option-input');field.type='text';field.maxLength=80;field.value=value;field.addEventListener('input',changed);
+                    const remove=el('button','dz-icon-button');remove.type='button';remove.append(icon('fa-solid fa-xmark'));remove.addEventListener('click',()=>{row.remove();redrawOptionLabels();changed();});row.append(field,remove);optionList.append(row);redrawOptionLabels();
+                }
+                function showBuilder(open){builder.hidden=!open;toggle.setAttribute('aria-expanded',String(open));toggle.querySelector('span').textContent=open?'Anket eklendi':'Anket ekle';changed();if(open)question.focus();}
+                toggle.addEventListener('click',()=>showBuilder(builder.hidden));
+                document.getElementById('community-poll-remove').addEventListener('click',()=>{resetComposer();changed();toggle.focus();});
+                addOption.addEventListener('click',()=>{appendOption();optionList.lastElementChild.querySelector('input').focus();changed();});
+                question.addEventListener('input',changed);duration.addEventListener('change',changed);
+                function getComposerDraft(){return builder.hidden?null:{question:question.value,options:readOptionValues(),hours:Number(duration.value)};}
+                function restoreComposerDraft(draft){
+                    resetComposer();if(!draft||typeof draft.question!=='string'||draft.question.length>160||!Array.isArray(draft.options)||draft.options.length<2||draft.options.length>4||!draft.options.every(v=>typeof v==='string'&&v.length<=80)||![1,6,24,72].includes(draft.hours))return;
+                    question.value=draft.question;optionList.replaceChildren();draft.options.forEach(appendOption);duration.value=String(draft.hours);builder.hidden=false;toggle.setAttribute('aria-expanded','true');toggle.querySelector('span').textContent='Anket eklendi';
+                }
+                function resetComposer(){question.value='';duration.value='24';optionList.replaceChildren();appendOption();appendOption();builder.hidden=true;toggle.setAttribute('aria-expanded','false');toggle.querySelector('span').textContent='Anket ekle';}
+                function getComposerPoll(){
+                    if(builder.hidden)return null;
+                    const title=question.value.trim(),values=readOptionValues(),hours=Number(duration.value);
+                    if(!title||title.length>160)throw new Error('Anket sorusu 1–160 karakter olmalı.');
+                    if(values.length<2||values.length>4||values.some(value=>!value||value.length>80))throw new Error('Ankete 2–4 dolu seçenek ekle; her seçenek en fazla 80 karakter olabilir.');
+                    if(new Set(values.map(normalize)).size!==values.length)throw new Error('Anket seçenekleri birbirinden farklı olmalı.');
+                    if(![1,6,24,72].includes(hours))throw new Error('Geçerli bir anket süresi seç.');
+                    return {question:title,options:values,endsAt:sdk.Timestamp.fromMillis(Date.now()+hours*3600000),totalVotes:0,counts:values.map(()=>0)};
+                }
+                function updateComposer(){
+                    const signed=!!options.getUser();toggle.disabled=!signed;
+                    [question,duration,addOption,...optionList.querySelectorAll('input,button')].forEach(node=>node.disabled=!signed);
+                }
+                function validPoll(poll){return poll&&typeof poll.question==='string'&&poll.question.length<=160&&Array.isArray(poll.options)&&poll.options.length>=2&&poll.options.length<=4&&poll.options.every(v=>typeof v==='string'&&v.length<=80)&&Array.isArray(poll.counts)&&poll.counts.length===poll.options.length&&poll.counts.every(v=>Number.isSafeInteger(v)&&v>=0)&&Number.isSafeInteger(poll.totalVotes)&&poll.totalVotes>=0&&poll.counts.reduce((a,b)=>a+b,0)===poll.totalVotes&&millis(poll.endsAt)>0;}
+                function formatRemaining(end){const remaining=end-Date.now();if(remaining<=0)return 'Anket sona erdi';if(remaining<3600000)return `${Math.max(1,Math.ceil(remaining/60000))} dk kaldı`;if(remaining<86400000)return `${Math.ceil(remaining/3600000)} sa kaldı`;return `${Math.ceil(remaining/86400000)} gün kaldı`;}
+                function drawPoll(state){
+                    if(!state.view.article.isConnected||!validPoll(state.data.poll))return;
+                    const poll=state.data.poll,user=options.getUser(),key=user?`${user.uid}:${state.data.id}`:'',vote=user?ownVotes.get(key):null,expired=millis(poll.endsAt)<=Date.now();
+                    state.question.textContent=poll.question;
+                    if(state.buttons.length!==poll.options.length){state.choices.replaceChildren();state.buttons=[];poll.options.forEach((_,index)=>{
+                        const button=el('button','dz-poll-choice');button.type='button';button.dataset.option=String(index);button.append(el('span'),el('span'),el('strong'));button.addEventListener('click',()=>voteFor(state,index));state.choices.append(button);state.buttons.push(button);
+                    });}
+                    const reveal=Number.isInteger(vote)||expired;
+                    state.buttons.forEach((button,index)=>{
+                        const percent=poll.totalVotes?Math.round(poll.counts[index]/poll.totalVotes*100):0;
+                        button.disabled=!user||expired||Number.isInteger(vote)||pendingVotes.has(state.data.id)||state.reading;
+                        button.setAttribute('aria-pressed',String(vote===index));button.setAttribute('aria-label',reveal?`${poll.options[index]}: ${poll.counts[index]} oy, yüzde ${percent}${vote===index?', senin oyun':''}`:poll.options[index]);
+                        button.style.setProperty('--dz-vote-width',reveal?`${percent}%`:'0%');button.children[1].textContent=poll.options[index];button.children[2].textContent=reveal?`${percent}%${vote===index?' ✓':''}`:'';
+                    });
+                    state.stats.textContent=`${poll.totalVotes} oy · ${formatRemaining(millis(poll.endsAt))}${!user?' · Oy vermek için giriş yap':state.reading?' · Oyun kontrol ediliyor':Number.isInteger(vote)?' · Oyun kaydedildi':''}`;
+                    state.stats.title=`Bitiş: ${new Date(millis(poll.endsAt)).toLocaleString('tr-TR')}`;
+                }
+                async function readOwnVote(state){
+                    const user=options.getUser();if(!user)return;const key=`${user.uid}:${state.data.id}`;if(ownVotes.has(key)||state.reading)return;
+                    const generation=authGeneration;state.reading=true;
+                    try{
+                        const snapshot=await sdk.getDoc(sdk.doc(db,'communityPosts',state.data.id,'votes',user.uid));
+                        if(generation!==authGeneration||pollViews.get(state.data.id)!==state)return;
+                        ownVotes.set(key,snapshot.exists()?snapshot.data().option:null);status(state);
+                    }catch(error){if(generation===authGeneration)status(state,options.errorText(error),true);}
+                    finally{if(generation===authGeneration){state.reading=false;drawPoll(state);}}
+                }
+                async function voteFor(state,index){
+                    const user=options.getUser(),id=state.data.id;
+                    if(!user){options.toast('Oy vermek için giriş yapmalısın.','error');return;}
+                    if(pendingVotes.has(id)||!options.beginAction())return;
+                    pendingVotes.add(id);drawPoll(state);let success=false;
+                    try{
+                        const result=await sdk.runTransaction(db,async transaction=>{
+                            const ref=options.postRef(id),voteRef=sdk.doc(db,'communityPosts',id,'votes',user.uid);
+                            const post=await transaction.get(ref),existing=await transaction.get(voteRef);
+                            if(!post.exists()||post.data().deleted)throw new Error('post-missing');
+                            const data=post.data();if(!validPoll(data.poll)||millis(data.poll.endsAt)<=Date.now())throw new Error('poll-ended');
+                            if(existing.exists())return {already:true,option:existing.data().option,post:data};
+                            const rate=await transaction.get(options.rateRef(user));options.checkRate(rate);
+                            const counts=[...data.poll.counts];if(!Number.isInteger(index)||index<0||index>=counts.length)throw new Error('poll-invalid');counts[index]++;
+                            const poll={...data.poll,counts,totalVotes:data.poll.totalVotes+1};
+                            transaction.set(voteRef,{authorId:user.uid,option:index,createdAt:sdk.serverTimestamp()});
+                            transaction.update(ref,{poll,lastEvent:{type:'vote',id:user.uid,actorId:user.uid}});options.writeRate(transaction,user,'vote',id,user.uid);
+                            return {option:index,post:{...data,poll}};
+                        });
+                        if(options.getUser()?.uid!==user.uid)return;
+                        ownVotes.set(`${user.uid}:${id}`,result.option);state.data={...result.post,id};
+                        options.onPostUpdated(id,result.post);status(state,result.already?'Bu ankette zaten oy kullandın.':'Oyun kaydedildi.');success=!result.already;
+                    }catch(error){status(state,error.message==='poll-ended'?'Bu anket sona erdi.':error.message==='poll-invalid'?'Anket seçeneği geçersiz.':options.errorText(error),true);}
+                    finally{pendingVotes.delete(id);options.endAction(success);drawPoll(state);}
+                }
+                function renderPostPoll(view,data){
+                    if(!validPoll(data.poll)||data.deleted){removePost(data.id);return;}
+                    let state=pollViews.get(data.id);
+                    if(!state||state.view!==view){
+                        if(state)state.root.remove();
+                        const root=el('section','dz-poll');root.setAttribute('aria-label','Paylaşım anketi');const title=el('h4'),choices=el('div','dz-poll-choices'),stats=el('p','dz-poll-stats'),message=el('p','dz-poll-status');message.setAttribute('role','status');root.append(title,choices,stats,message);
+                        view.article.insertBefore(root,view.commentButton.parentElement);state={view,root,question:title,choices,stats,status:message,buttons:[],data,reading:false};pollViews.set(data.id,state);
+                    }
+                    state.data=data;drawPoll(state);readOwnVote(state);
+                    // drawPoll also runs after the article is attached in the parent's render loop.
+                    queueMicrotask(()=>{if(pollViews.get(data.id)===state)drawPoll(state);});
+                }
+                function removePost(id){const state=pollViews.get(id);state?.root.remove();pollViews.delete(id);}
+                function onAuthChange(){
+                    const id=options.getUser()?.uid||null;authGeneration++;ownVotes.clear();pendingVotes.clear();
+                    if(id!==lastUserId)resetComposer();lastUserId=id;
+                    for(const state of pollViews.values()){state.reading=false;drawPoll(state);readOwnVote(state);}updateComposer();
+                }
+                function onOpen(){clearInterval(closeTimer);closeTimer=setInterval(()=>{if(options.isOpen())for(const state of pollViews.values())drawPoll(state);},30000);}
+                function onClose(){clearInterval(closeTimer);clearTimeout(searchTimer);authGeneration++;pollViews.clear();ownVotes.clear();searchCache.clear();}
+                resetComposer();
+                return {getComposerPoll,getComposerDraft,restoreComposerDraft,resetComposer,updateComposer,hasPoll:()=>!builder.hidden,matchesSearch,decorateText,renderPostPoll,removePost,onAuthChange,onOpen,onClose,setSearch,getSearchQuery:()=>input.value.trim(),updateSearchScope};
+            }
+        };
+
+    </script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy, arrayUnion, arrayRemove, getDoc, setDoc, getDocs, where, limit, startAfter, runTransaction, serverTimestamp, writeBatch } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, updateDoc, deleteDoc, query, orderBy, arrayUnion, arrayRemove, getDoc, setDoc, getDocs, where, limit, startAfter, runTransaction, serverTimestamp, writeBatch, Timestamp, deleteField } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         function escapeHTML(str) {
@@ -836,7 +1772,8 @@
         let currentUserData = { favorites: [], notifications: [] };
         let communityInboxRows = [];
         let isAdmin = false;
-        let spotsData = []; 
+        let spotsData = [];
+        let dzUsingOfflinePack=false,dzLiveSpots=[],dzLiveSnapshotReady=false;
         let announcementsData = [];
         let activeFilter = 'all';
         let favActiveFilter = 'all';
@@ -1196,6 +2133,7 @@
             document.getElementById('profile-modal').classList.remove('hidden');
         };
         window.closeModals = () => {
+            window.DropZoneRideTools?.close(); window.DropZoneOffline?.close?.(); dzCloseFeatureDialogs();
             if (typeof window.closeCommunity === 'function') window.closeCommunity();
             document.querySelectorAll('.modal-overlay').forEach(m => m.classList.add('hidden'));
             window.cancelEditDesc(); window.cancelReply();
@@ -1225,7 +2163,7 @@
             if(initialLoadDone) { listContainer.innerHTML = ''; }
             markersLayer.clearLayers();
 
-            let filteredSpots = activeFilter === 'all' ? spotsData : spotsData.filter(s => s.category === activeFilter);
+            let filteredSpots = (activeFilter === 'all' ? spotsData : spotsData.filter(s => s.category === activeFilter)).filter(dzMatchesFeatures);
             
             filteredSpots.forEach(s => s.distance = getDistance(userLocation, s.coords));
             filteredSpots.sort((a, b) => {
@@ -1602,8 +2540,10 @@
             document.getElementById('detail-types').innerHTML = (spot.types || []).map(t => `<span class="bg-zinc-800 border border-zinc-700 text-neon px-2 py-1 rounded text-[10px] font-bold">${escapeHTML(t)}</span>`).join('');
             document.getElementById('detail-desc').innerText = spot.desc || "Açıklama belirtilmemiş.";
 
+            dzRenderFeatures(spot);
             const isOwner = currentUser && spot.userId === currentUser.uid;
             document.getElementById('btn-edit-desc').classList.toggle('hidden', !(isAdmin || isOwner));
+            document.getElementById('dz-edit-features').hidden = !(isAdmin || isOwner);
             
             const adminActions = document.getElementById('admin-spot-actions');
             adminActions.classList.toggle('hidden', !(isAdmin || isOwner));
@@ -1766,16 +2706,19 @@
 
         const q = query(collection(db, "spots"), orderBy("createdAt", "desc"));
         onSnapshot(q, (snapshot) => {
-            spotsData = []; snapshot.forEach((doc) => { spotsData.push({ ...doc.data(), id: doc.id }); });
+            dzLiveSnapshotReady=!snapshot.metadata?.fromCache;
+            dzLiveSpots = []; snapshot.forEach((doc) => { dzLiveSpots.push({ ...doc.data(), id: doc.id }); });
+            if(dzUsingOfflinePack)return;
+            spotsData=dzLiveSpots;document.getElementById('dz-offline-banner').hidden=dzLiveSnapshotReady;
             initialLoadDone = true;
             if (typeof communityFillSpots === 'function' && communityIsOpen()) { communityFillSpots(); communityRenderFeed(); }
             renderSpotsToDOM();
-            updateAdminReportBadge();
+            updateAdminReportBadge();dzRefreshTools();
             
             if(!document.getElementById('admin-reports-modal').classList.contains('hidden')) window.openAdminReportsModal();
             if(!document.getElementById('spot-detail-modal').classList.contains('hidden') && currentDetailSpotId) window.openSpotDetail(currentDetailSpotId); 
             if(!document.getElementById('favorites-modal').classList.contains('hidden')) window.renderFavorites(favActiveFilter);
-        });
+        },async()=>{try{const pack=await window.DropZoneOffline.getActivePack();if(pack)await dzUsePack(pack,null);}catch{} });
 
         // DUYURULARI DİNLE
         const annQuery = query(collection(db, "announcements"), orderBy("createdAt", "desc"));
@@ -1799,35 +2742,32 @@
             } catch (error) { window.showToast("Bir hata oluştu.", "error"); } finally { btn.innerText = 'Profili Güncelle'; btn.disabled = false; }
         });
 
-        document.getElementById('add-spot-form').addEventListener('submit', async (e) => {
-            e.preventDefault(); if (!currentUser) return; if(checkSpam()) return;
-            const category = document.getElementById('spot-category').value;
-            
-            const lat = parseFloat(document.getElementById('spot-lat').value);
-            const lng = parseFloat(document.getElementById('spot-lng').value);
-            if(!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) { window.showToast("Lütfen geçerli bir koordinat giriniz.", "error"); return; }
-
-            const btn = e.target.querySelector('button[type="submit"]'); btn.innerText = 'Kaydediliyor...'; btn.disabled = true;
-
-            const checkedTypes = Array.from(document.querySelectorAll('.type-checkbox:checked')).map(cb => cb.value);
-            const locText = await getCityDistrict(lat, lng);
-
-            const rawPhotoInput = document.getElementById('spot-photo').value;
-            const validPhotos = rawPhotoInput.split(',').map(url => url.trim()).filter(url => isValidUrl(url));
-
-            try {
-                const newSpot = {
-                    name: document.getElementById('spot-name').value,
-                    category: category, types: checkedTypes, desc: document.getElementById('spot-desc').value,
-                    photoUrl: validPhotos.join(','), locationText: locText,
-                    status: 'active', createdAt: Date.now(), userId: currentUser.uid, userName: communityName(currentUser),
-                    comments: [], reports: [], 
-                    coords: {lat, lng}
-                };
-
-                await addDoc(collection(db, "spots"), newSpot);
-                e.target.reset(); window.closeModals(); window.showToast("Spot eklendi!");
-            } catch (error) { window.showToast("Bir sorun oluştu.", "error"); } finally { btn.innerText = 'Spotu Kaydet'; btn.disabled = false; }
+        let dzAddingSpot=false;
+        document.getElementById('add-spot-form').addEventListener('submit', async event => {
+            event.preventDefault();const user=auth.currentUser;if(!user||dzAddingSpot||checkSpam())return;
+            if(!navigator.onLine){window.showToast('Spot eklemek için internet bağlantısı gerekli.','error');return;}
+            const form=event.currentTarget;if(!form.reportValidity())return;
+            const category=document.getElementById('spot-category').value,name=document.getElementById('spot-name').value.trim(),desc=document.getElementById('spot-desc').value;
+            const lat=Number(document.getElementById('spot-lat').value),lng=Number(document.getElementById('spot-lng').value);
+            if(!name||name.length>120||!Number.isFinite(lat)||!Number.isFinite(lng)||Math.abs(lat)>90||Math.abs(lng)>180){window.showToast('Geçerli bir spot adı ve koordinat gir.','error');return;}
+            let features;try{features=dzReadFeatures('dz-spot');}catch(error){window.showToast(error.message,'error');return;}
+            const types=[...document.querySelectorAll('.type-checkbox:checked')].map(cb=>cb.value),photoUrl=document.getElementById('spot-photo').value.split(',').map(url=>url.trim()).filter(isValidUrl).join(',');
+            if(photoUrl.length>8000){window.showToast('Fotoğraf bağlantıları çok uzun.','error');return;}
+            const button=form.querySelector('button[type="submit"]');dzAddingSpot=true;button.disabled=true;
+            document.getElementById('dz-duplicate-warning').textContent='';
+            try{
+                const duplicates=dzFindDuplicates(name,{lat,lng});
+                if(duplicates.length&&!await dzConfirmDuplicates(duplicates)){document.getElementById('dz-duplicate-warning').textContent='Yeni kayıt oluşturulmadı. Bilgilerin formda korunuyor.';return;}
+                if(auth.currentUser?.uid!==user.uid)return;
+                button.textContent='Kaydediliyor…';
+                const locationText=await getCityDistrict(lat,lng);
+                if(auth.currentUser?.uid!==user.uid)return;
+                const spot={name,category,types,desc,photoUrl,locationText,status:'active',createdAt:Date.now(),userId:user.uid,userName:communityName(user),comments:[],reports:[],coords:{lat,lng}};
+                if(Object.values(features).some(value=>value!==null&&value!=='unknown'))spot.features=features;
+                await addDoc(collection(db,'spots'),spot);
+                if(auth.currentUser?.uid===user.uid){form.reset();window.closeModals();window.showToast('Spot eklendi.');}
+            }catch(error){document.getElementById('dz-duplicate-warning').textContent=error.code==='permission-denied'?'Spot kaydedilemedi. Özellikler için güncel Firestore kurallarını kontrol et.':'Spot kaydedilemedi. Bağlantını kontrol edip yeniden dene.';}
+            finally{dzAddingSpot=false;button.disabled=false;button.textContent='Spotu Kaydet';}
         });
 
         // Community: bounded reads, explicit errors and atomic, rule-validated writes.
@@ -1909,6 +2849,7 @@
             });
         }
         function communityBeginAction(undo = false) {
+            if(!navigator.onLine){window.showToast('Bu işlem için internet bağlantısı gerekli.','error');return false;}
             if (communityInFlight || (!undo && Date.now() < communityCooldownUntil)) { window.showToast('Yeni bir işlem için 5 saniye bekle.', 'error'); return false; }
             communityInFlight = true; communityUpdateComposer(); return true;
         }
@@ -1975,8 +2916,8 @@
         function communitySaveDraft() {
             const user = auth.currentUser; if (!user) return;
             const key = communityStorageKey('draft', user.uid);
-            if (!communityText.value && !communitySpot.value) communityStored('sessionStorage', 'remove', key);
-            else communityStored('sessionStorage', 'set', key, JSON.stringify({text:communityText.value.slice(0,1000),spotId:communitySpot.value}));
+            if (!communityText.value && !communitySpot.value && !communityExtras.hasPoll()) communityStored('sessionStorage', 'remove', key);
+            else communityStored('sessionStorage', 'set', key, JSON.stringify({text:communityText.value.slice(0,1000),spotId:communitySpot.value,poll:communityExtras.getComposerDraft()}));
         }
         function communityRestoreDraft(user) {
             if (!user) return;
@@ -1984,7 +2925,7 @@
             try {
                 const draft = JSON.parse(raw);
                 if (!draft || typeof draft.text !== 'string' || draft.text.length > 1000 || typeof draft.spotId !== 'string' || draft.spotId.length > 1500 || draft.spotId.includes('/')) return;
-                communityText.value = draft.text;
+                communityText.value = draft.text; communityExtras.restoreComposerDraft(draft.poll);
                 if (draft.spotId) {
                     const spot = spotsData.find(s => s.id === draft.spotId);
                     // The map's initial snapshot may not have arrived yet. Resolve this ID later.
@@ -2014,15 +2955,16 @@
             const user = auth.currentUser, length = communityText.value.length;
             const counter = document.getElementById('community-char-count'); counter.textContent = `${length} / 1000`;
             counter.classList.toggle('is-near-limit', length >= 900 && length < 1000); counter.classList.toggle('is-at-limit', length >= 1000);
+            communityText.required = !communityExtras.hasPoll(); communityExtras.updateComposer();
             communityText.disabled = !user; communitySpot.disabled = !user;
             document.getElementById('community-spot-search').disabled = !user;
             document.getElementById('community-auth-prompt').hidden = !!user;
             const button = document.getElementById('community-publish');
-            button.disabled = !user || !communityText.value.trim() || communityInFlight || Date.now() < communityCooldownUntil;
+            button.disabled = !user || (!communityText.value.trim() && !communityExtras.hasPoll()) || communityInFlight || Date.now() < communityCooldownUntil;
             button.querySelector('span').textContent = communityInFlight ? 'Gönderiliyor' : Date.now() < communityCooldownUntil ? 'Bekle' : 'Paylaş';
             button.querySelector('i').className = communityInFlight ? 'fa-solid fa-spinner fa-spin' : 'fa-solid fa-arrow-up';
             document.getElementById('community-compose').setAttribute('aria-busy', String(communityInFlight));
-            document.getElementById('community-draft-indicator').hidden = !communityText.value;
+            document.getElementById('community-draft-indicator').hidden = !communityText.value && !communityExtras.hasPoll();
             const name = user ? communityName(user) : 'Misafir';
             document.getElementById('community-compose-avatar').textContent = Array.from(name).slice(0,2).join('').toLocaleUpperCase('tr-TR');
             document.getElementById('community-identity').textContent = name;
@@ -2071,13 +3013,15 @@
         document.getElementById('community-compose').addEventListener('submit', async event => {
             event.preventDefault(); const user = auth.currentUser;
             if (!user) { window.showToast('Paylaşım için giriş yapmalısın.', 'error'); return; }
-            const text = communityText.value.trim(); const spotId = communitySpot.value;
+            const rawText=communityText.value.trim(),spotId=communitySpot.value;
+            let poll;try{poll=communityExtras.getComposerPoll();}catch(error){communityStatus('community-compose-status',error.message,true);return;}
+            const text=rawText||poll?.question||'';const rawPoll=JSON.stringify(communityExtras.getComposerDraft());
             if (!text || text.length > 1000) return;
             if (spotId && !spotsData.some(s => s.id === spotId)) { communityStatus('community-compose-status', 'Geçerli bir spot seç.', true); return; }
             communitySaveDraft();
             if (!await communityConfirmRules(user)) return;
             if (auth.currentUser?.uid !== user.uid || !communityIsOpen()) return;
-            if (communityText.value.trim() !== text || communitySpot.value !== spotId) { communityStatus('community-compose-status', 'Paylaşımın değişti. Yeniden Paylaş’a dokun.', true); return; }
+            if (communityText.value.trim() !== rawText || communitySpot.value !== spotId || JSON.stringify(communityExtras.getComposerDraft())!==rawPoll) { communityStatus('community-compose-status', 'Paylaşımın değişti. Yeniden Paylaş’a dokun.', true); return; }
             if (!communityBeginAction()) return;
             const ref = doc(collection(db, 'communityPosts')); let success = false;
             try {
@@ -2085,12 +3029,12 @@
                 await runTransaction(db, async transaction => {
                     const rate = await transaction.get(communityRateRef(user)); communityCheckRate(rate);
                     if (spotId) { const spot = await transaction.get(doc(db, 'spots', spotId)); if (!spot.exists()) throw new Error('spot-missing'); }
-                    transaction.set(ref, { authorId:user.uid, authorName:communityName(user), text, spotId, createdAt:serverTimestamp(), deleted:false, likeCount:0, commentCount:0, lastEvent:{type:'post', id:ref.id, actorId:user.uid} });
+                    transaction.set(ref, { authorId:user.uid, authorName:communityName(user), text, spotId, createdAt:serverTimestamp(), deleted:false, likeCount:0, commentCount:0, lastEvent:{type:'post', id:ref.id, actorId:user.uid},...(poll?{poll}:{}) });
                     communityWriteRate(transaction, user, 'post', ref.id, ref.id);
                 });
                 success = true;
                 if (auth.currentUser?.uid === user.uid) {
-                    if (communityText.value.trim() === text) { communityText.value = ''; communityFitTextarea(); communitySaveDraft(); }
+                    if (communityText.value.trim() === rawText && JSON.stringify(communityExtras.getComposerDraft())===rawPoll) { communityText.value='';communityExtras.resetComposer();communityFitTextarea();communitySaveDraft(); }
                     communityStatus('community-compose-status', 'Paylaşımın ekibe ulaştı.');
                     if (communitySpot.value === spotId) { communitySpot.value = ''; communitySaveDraft(); communityUpdateSpotChip(); }
                     if (communitySelectedSpot && communitySelectedSpot !== spotId) communityStatus('community-compose-status', 'Paylaşımın gönderildi. Görmek için “Tüm paylaşımlar” filtresine geç.');
@@ -2121,7 +3065,7 @@
         function communityStartFeed() {
             communityStopFeed();
             communityHead = []; communityOlder = []; communityPendingHead = null; communityCursor = null; communityMore = false;
-            communityViews.clear(); communityOverrides.clear(); communityLikes.clear(); communityFeed.replaceChildren();
+            for(const id of communityViews.keys())communityExtras.removePost(id);communityViews.clear(); communityOverrides.clear(); communityLikes.clear(); communityFeed.replaceChildren();
             document.getElementById('community-new-posts').hidden = true;
             document.getElementById('community-load-more').hidden = true;
             communityStatus('community-feed-status', 'Paylaşımlar yükleniyor…');
@@ -2154,10 +3098,10 @@
             return [...records.values()].sort((a,b) => a.id === communityPinned?.id ? -1 : b.id === communityPinned?.id ? 1 : communityDate(b.data().createdAt) - communityDate(a.data().createdAt)).slice(0, COMMUNITY_MAX_LOADED);
         }
         function communityRenderFeed() {
-            const docs = communityAllDocs(); const visible = docs.filter(d => !(communityOverrides.get(d.id) || d.data()).deleted);
+            const docs = communityAllDocs(); const visible = docs.filter(d => {const data=communityOverrides.get(d.id)||d.data();return !data.deleted&&communityExtras.matchesSearch({...data,id:d.id});});
             const ids = new Set(visible.map(d => d.id));
             for (const [id,view] of communityViews) {
-                if (!ids.has(id)) { if (communityCommentView === view) communityCloseComments(); view.article.remove(); communityViews.delete(id); }
+                if (!ids.has(id)) { if (communityCommentView === view) communityCloseComments(); communityExtras.removePost(id); view.article.remove(); communityViews.delete(id); }
             }
             visible.forEach((snapshot, index) => {
                 const data = { ...(communityOverrides.get(snapshot.id) || snapshot.data()), id:snapshot.id }; let view = communityViews.get(data.id);
@@ -2167,6 +3111,8 @@
                 if (current !== view.article) communityFeed.insertBefore(view.article, current || null);
             });
             communityStatus('community-feed-status', visible.length ? '' : docs.length ? 'Bu sayfada görünür paylaşım yok. Daha eski paylaşımları yükleyebilirsin.' : 'Henüz paylaşım yok. İlk hikâyeyi sen başlat.');
+            communityExtras.updateSearchScope(docs.length,visible.length,communityMore&&docs.length<COMMUNITY_MAX_LOADED);
+            if(communityExtras.getSearchQuery()&&!visible.length)communityStatus('community-feed-status','Yüklenen paylaşımlarda sonuç bulunamadı.');
             const more = document.getElementById('community-load-more'); more.hidden = !communityMore || docs.length >= COMMUNITY_MAX_LOADED;
             more.disabled = communityLoading;
             if (docs.length >= COMMUNITY_MAX_LOADED) communityStatus('community-feed-status', 'Son 100 paylaşım yüklendi. Daha odaklı bir akış için spot filtresini kullan.');
@@ -2217,7 +3163,7 @@
             view.data = data; view.author.textContent = data.authorName || 'Rider';
             view.time.textContent = `· ${communityTime(data.createdAt)}`;
             const millis = communityDate(data.createdAt); if (millis) { view.time.dateTime = new Date(millis).toISOString(); view.time.title = new Date(millis).toLocaleString('tr-TR'); }
-            view.text.textContent = typeof data.text === 'string' ? data.text : '';
+            communityExtras.decorateText(view.text,data.text);view.text.hidden=!!data.poll&&data.text===data.poll.question;communityExtras.renderPostPoll(view,data);
             view.remove.hidden = auth.currentUser?.uid !== data.authorId;
             view.like.lastChild.textContent = String(Math.max(0, Number(data.likeCount) || 0));
             view.like.setAttribute('aria-label', `${data.likeCount || 0} beğeni; beğeniyi değiştir`);
@@ -2286,7 +3232,7 @@
             window.showConfirm('Paylaşımını kaldırmak istiyor musun? Akıştan gizlenir ve yeni etkileşimlere kapanır.', async () => {
                 if (communityBusy.has(`delete:${view.data.id}`)) return;
                 communityBusy.add(`delete:${view.data.id}`);
-                try { await updateDoc(communityPostRef(view.data.id),{deleted:true,text:''}); communityOverrides.set(view.data.id,{...view.data,deleted:true,text:''}); view.article.remove(); if (communityCommentView === view) communityCloseComments(); window.showToast('Paylaşım kaldırıldı.'); }
+                try { await updateDoc(communityPostRef(view.data.id),{deleted:true,text:'',...(view.data.poll?{poll:deleteField()}:{})}); communityOverrides.set(view.data.id,{...view.data,deleted:true,text:'',poll:undefined}); view.article.remove(); if (communityCommentView === view) communityCloseComments(); window.showToast('Paylaşım kaldırıldı.'); }
                 catch (error) { window.showToast(communityError(error),'error'); }
                 finally { communityBusy.delete(`delete:${view.data.id}`); }
             });
@@ -2362,7 +3308,7 @@
             if (!communityIsOpen()) {
                 communityReturnFocus = document.activeElement;
                 document.getElementById('notifications-modal').classList.add('hidden');
-                communityModal.classList.remove('hidden'); communityFillSpots(); communityUpdateComposer(); communityFitTextarea(); communityStartFeed();
+                communityModal.classList.remove('hidden'); communityFillSpots(); communityUpdateComposer(); communityFitTextarea(); communityExtras.onOpen(); communityStartFeed();
                 communityModal.querySelector('[data-community-action="close"]').focus();
             }
             if (typeof postId === 'string' && /^[A-Za-z0-9_-]{1,128}$/.test(postId)) await communityOpenSinglePost(postId);
@@ -2370,7 +3316,7 @@
         window.closeCommunity = () => {
             if (!communityIsOpen() && !communityFeedUnsubscribe) return;
             communityCloseRules(false); communitySaveDraft();
-            communityModal.classList.add('hidden'); communityStopFeed();
+            communityModal.classList.add('hidden'); communityStopFeed();communityExtras.onClose();
             if (window.location.hash.startsWith('#community/')) history.replaceState(null,'',window.location.pathname + window.location.search);
             if (communityReturnFocus?.isConnected) communityReturnFocus.focus();
         };
@@ -2493,8 +3439,8 @@
         });
         onAuthStateChanged(auth, user => {
             const previousUid=communityUid;communityUid=user?.uid||null;communityAuthGeneration++;
-            clearTimeout(communityDraftTimer);
-            if(previousUid!==communityUid){communityCloseRules(false);if(previousUid)communityStored('sessionStorage','remove',communityStorageKey('draft',previousUid));}
+            clearTimeout(communityDraftTimer);communityExtras.onAuthChange();window.DropZoneRideTools?.onAuthChange();
+            if(previousUid!==communityUid){window.closeConfirm();dzCloseFeatureDialogs();communityCloseRules(false);if(previousUid)communityStored('sessionStorage','remove',communityStorageKey('draft',previousUid));}
             communityInboxUnsubscribe?.();communityUserUnsubscribe?.();communityInboxUnsubscribe=null;communityUserUnsubscribe=null;
             communityInboxRows=[];communityLikes.clear();communityCooldownUntil=0;clearTimeout(communityCooldownTimer);
             if(previousUid!==communityUid){currentUserData.notifications=[];communityText.value='';communitySpot.value='';delete communitySpot.dataset.draftSpot;communityToggleSpotPanel(false);communityStatus('community-compose-status');for(const view of communityViews.values()){view.input.value='';view.counter.textContent='0 / 500';}}
@@ -2519,6 +3465,143 @@
             const match=window.location.hash.match(/^#community\/([A-Za-z0-9_-]{1,128})$/);
             if(match)window.openCommunity(match[1]);
         }
+        const dzFeatureDefaults = {difficulty:'unknown',dropHeight:null,landing:'unknown',surface:'unknown'};
+        const dzLabels = {beginner:'Başlangıç',intermediate:'Orta seviye',advanced:'İleri seviye',wide:'Geniş iniş',medium:'Orta iniş',narrow:'Dar iniş',concrete:'Beton',asphalt:'Asfalt',dirt:'Toprak',wood:'Ahşap',mixed:'Karışık'};
+        function dzFeatures(spot) {
+            const source=spot?.features || {};
+            return {
+                difficulty:['beginner','intermediate','advanced'].includes(source.difficulty)?source.difficulty:'unknown',
+                dropHeight:typeof source.dropHeight==='number'&&Number.isFinite(source.dropHeight)&&source.dropHeight>=0&&source.dropHeight<=30?source.dropHeight:null,
+                landing:['wide','medium','narrow'].includes(source.landing)?source.landing:'unknown',
+                surface:['concrete','asphalt','dirt','wood','mixed'].includes(source.surface)?source.surface:'unknown'
+            };
+        }
+        function dzReadFeatures(prefix) {
+            const height=document.getElementById(`${prefix}-dropHeight`).value;
+            const values={difficulty:document.getElementById(`${prefix}-difficulty`).value,dropHeight:height===''?null:Number(height),landing:document.getElementById(`${prefix}-landing`).value,surface:document.getElementById(`${prefix}-surface`).value};
+            if(values.dropHeight!==null&&(!Number.isFinite(values.dropHeight)||values.dropHeight<0||values.dropHeight>30))throw new Error('Drop yüksekliği 0–30 metre arasında olmalı.');
+            return dzFeatures({features:values});
+        }
+        function dzMatchesFeatures(spot) {
+            const features=dzFeatures(spot);
+            for(const key of ['difficulty','surface','landing']){const value=document.getElementById(`dz-filter-${key}`).value;if(value&&value!==features[key])return false;}
+            const min=document.getElementById('dz-filter-drop-min').value,max=document.getElementById('dz-filter-drop-max').value;
+            if(min!==''&&(features.dropHeight===null||features.dropHeight<Number(min)))return false;
+            if(max!==''&&(features.dropHeight===null||features.dropHeight>Number(max)))return false;
+            return true;
+        }
+        let dzFilterTimer;
+        for(const input of document.querySelectorAll('[id^="dz-filter-"]:is(input,select)'))input.addEventListener('input',()=>{
+            clearTimeout(dzFilterTimer);dzFilterTimer=setTimeout(()=>{
+                const min=document.getElementById('dz-filter-drop-min'),max=document.getElementById('dz-filter-drop-max');
+                const valid=min.checkValidity()&&max.checkValidity()&&!(min.value!==''&&max.value!==''&&Number(min.value)>Number(max.value));
+                document.getElementById('dz-filter-status').textContent=valid?'':'Yükseklik aralığını 0–30 metre arasında, en az ≤ en fazla olacak şekilde gir.';
+                if(valid)renderSpotsToDOM();
+            },140);
+        });
+        document.getElementById('dz-filter-reset').addEventListener('click',()=>{document.querySelectorAll('[id^="dz-filter-"]:is(input,select)').forEach(el=>el.value='');document.getElementById('dz-filter-status').textContent='';renderSpotsToDOM();});
+        function dzRenderFeatures(spot) {
+            const values=dzFeatures(spot),container=document.getElementById('dz-detail-features');container.replaceChildren();
+            const labels=[values.difficulty!=='unknown'?dzLabels[values.difficulty]:null,values.dropHeight!==null?`${values.dropHeight} m drop`:null,values.landing!=='unknown'?dzLabels[values.landing]:null,values.surface!=='unknown'?dzLabels[values.surface]:null].filter(Boolean);
+            for(const label of labels){const span=document.createElement('span');span.textContent=label;container.append(span);}
+            if(!labels.length){const span=document.createElement('span');span.textContent='Seviye ve zemin henüz belirtilmemiş';container.append(span);}
+        }
+        function dzMeters(a,b) {
+            if(!a||!b||![a.lat,a.lng,b.lat,b.lng].every(Number.isFinite))return Infinity;
+            const rad=value=>value*Math.PI/180,dlat=rad(b.lat-a.lat),dlng=rad(b.lng-a.lng);
+            const h=Math.sin(dlat/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dlng/2)**2;
+            return 6371000*2*Math.atan2(Math.sqrt(Math.min(1,h)),Math.sqrt(Math.max(0,1-h)));
+        }
+        function dzNormalized(value){return String(value||'').toLocaleLowerCase('tr-TR').normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/ı/g,'i').replace(/[^\p{L}\p{N}]/gu,'');}
+        function dzFindDuplicates(name,coords) {
+            const normalized=dzNormalized(name);
+            const unique=new Map([...dzLiveSpots,...spotsData].map(spot=>[spot.id,spot]));
+            return [...unique.values()].map(spot=>({spot,distance:dzMeters(coords,spot.coords)})).filter(({spot,distance})=>{
+                const other=dzNormalized(spot.name),similar=normalized.length>=5&&other.length>=5&&(normalized.includes(other)||other.includes(normalized));
+                return distance<=80||(similar&&distance<=250);
+            }).sort((a,b)=>a.distance-b.distance).slice(0,5);
+        }
+        let dzDuplicateResolver=null,dzFeatureDialogFocus=null,dzEditingSpot=null;
+        function dzShowFeatureDialog(id){const dialog=document.getElementById(id);dzFeatureDialogFocus=document.activeElement;dialog.hidden=false;dialog.querySelector('button,input,select')?.focus();}
+        function dzCloseFeatureDialogs(){
+            for(const id of ['dz-duplicate-modal','dz-features-modal'])document.getElementById(id).hidden=true;
+            const resolve=dzDuplicateResolver;dzDuplicateResolver=null;resolve?.(false);
+            if(dzFeatureDialogFocus?.isConnected)dzFeatureDialogFocus.focus();
+        }
+        function dzConfirmDuplicates(duplicates){
+            const list=document.getElementById('dz-duplicate-list');list.replaceChildren();
+            for(const {spot,distance} of duplicates){const button=document.createElement('button');button.type='button';const name=document.createElement('strong'),detail=document.createElement('small');name.textContent=spot.name||'İsimsiz spot';detail.textContent=`${Math.round(distance)} m yakınında · Mevcut kaydı aç`;button.append(name,detail);button.addEventListener('click',()=>{dzCloseFeatureDialogs();document.getElementById('add-spot-modal').classList.add('hidden');window.openSpotDetail(spot.id);});list.append(button);}
+            document.getElementById('dz-duplicate-warning').textContent='Yakındaki benzer kayıtları kontrol et.';
+            return new Promise(resolve=>{dzDuplicateResolver=resolve;dzShowFeatureDialog('dz-duplicate-modal');});
+        }
+        document.getElementById('dz-duplicate-continue').addEventListener('click',()=>{const resolve=dzDuplicateResolver;dzDuplicateResolver=null;document.getElementById('dz-duplicate-modal').hidden=true;resolve?.(true);});
+        document.getElementById('dz-duplicate-cancel').addEventListener('click',dzCloseFeatureDialogs);
+        for(const dialog of document.querySelectorAll('#dz-duplicate-modal,#dz-features-modal')){
+            dialog.addEventListener('click',event=>{if(event.target===dialog||event.target.closest('[data-dz-close]'))dzCloseFeatureDialogs();});
+            dialog.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();dzCloseFeatureDialogs();}if(event.key==='Tab'){const items=[...dialog.querySelectorAll('button:not(:disabled),input,select')].filter(el=>el.getClientRects().length);if(event.shiftKey&&document.activeElement===items[0]){event.preventDefault();items.at(-1)?.focus();}else if(!event.shiftKey&&document.activeElement===items.at(-1)){event.preventDefault();items[0]?.focus();}}});
+        }
+        document.getElementById('dz-edit-features').addEventListener('click',()=>{
+            const spot=spotsData.find(s=>s.id===currentDetailSpotId),user=auth.currentUser;if(!spot||!user||(!isAdmin&&spot.userId!==user.uid))return;
+            dzEditingSpot=spot.id;const values=dzFeatures(spot);for(const key of Object.keys(values))document.getElementById(`dz-edit-${key}`).value=values[key]??'';
+            document.getElementById('dz-features-status').textContent='';dzShowFeatureDialog('dz-features-modal');
+        });
+        document.getElementById('dz-features-form').addEventListener('submit',async event=>{
+            event.preventDefault();const user=auth.currentUser,spot=spotsData.find(s=>s.id===dzEditingSpot);if(!user||!spot||(!isAdmin&&spot.userId!==user.uid))return;
+            const button=document.getElementById('dz-save-features');button.disabled=true;
+            try{const features=dzReadFeatures('dz-edit');await updateDoc(doc(db,'spots',spot.id),{features});dzCloseFeatureDialogs();window.showToast('Spot özellikleri güncellendi.');}
+            catch(error){document.getElementById('dz-features-status').textContent=error.code==='permission-denied'?'Özellikleri kaydetmek için güncel Firestore kurallarını uygula.':error.message||'Kaydedilemedi.';}
+            finally{button.disabled=false;}
+        });
+
+        const communityExtras = window.DropZoneCommunityExtras.create({
+            db,sdk:{doc,getDoc,runTransaction,serverTimestamp,Timestamp},getUser:()=>auth.currentUser,isOpen:communityIsOpen,
+            postRef:communityPostRef,rateRef:communityRateRef,checkRate:communityCheckRate,writeRate:communityWriteRate,
+            beginAction:communityBeginAction,endAction:communityEndAction,toast:window.showToast,errorText:communityError,
+            onComposerChange:communityUpdateComposer,onDraftChange:()=>{clearTimeout(communityDraftTimer);communityDraftTimer=setTimeout(communitySaveDraft,250);},
+            onSearchChange:communityRenderFeed,onPostUpdated:(id,post)=>{communityOverrides.set(id,post);const view=communityViews.get(id);if(view)communityUpdatePost(view,{...post,id});}
+        });
+
+        function dzRefreshTools() {
+            if(!document.getElementById('ride-tools-modal').classList.contains('hidden'))window.DropZoneRideTools.refresh();
+            if(!document.getElementById('offline-modal').hidden)window.DropZoneOffline.refresh();
+        }
+        function dzRenderOfflineBanner(pack) {
+            const banner=document.getElementById('dz-offline-banner');banner.replaceChildren();banner.hidden=!pack;
+            if(!pack)return;
+            const label=document.createElement('span');label.textContent=`Kaydedilmiş paket: ${pack.name} · ${new Date(pack.savedAt).toLocaleDateString('tr-TR')} · Spot bilgileri hazır; harita zemini internet gerektirebilir.`;banner.append(label);
+            if(navigator.onLine){const button=document.createElement('button');button.type='button';button.textContent='Canlı spotlara dön';button.style.cssText='display:block;border:0;background:transparent;color:#bef264;margin-top:6px;text-decoration:underline';button.addEventListener('click',dzUseLiveSpots);banner.append(button);}
+        }
+        function dzUseLiveSpots() {
+            dzUsingOfflinePack=false;spotsData=dzLiveSpots;initialLoadDone=true;
+            const banner=document.getElementById('dz-offline-banner');banner.hidden=dzLiveSnapshotReady;if(!dzLiveSnapshotReady)banner.textContent='Canlı spotlar yükleniyor…';
+            renderSpotsToDOM();if(communityIsOpen())communityFillSpots();dzRefreshTools();
+        }
+        async function dzUsePack(pack,spotId) {
+            if(!pack||!Array.isArray(pack.spots)||!pack.spots.length)return;
+            dzUsingOfflinePack=true;spotsData=pack.spots;initialLoadDone=true;dzRenderOfflineBanner(pack);renderSpotsToDOM();if(communityIsOpen()){communityFillSpots();communityRenderFeed();}dzRefreshTools();
+            if(spotId){window.closeModals();window.openSpotDetail(spotId);}
+        }
+        window.DropZoneRideTools.initialize({getSpots:()=>spotsData,getUser:()=>auth.currentUser,map,showToast:window.showToast,shareEntry:async(text,spotId)=>{
+            const sharingUid=auth.currentUser?.uid;if(!sharingUid)return;
+            window.closeModals();await window.openCommunity();if(auth.currentUser?.uid!==sharingUid)return;
+            const fill=()=>{if(auth.currentUser?.uid!==sharingUid)return;communityExtras.resetComposer();communityText.value=text.slice(0,1000);communityFillSpots();communitySpot.value=spotId;communityUpdateComposer();communityFitTextarea();communitySaveDraft();communityScroll.scrollTop=0;communityText.focus();};
+            if(communityText.value.trim()||communityExtras.hasPoll())window.showConfirm('Mevcut paylaşım taslağını bu günlük kaydıyla değiştirmek ister misin?',fill);else fill();
+        }});
+        window.DropZoneOffline.init({getSpots:()=>spotsData,map,onUsePack:dzUsePack,toast:window.showToast});
+        document.getElementById('dz-tools-routes').addEventListener('click',()=>window.DropZoneRideTools.open('routes'));
+        document.getElementById('dz-tools-journal').addEventListener('click',()=>window.DropZoneRideTools.open('journal'));
+        document.getElementById('dz-tools-offline').addEventListener('click',()=>{window.closeModals();window.DropZoneOffline.open();});
+        document.getElementById('dz-route-add-spot').addEventListener('click',()=>window.DropZoneRideTools.addStop(currentDetailSpotId));
+        document.getElementById('dz-journal-log-spot').addEventListener('click',()=>window.DropZoneRideTools.logSpot(currentDetailSpotId));
+        window.addEventListener('online',()=>{dzUseLiveSpots();window.DropZoneOffline.onNetworkChange().catch(()=>{});});
+        window.addEventListener('offline',()=>window.DropZoneOffline.onNetworkChange().catch(()=>{}));
+        window.DropZoneOffline.onNetworkChange().catch(()=>{});
+        if(window.isSecureContext&&'serviceWorker' in navigator){
+            navigator.serviceWorker.register(new URL('./sw.js',window.location.href),{scope:new URL('./',window.location.href).pathname}).then(()=>{
+                if(!document.getElementById('offline-modal').hidden)window.DropZoneOffline.status();
+            }).catch(()=>{/* The offline dialog reports unsupported or incomplete preparation. */});
+        }
+
         window.addEventListener('hashchange',communityFollowHash);communityFollowHash();
 
     </script>
