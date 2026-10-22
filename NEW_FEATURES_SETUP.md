@@ -14,14 +14,40 @@ kontrol edilmelidir.
 - `firestore.rules`: mevcut profil/spot/duyuru yetkileri ve topluluk kurallarıyla
   birleştirilmiş **tam** dosya. Eski üretim kurallarını yedekleyip bu dosyanın
   tamamıyla değiştirin. GitHub'a dosya koymak Firebase kurallarını yayımlamaz.
-- `community.firestore.indexes.json`: mevcut `spotId ASC + createdAt DESC`
-  birleşik dizini korunur. Bu sürümde ek Firestore dizini gerekmez.
+- `community.firestore.indexes.json`: eski `spotId ASC + createdAt DESC`
+  dizini korunur. Kaldırılmış paylaşımları sorgudan dışlayan ve “En çok beğenilen” /
+  “En yeni” sıralamalarını destekleyen **dört yeni birleşik dizin** Firebase
+  projesinde ayrıca oluşturulmalıdır. Firebase Console → Firestore Database →
+  Indexes bölümünde dosyadaki `deleted` alanını içeren dört tanımı ekleyip
+  durumlarının Enabled olmasını bekleyin. GitHub güncellemesi bu dizinleri
+  yayımlamaz. Dizinsiz durumda arayüz hatayı açıkça gösterir; sıralamayı
+  değiştirmek eksik bir dizinin yerini tutmaz.
 
 Kuralları yayımlamadan önce emülatör testlerini çalıştırın. Bu çalışma alanında
 önceki emülatör indirmesi `storage.googleapis.com` erişiminde CONNECT 403 aldığı
 ve yeni bir erişim değişikliği bilinmediği için yeni yetkilendirme testlerinin
 çalıştığı varsayılmamalıdır. Testlerin sözdizimi kontrolü yalnızca test kaynağını
 kontrol eder; Firestore kural derlemesi veya yetki davranışı doğrulaması değildir.
+
+## Haritadan rota ve günlük kullanımı
+
+- **Rotalarım → Haritada rota oluştur:** mevcut spotlara durak sırasıyla dokun.
+  Haritadaki 1–10 işaretleri ve alt çubuk aynı sırayı gösterir. Aynı spot ikinci
+  kez eklenmez. “Son durağı geri al” son seçimi kaldırır; “Rotaya dön” listeyi
+  ve rota adını koruyarak düzenleyiciye döner.
+- **Önizle → Rotaya dön:** önizlemenin altındaki düğme veya Escape rotayı
+  kaybetmeden geri döner. Çizgi spotlar arasında kuş uçuşudur; gerçek yol
+  tarifleri “Navigasyonda aç” ile açılır.
+- **Sürüş günlüğüm → Haritadan seç:** bir spot seçmek yazılmış tarih, hareket,
+  not ve paylaşım tercihini değiştirmez. Seçmeden geri dönmek mevcut spotu
+  korur. Hesap değiştiğinde önceki hesabın özel taslağı ve harita seçimi temizlenir.
+- Her iki formda spot/şehir araması vardır. Sonuç listeleri 100 kayıtla sınırlıdır;
+  haritadan seçilen günlük spotu ilk 100 sonucun dışında olsa da seçim korunur.
+  Seçim sırasında kategori ve fiziksel filtreler tüm spotlara erişmek için geçici
+  olarak haritada uygulanmaz; seçim bitince eski filtreler yeniden uygulanır.
+- Kaydedilen rotalar, mesafe açıklaması, günlük paylaşım tercihi ve çevrimdışı
+  hazırlık ayrıntıları açılır bölümlerdedir. Klavye odağı ve azaltılmış hareket
+  tercihi desteklenir. “Spotları indir” harita zemini/fotoğraf indirmediğini belirtir.
 
 ## İsteğe bağlı spot özellikleri
 
@@ -96,6 +122,19 @@ bitiş tarihi yayımdan sonra değiştirilemez. Kaldırılan paylaşıma yeni oy
 
 ## Arama, yerel veriler ve çevrimdışı sınırlar
 
+- Topluluk varsayılan olarak tüm koleksiyonu `likeCount DESC`, eşitlikte
+  `createdAt DESC` sırasıyla sorgular; yalnızca yüklenmiş satırları sıralamaz.
+  Sorgu `deleted == false` koşuluyla kaldırılmış paylaşımları baştan dışlar;
+  kaldırılmış, çok beğenilmiş kayıtlar sayfa sınırını tüketmez. Her sorgu en fazla
+  20 belge, ekran en fazla 100 belge yükler. “En yeni”
+  seçeneği tarih sırasını korur. Beğeniyle ilk sayfa sınırı değişirse eski
+  sayfalar ve imleç yenilenir. Ekran aşağı kaydırılmışsa sıralama değişimi
+  “Akış güncellendi” düğmesiyle uygulanır. Bu sırada ilk 20’den çıkan kayıtlar
+  geçerli bir paylaşımın alt sıraya düşmesiyle silinmesini ayırmak için bir kez
+  doğrulanır: bekleyen güncelleme başına en fazla 20 tek-belge okuması yapılır,
+  ek dinleyici açılmaz. Böylece geçerli satırlar korunur, kaldırılan satırlar
+  yenileme beklenmeden kaybolur. Paylaşım bağlantısıyla özellikle
+  açılan kayıt bağlamı kaybetmemek için geçici olarak ilk sırada tutulur.
 - Topluluk metin/etiket araması yüklenmiş paylaşımlar üzerinde çalışır. Tüm
   Firestore geçmişinde tam metin araması yaptığı iddia edilmemelidir; daha eski
   kayıtlar için sayfalama kullanılabilir.

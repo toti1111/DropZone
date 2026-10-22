@@ -85,3 +85,15 @@ blocks all network before a cold new-page launch. It verifies missing dependenci
 stay unready, recursive SDK asset caching, no private/auth/tile response caching,
 restored IndexedDB public spots, and failure after clearing the shell cache.
 It never uses production Firestore or downloads actual map tiles.
+
+## Map tools and popularity regressions
+
+`map-tools.browser.test.cjs` checks preview return without losing stops, numbered
+map markers after reordering, actual Leaflet marker selection with duplicate and
+10-stop limits, undo, journal draft preservation and account cleanup, more than
+100 spot choices, mobile map controls, reduced motion, globally queried popularity
+ordering, unique pagination and live ranking changes while reading. The mock uses
+immutable snapshots and lexicographic multi-field cursors so mutable-like ranking
+cannot pass by sorting the wrong key or silently updating old cursor snapshots.
+Firestore index definitions must still be deployed separately; browser fixtures
+do not prove that production indexes exist.

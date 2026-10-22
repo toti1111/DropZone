@@ -215,6 +215,10 @@
         .dz-tabs>button:hover { color:var(--dz-text); }
         .dz-tabs>.dz-refresh { margin-left:auto; min-width:32px; justify-content:center; }
         .dz-refresh:hover i { transform:rotate(35deg); transition:transform .2s; }
+        .dz-feed-order { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 24px 0; }
+        .dz-feed-order label { color:var(--dz-muted); font-size:12px; }
+        .dz-feed-order select { min-height:44px; max-width:220px; padding:8px 30px 8px 12px; border:1px solid var(--dz-line); border-radius:12px; background:var(--dz-field); color:var(--dz-text); font:inherit; font-size:12px; }
+        @media(max-width:600px) { .dz-feed-order { padding:12px 18px 0; } .dz-feed-order select { font-size:16px; max-width:225px; } }
         .dz-filter-panel { padding:16px 26px; background:var(--dz-card); font-size:11px; animation:dz-reveal .2s ease both; border-bottom:1px solid var(--dz-line); }
         .dz-filter-panel label { display:block; margin-bottom:8px; color:var(--dz-muted); }
         .dz-feed-status { font-size:12px; text-align:center; margin:0; color:var(--dz-muted); line-height:1.8; white-space:pre-line; }
@@ -485,6 +489,68 @@
             .dz-compose-footer { flex-wrap:wrap; }
             .dz-publish-actions { margin-left:auto; }
         }
+/* Offline downloads: one primary action, saved items, optional preparation details. */
+.dzo-card { max-width:620px;animation:dzo-enter .22s cubic-bezier(.2,.7,.2,1) both;scrollbar-width:thin;scrollbar-color:#ffffff26 transparent; }
+.dzo-header { align-items:center;padding:24px 26px 21px;border-bottom:0; }
+.dzo-header h2 { margin:5px 0 7px;font-size:25px; }
+.dzo-eyebrow { display:block;color:var(--dzo-accent);font-size:10px;font-weight:750;letter-spacing:.09em;text-transform:uppercase; }
+.dzo-body { padding:0 26px 26px;gap:23px; }
+.dzo-section-title { display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:2px; }
+.dzo-body .dzo-section-title h3 { margin:0;font-size:13px; }
+.dzo-count { color:var(--dzo-muted);font-size:10px;line-height:1.6;text-align:right;overflow-wrap:anywhere; }
+.dzo-form { gap:14px;padding:20px;border:1px solid var(--dzo-line);border-radius:16px;background:#ffffff02; }
+.dzo-form .dzo-grid { gap:12px; }
+.dzo-modal input,.dzo-modal select { transition:border-color .16s,background-color .16s; }
+.dzo-modal input:hover,.dzo-modal select:hover { border-color:#bef26435; }
+.dzo-primary,.dzo-secondary { min-height:44px;transition:background-color .16s,border-color .16s,color .16s; }
+.dzo-form>.dzo-primary { width:100%;gap:10px; }
+.dzo-modal .dzo-download-note { text-align:center;font-size:10px;line-height:1.7; }
+.dzo-saved>.dzo-section-title { margin-bottom:10px; }
+.dzo-pack { gap:12px;padding:14px;align-items:flex-start; }
+.dzo-pack small { font-size:10px; }
+.dzo-pack-actions { flex-wrap:wrap;justify-content:flex-end;gap:5px; }
+.dzo-pack-actions button { font-size:10px!important;min-height:42px;padding:8px 10px; }
+.dzo-pack-actions [data-offline-action=delete] { border-color:transparent;background:transparent; }
+.dzo-readiness { display:block;padding:0;background:transparent;border:1px solid var(--dzo-line);border-radius:13px; }
+.dzo-readiness summary { display:flex;align-items:center;gap:10px;padding:15px 16px;cursor:pointer;list-style:none;min-height:48px;font-size:11px;font-weight:650;touch-action:manipulation; }
+.dzo-readiness summary::-webkit-details-marker { display:none; }
+.dzo-readiness summary>i { font-size:9px;color:var(--dzo-muted);transition:transform .18s; }
+.dzo-readiness[open] summary>i { transform:rotate(180deg); }
+.dzo-ready-label { margin-left:auto;text-align:right;color:var(--dzo-muted);font-size:10px;font-weight:500; }
+.dzo-ready-label[data-ready=true] { color:var(--dzo-accent); }
+.dzo-readiness-content { display:grid;gap:14px;padding:0 16px 16px; }
+.dzo-readiness-content .dzo-secondary { justify-self:start; }
+.dzo-detail { padding-top:20px; }
+.dzo-spot { min-height:50px;transition:color .15s; }
+.dzo-spot:hover strong { color:var(--dzo-accent); }
+@keyframes dzo-enter { from { opacity:0;transform:translateY(8px); } to { opacity:1;transform:translateY(0); } }
+@media(max-width:600px) {
+ .dzo-modal { padding:10px; }
+ .dzo-card { max-height:calc(100dvh - 20px);border-radius:20px; }
+ .dzo-header { padding:22px 18px 19px; }
+ .dzo-header h2 { font-size:23px; }
+ .dzo-body { padding:0 16px 20px;gap:22px; }
+ .dzo-form { padding:16px;gap:13px; }
+ .dzo-form .dzo-section-title { align-items:flex-start; }
+ .dzo-form .dzo-count { max-width:55%; }
+ .dzo-pack { gap:12px; }
+ .dzo-pack-actions { width:100%;justify-content:flex-start;align-self:stretch; }
+ .dzo-pack-actions [data-offline-action=use] { flex:1; }
+ .dzo-pack-actions [data-offline-action=delete] { margin-left:auto; }
+ .dzo-detail-heading { flex-direction:row;align-items:center; }
+ .dzo-detail-heading h3 { min-width:0;font-size:13px; }
+ .dzo-detail-heading button { flex-shrink:0; }
+ .dzo-readiness summary { padding:14px;font-size:10px; }
+ .dzo-ready-label { font-size:9px; }
+}
+@media(prefers-reduced-motion:reduce) { .dzo-card { animation:none; }.dzo-modal *,.dzo-modal *::before,.dzo-modal *::after { transition:none!important;scroll-behavior:auto!important; } }
+/* Simple route and journal flows, map selection and ordered stop overlays. */
+.dzt-card{animation:dzt-dialog-in .2s ease-out}.dzt-scroll>section{animation:dzt-panel-in .16s ease-out}.dzt-map-choice{width:100%;display:flex;align-items:center;gap:13px;padding:15px;margin:0 0 12px;border:1px solid #a3e63555;border-radius:14px;background:linear-gradient(120deg,#a3e63513,#a3e63505);color:var(--dzt-text);text-align:left;transition:background .18s ease,border-color .18s ease}.dzt-map-choice:hover{border-color:var(--dzt-accent);background:#a3e63518}.dzt-map-choice>span:nth-child(2){flex:1;min-width:0}.dzt-map-choice strong,.dzt-map-choice small{display:block}.dzt-map-choice strong{font-size:14px}.dzt-map-choice small{font-size:11px;color:var(--dzt-muted);margin-top:4px;line-height:1.5}.dzt-map-choice-icon{width:42px;height:42px;display:grid;place-items:center;flex-shrink:0;border-radius:12px;background:#a3e63516;color:var(--dzt-accent);font-size:19px}.dzt-map-choice>i{font-size:12px;color:var(--dzt-accent)}.dzt-route-picker{grid-template-columns:minmax(0,1fr) auto;gap:8px}.dzt-route-picker>input{grid-column:1/-1}.dzt-route-picker>select{grid-column:1}.dzt-route-picker>button{grid-column:2}.dzt-journal-find{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.dzt-journal-spot-picker{display:grid;gap:8px}.dzt-journal-spot-picker>label:not(.dzt-sr){font-size:12px;color:var(--dzt-muted)}.dzt-main-actions{gap:8px}.dzt-disclosure{border-top:1px solid var(--dzt-line);padding:14px 0;margin-top:12px}.dzt-disclosure>summary{cursor:pointer;font-size:13px;min-height:28px;font-weight:650;color:var(--dzt-text);line-height:1.7;list-style-position:inside}.dzt-disclosure>summary>span{font-size:11px;color:var(--dzt-muted);margin-left:6px}.dzt-disclosure[open]>summary{margin-bottom:14px}.dzt-help{padding-bottom:0;margin-top:0}.dzt-help summary{color:var(--dzt-muted);font-size:11px;font-weight:500}.dzt-help .dzt-muted{margin-bottom:0}.dzt-share-options{margin:0;padding:12px 0}.dzt-share-options label{display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--dzt-muted)}.dzt-share-options p{margin:10px 0 0}.dzt-journal-form{margin-bottom:26px}.dzt-stop{animation:dzt-panel-in .16s ease-out}.dzt-stop-index{box-shadow:0 0 0 3px #a3e63508}.dzt-disclosure>summary:focus-visible{outline:2px solid var(--dzt-accent);outline-offset:3px;border-radius:4px}
+.dzt-map-toolbar{--dzt-bg:#121713;--dzt-text:#eff4ef;--dzt-muted:#b4c3b2;--dzt-line:#ffffff20;--dzt-accent:#bef264;position:fixed;z-index:1100;left:50%;bottom:max(24px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(540px,calc(100% - 32px));padding:16px;background:#121713f5;color:var(--dzt-text);border:1px solid #a3e63555;border-radius:18px;box-shadow:0 14px 48px #0007;backdrop-filter:blur(14px);animation:dzt-toolbar-in .22s ease-out;box-sizing:border-box}.dzt-map-toolbar[hidden],.dzt-map-toolbar [hidden]{display:none!important}.dzt-map-heading{display:flex;align-items:center;gap:11px}.dzt-map-heading>div{flex:1;min-width:0}.dzt-map-heading strong{display:block;font-size:14px;font-weight:750}.dzt-map-heading p{font-size:11px;line-height:1.5;color:var(--dzt-muted);margin:4px 0 0}.dzt-map-badge{display:grid;place-items:center;width:40px;height:40px;flex-shrink:0;border-radius:12px;background:#a3e6351a;color:var(--dzt-accent);font-size:17px}.dzt-map-close{display:grid;place-items:center;align-self:flex-start;flex-shrink:0;min-width:36px;min-height:36px;border:0;border-radius:10px;background:transparent;color:var(--dzt-muted);cursor:pointer}.dzt-map-actions{display:flex;gap:8px;margin-top:12px}.dzt-map-actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 13px;border-radius:11px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation;border:1px solid var(--dzt-line)}.dzt-map-primary{flex:1;background:var(--dzt-accent);color:#17230c}.dzt-map-secondary{background:transparent;color:var(--dzt-text)}.dzt-map-actions button:disabled{opacity:.4;cursor:default}.dzt-map-message{font-size:12px;line-height:1.5;color:var(--dzt-accent);padding-top:10px;overflow-wrap:anywhere}.dzt-map-message:empty{display:none}.dzt-map-message[data-error=true]{color:#fda4af}.dzt-map-stops{display:flex;gap:6px;padding:0;margin:12px 0 0;list-style:none;overflow-x:auto;overscroll-behavior:contain;max-height:40px;scrollbar-width:thin}.dzt-map-stops:empty{display:none}.dzt-map-stops li{display:inline-flex;align-items:center;gap:5px;flex-shrink:0;font-size:11px;max-width:170px;padding:5px 8px;background:#ffffff08;border:1px solid var(--dzt-line);border-radius:8px}.dzt-map-stops li>span{font-weight:800;color:var(--dzt-accent)}.dzt-map-stops li>strong{font-weight:500;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.dzt-map-toolbar :is(button,a):focus-visible{outline:2px solid var(--dzt-accent);outline-offset:3px}.dzt-route-number-icon{background:transparent!important;border:0!important}.dzt-route-number{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#bef264;border:3px solid #fff;color:#17230c;font-size:14px;font-weight:900;box-shadow:0 3px 14px #0008}.dzt-route-number.is-end{background:#7dd3fc}.dzt-route-number.is-start{background:#bef264}.dzt-route-number-icon:focus-visible .dzt-route-number{outline:3px solid #facc15;outline-offset:3px}.day-mode .dzt-map-toolbar{--dzt-text:#1d2815;--dzt-muted:#52634d;--dzt-line:#26391a25;background:#fffffff5;border-color:#81a058;box-shadow:0 12px 40px #20351026}.day-mode .dzt-map-badge,.day-mode .dzt-map-choice-icon{color:#4d7c0f}.day-mode .dzt-map-stops li>span,.day-mode .dzt-map-choice>i{color:#4d7c0f}.day-mode .dzt-map-message{color:#3f6212}.day-mode .dzt-map-message[data-error=true]{color:#b91c1c}
+@keyframes dzt-dialog-in{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes dzt-panel-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@keyframes dzt-toolbar-in{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:600px){.dzt-journal-find{grid-template-columns:1fr}.dzt-journal-find button{min-height:44px}.dzt-map-toolbar{bottom:max(16px,env(safe-area-inset-bottom));width:calc(100% - 24px);padding:13px;border-radius:16px}.dzt-map-actions{flex-wrap:wrap}.dzt-map-actions button{flex:1;white-space:nowrap;font-size:11px}.dzt-map-heading p{font-size:11px}.dzt-map-toolbar .dzt-map-close{min-width:40px;min-height:40px}.dzt-map-choice{padding:13px}.dzt-map-choice small{font-size:11px}.dzt-disclosure summary{min-height:36px}.dzt-main-actions>.dzt-text{flex:0 0 auto}.dzt-scroll{padding-bottom:max(22px,env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){.dzt-card,.dzt-scroll>section,.dzt-stop,.dzt-map-toolbar{animation:none!important}.dzt-map-choice,.dzt-map-toolbar *,.dzt-card *{transition:none!important;scroll-behavior:auto!important}}
+.dzo-readiness summary:focus-visible{outline:2px solid var(--dzo-accent);outline-offset:3px;border-radius:10px}
     </style>
 </head>
 <body class="antialiased font-sans">
@@ -532,9 +598,10 @@
             <p id="community-compose-status" class="dz-status" role="status"></p>
           </form>
           <div class="dz-tabs" aria-label="Akış filtreleri"><button type="button" id="community-tab-all" aria-pressed="true" data-community-action="all">Tüm paylaşımlar</button><button type="button" id="community-tab-spot" aria-pressed="false" data-community-action="filter" aria-controls="community-filter-panel" aria-expanded="false">Spot filtresi <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></button><button type="button" class="dz-refresh" data-community-action="refresh" aria-label="Akışı yenile"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button></div>
+<div class="dz-feed-order"><label for="community-sort">Sıralama</label><select id="community-sort"><option value="popular">En çok beğenilen</option><option value="newest">En yeni</option></select></div>
 <div class="dz-community-search"><div class="dz-community-search-field"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><label class="dz-sr" for="community-search">Yüklenen paylaşımlarda ara</label><input id="community-search" type="search" maxlength="120" placeholder="Paylaşım veya #etiket ara" autocomplete="off"><button id="community-search-clear" type="button" class="dz-icon-button" aria-label="Topluluk aramasını temizle" hidden><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div><p id="community-search-scope" class="dz-search-scope" role="status" aria-live="polite" hidden></p></div>
           <div id="community-filter-panel" class="dz-filter-panel" hidden><label for="community-filter-spot">Paylaşımlarını görmek istediğin spot</label><select id="community-filter-spot"><option value="">Tüm spotlar</option></select></div>
-          <div id="community-new-posts" class="dz-new-posts" hidden><button type="button" data-community-action="new-posts">Yeni paylaşımlar <i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button></div>
+          <div id="community-new-posts" class="dz-new-posts" hidden><button type="button" data-community-action="new-posts">Akış güncellendi <i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button></div>
           <p id="community-feed-status" class="dz-feed-status" role="status" aria-live="polite"></p>
           <div id="community-feed" class="dz-feed" aria-label="Topluluk paylaşımları"></div>
           <button id="community-load-more" class="dz-load-more" type="button" hidden>Daha fazla göster <i class="fa-solid fa-arrow-down" aria-hidden="true"></i></button>
@@ -792,31 +859,32 @@
 <!-- Routes and personal ride journal: local device data, scoped per account. -->
 <section id="ride-tools-modal" class="dzx-modal hidden" role="dialog" aria-modal="true" aria-labelledby="ride-tools-title">
   <div class="dzt-card">
-    <header class="dzt-header"><div><span class="dzt-eyebrow">DropZone</span><h2 id="ride-tools-title">Sürüş araçları</h2></div><button type="button" class="dzt-icon" data-ride-action="close" aria-label="Sürüş araçlarını kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
-    <div class="dzt-tabs" role="tablist" aria-label="Sürüş araçları"><button id="ride-route-tab" type="button" role="tab" aria-selected="true" aria-controls="ride-route-panel" data-ride-action="routes">Rotam</button><button id="ride-journal-tab" type="button" role="tab" aria-selected="false" aria-controls="ride-journal-panel" data-ride-action="journal">Sürüş günlüğüm</button></div>
+    <header class="dzt-header"><div><span class="dzt-eyebrow">DropZone</span><h2 id="ride-tools-title">Rotalarım</h2></div><button type="button" class="dzt-icon" data-ride-action="close" aria-label="Sürüş araçlarını kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></header>
+    <div class="dzt-tabs" role="tablist" aria-label="Sürüş araçları"><button id="ride-route-tab" type="button" role="tab" aria-selected="true" aria-controls="ride-route-panel" data-ride-action="routes">Rotalarım</button><button id="ride-journal-tab" type="button" role="tab" aria-selected="false" aria-controls="ride-journal-panel" data-ride-action="journal">Sürüş günlüğüm</button></div>
     <p id="ride-tools-status" class="dzt-status" role="status" aria-live="polite"></p>
     <div class="dzt-scroll">
       <section id="ride-route-panel" role="tabpanel" aria-labelledby="ride-route-tab">
-        <div class="dzt-section-heading"><h3>Duraklarını seç</h3><span id="ride-route-count">0 / 10 spot</span></div>
-        <form id="ride-route-add-form" class="dzt-route-picker"><label class="dzt-sr" for="ride-route-search">Rota için spot ara</label><input id="ride-route-search" type="search" maxlength="100" placeholder="Spot veya şehir ara"><label class="dzt-sr" for="ride-route-spot">Rotaya eklenecek spot</label><select id="ride-route-spot"><option value="">Spot seç</option></select><button id="ride-route-add" type="submit" class="dzt-primary">Durak ekle</button></form>
+        <div class="dzt-section-heading"><h3>Duraklarını sırayla ekle</h3><span id="ride-route-count">0 / 10 durak</span></div>
+        <button id="ride-route-map-pick" type="button" class="dzt-map-choice" data-ride-action="pick-route"><span class="dzt-map-choice-icon"><i class="fa-solid fa-route" aria-hidden="true"></i></span><span><strong>Haritada rota oluştur</strong><small>Spotlara sırayla dokun, rotan çizilsin</small></span><i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
+        <form id="ride-route-add-form" class="dzt-route-picker"><label class="dzt-sr" for="ride-route-search">Rota için spot ara</label><input id="ride-route-search" type="search" maxlength="100" placeholder="Ya da spot / şehir adıyla ara"><label class="dzt-sr" for="ride-route-spot">Rotaya eklenecek spot</label><select id="ride-route-spot"><option value="">Spot seç</option></select><button id="ride-route-add" type="submit" class="dzt-secondary">Ekle</button></form>
         <ol id="ride-route-stops" class="dzt-stops"></ol>
         <div id="ride-route-summary" class="dzt-summary" hidden></div>
-        <p class="dzt-muted dzt-route-note">Mesafe duraklar arasında kuş uçuşudur. Süre 15 km/sa hızla tahmin edilir; yol, trafik ve sürüş molalarını içermez.</p>
-        <div class="dzt-actions"><button id="ride-route-preview" type="button" class="dzt-secondary" data-ride-action="preview">Haritada göster</button><a id="ride-route-navigate" class="dzt-primary" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">Navigasyonda aç <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a><button type="button" class="dzt-text" data-ride-action="clear-route">Temizle</button></div>
+        <div class="dzt-actions dzt-main-actions"><button id="ride-route-preview" type="button" class="dzt-secondary" data-ride-action="preview"><i class="fa-regular fa-eye" aria-hidden="true"></i>Önizle</button><a id="ride-route-navigate" class="dzt-primary" href="#" target="_blank" rel="noopener noreferrer" aria-disabled="true">Navigasyonda aç</a><button type="button" class="dzt-text" data-ride-action="clear-route">Temizle</button></div>
         <div id="ride-route-nav-segments" class="dzt-nav-segments" hidden></div>
-        <form id="ride-route-save-form" class="dzt-save-form"><label for="ride-route-name">Rotayı kaydet</label><div><input id="ride-route-name" type="text" maxlength="80" placeholder="Rotana bir ad ver" required><button id="ride-route-save" type="submit" class="dzt-secondary">Kaydet</button></div></form>
-        <div class="dzt-section-heading"><h3>Kaydedilen rotalar</h3><span>Bu cihazda saklanır</span></div><div id="ride-route-saved" class="dzt-saved"></div>
+        <form id="ride-route-save-form" class="dzt-save-form"><label for="ride-route-name">Bu rotayı sakla</label><div><input id="ride-route-name" type="text" maxlength="80" placeholder="Rota adı" required><button id="ride-route-save" type="submit" class="dzt-secondary">Kaydet</button></div></form>
+        <details class="dzt-disclosure" id="ride-route-library"><summary>Kaydedilen rotalar <span id="ride-route-saved-count">0</span></summary><div id="ride-route-saved" class="dzt-saved"></div></details>
+        <details class="dzt-disclosure dzt-help"><summary>Mesafe nasıl hesaplanır?</summary><p class="dzt-muted dzt-route-note">Çizgiler spotları sırayla bağlar. Mesafe kuş uçuşu, süre 15 km/sa hızla tahmindir. Yol tarifi için Navigasyonda aç seçeneğini kullan. Rotaların bu cihazda saklanır.</p></details>
       </section>
       <section id="ride-journal-panel" role="tabpanel" aria-labelledby="ride-journal-tab" hidden>
         <div id="ride-journal-auth" class="dzt-notice" hidden>Günlüğünü kullanmak için Google hesabınla giriş yap.</div>
         <div id="ride-journal-content">
           <form id="ride-journal-form" class="dzt-journal-form">
-            <div class="dzt-section-heading"><h3 id="ride-journal-form-title">Yeni sürüş kaydı</h3><span>Bu cihazda saklanır</span></div>
-            <div class="dzt-grid"><label>Spot<select id="ride-journal-spot" required><option value="">Spot seç</option></select></label><label>Tarih<input id="ride-journal-date" type="date" required></label></div>
+            <div class="dzt-section-heading"><h3 id="ride-journal-form-title">Yeni sürüş kaydı</h3><span>Bu cihazda, sana özel</span></div>
+            <div class="dzt-journal-spot-picker"><label for="ride-journal-search">Hangi spotta sürdün?</label><div class="dzt-journal-find"><input id="ride-journal-search" type="search" maxlength="100" placeholder="Spot veya şehir ara" aria-label="Günlük için spot ara"><button id="ride-journal-map-pick" type="button" class="dzt-secondary" data-ride-action="pick-journal"><i class="fa-regular fa-map" aria-hidden="true"></i>Haritadan seç</button></div><label class="dzt-sr" for="ride-journal-spot">Sürüş yaptığın spot</label><select id="ride-journal-spot" required><option value="">Spot seç</option></select></div>
+            <label>Tarih<input id="ride-journal-date" type="date" required></label>
             <label>Denediğin hareketler<input id="ride-journal-tricks" type="text" maxlength="200" placeholder="Örn. bunny hop, manual"></label>
-            <label>Notların<textarea id="ride-journal-notes" rows="3" maxlength="2000" placeholder="Ne iyi gitti, bir sonraki sürüşte ne deneyeceksin?"></textarea></label>
-            <label>Paylaşım tercihi<select id="ride-journal-visibility"><option value="private">Özel — yalnızca günlükte</option><option value="shareable">Paylaşılabilir — topluluk taslağına aktarılabilir</option></select></label>
-            <p class="dzt-muted">Kaydın otomatik paylaşılmaz. Paylaşılabilir kayıtları ayrıca topluluk taslağına aktarabilirsin.</p>
+            <label>Notların<textarea id="ride-journal-notes" rows="3" maxlength="2000" placeholder="Sürüşün nasıl geçti?"></textarea></label>
+            <details class="dzt-disclosure dzt-share-options"><summary>Paylaşım tercihi</summary><label>Görünürlük<select id="ride-journal-visibility"><option value="private">Özel — yalnızca günlükte</option><option value="shareable">Paylaşılabilir — topluluk taslağına aktarılabilir</option></select></label><p class="dzt-muted">Otomatik paylaşılmaz; paylaşılabilir kayıtları ayrıca toplulukta paylaşabilirsin.</p></details>
             <div class="dzt-actions"><button id="ride-journal-save" type="submit" class="dzt-primary">Kaydı ekle</button><button id="ride-journal-cancel" type="button" class="dzt-secondary" data-ride-action="cancel-edit" hidden>Düzenlemeyi iptal et</button></div>
           </form>
           <div class="dzt-section-heading"><h3>Sürüş geçmişin</h3><span id="ride-journal-count">0 kayıt</span></div>
@@ -827,21 +895,27 @@
     </div>
   </div>
 </section>
-    <section id="offline-modal" class="dzo-modal" role="dialog" aria-modal="true" aria-labelledby="offline-title" hidden>
+<section id="ride-map-toolbar" class="dzt-map-toolbar" aria-label="Haritada rota ve spot seçimi" hidden>
+  <div class="dzt-map-heading"><span id="ride-map-badge" class="dzt-map-badge" aria-hidden="true"><i class="fa-solid fa-route"></i></span><div><strong id="ride-map-title">Haritada rota oluştur</strong><p id="ride-map-hint">Spotlara sırayla dokun.</p></div><button type="button" class="dzt-map-close" data-ride-map-action="exit" aria-label="Harita görünümünü kapat"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+  <div id="ride-map-message" class="dzt-map-message" role="status" aria-live="polite"></div>
+  <ol id="ride-map-stops" class="dzt-map-stops" aria-label="Seçilen duraklar"></ol>
+  <div class="dzt-map-actions"><button id="ride-map-undo" type="button" class="dzt-map-secondary" data-ride-map-action="undo"><i class="fa-solid fa-arrow-rotate-left" aria-hidden="true"></i>Son durağı geri al</button><button id="ride-map-return" type="button" class="dzt-map-primary" data-ride-map-action="return"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i>Rotaya dön</button></div>
+</section>
+    <section id="offline-modal" class="dzo-modal" role="dialog" aria-modal="true" aria-labelledby="offline-title" aria-describedby="offline-intro" hidden>
       <div class="dzo-card" tabindex="-1">
-        <header class="dzo-header"><div><h2 id="offline-title">Çevrimdışı spotlar</h2><p>Spot bilgilerini bu cihazda sakla. Harita döşemeleri ve fotoğraflar indirilmez.</p></div><button type="button" class="dzo-icon" data-offline-action="close" aria-label="Çevrimdışı spotları kapat">×</button></header>
+        <header class="dzo-header"><div><span class="dzo-eyebrow">Cihazımda</span><h2 id="offline-title">Spotları indir</h2><p id="offline-intro">Spot bilgilerine internet olmadan da ulaş.</p></div><button type="button" class="dzo-icon" data-offline-action="close" aria-label="Çevrimdışı spotları kapat">×</button></header>
         <div class="dzo-body">
-          <div class="dzo-readiness"><p id="offline-status" role="status" aria-live="polite">Çevrimdışı açılış durumu kontrol ediliyor.</p><button id="offline-prepare" type="button" class="dzo-secondary">Çevrimdışı açılışı hazırla</button></div>
           <form id="offline-pack-form" class="dzo-form">
-            <h3>Spot paketi oluştur</h3>
-            <label for="offline-pack-name">Paket adı</label><input id="offline-pack-name" maxlength="60" required placeholder="Örn. İzmir hafta sonu">
-            <div class="dzo-grid"><div><label for="offline-pack-source">Kaydedilecek bölge</label><select id="offline-pack-source"><option value="bounds">Haritada görünen spotlar</option><option value="city">Bir şehirdeki spotlar</option></select></div><div id="offline-city-field" hidden><label for="offline-pack-city">Şehir</label><select id="offline-pack-city"></select></div></div>
-            <p id="offline-pack-count" class="dzo-muted"></p>
-            <button id="offline-pack-save" type="submit" class="dzo-primary">Spotları cihaza kaydet</button>
+            <div class="dzo-section-title"><h3>Yeni indirme</h3><span id="offline-pack-count" class="dzo-count" role="status" aria-live="polite"></span></div>
+            <div class="dzo-grid"><div><label for="offline-pack-source">Hangi bölge?</label><select id="offline-pack-source"><option value="bounds">Haritada görünen alan</option><option value="city">Şehir seç</option></select></div><div id="offline-city-field" hidden><label for="offline-pack-city">Şehir</label><select id="offline-pack-city"></select></div></div>
+            <div><label for="offline-pack-name">İndirme adı</label><input id="offline-pack-name" maxlength="60" required placeholder="Örn. İzmir hafta sonu" autocomplete="off"></div>
+            <button id="offline-pack-save" type="submit" class="dzo-primary"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Spotları cihaza kaydet</button>
+            <p class="dzo-muted dzo-download-note">Yalnızca spot bilgileri indirilir; harita zemini ve fotoğraflar dahil değildir.</p>
             <p id="offline-pack-status" class="dzo-feedback" role="status" aria-live="polite"></p>
           </form>
-          <section class="dzo-saved"><h3>Kaydedilen paketler</h3><div id="offline-pack-list"></div></section>
-          <section id="offline-pack-detail" class="dzo-detail" hidden><div class="dzo-detail-heading"><h3 id="offline-pack-detail-title"></h3><button id="offline-pack-use" type="button" class="dzo-secondary">Bu paketi haritada aç</button></div><p class="dzo-muted">Kaydedilmiş bilgiler güncel olmayabilir. İnternet yoksa harita zemini görünmeyebilir; spot listesi ve detayları kullanılabilir.</p><div id="offline-pack-spots"></div><button id="offline-pack-more" type="button" class="dzo-secondary" hidden>Daha fazla spot göster</button></section>
+          <section class="dzo-saved" aria-labelledby="offline-saved-title"><div class="dzo-section-title"><h3 id="offline-saved-title">İndirdiklerim</h3><span id="offline-pack-total" class="dzo-count"></span></div><div id="offline-pack-list"></div></section>
+          <section id="offline-pack-detail" class="dzo-detail" aria-labelledby="offline-pack-detail-title" hidden><div class="dzo-detail-heading"><h3 id="offline-pack-detail-title"></h3><button id="offline-pack-use" type="button" class="dzo-secondary">Haritada aç</button></div><p class="dzo-muted">Bilgiler indirildiği tarihe aittir. İnternet yoksa harita zemini görünmeyebilir.</p><div id="offline-pack-spots"></div><button id="offline-pack-more" type="button" class="dzo-secondary" hidden>Daha fazla spot</button></section>
+          <details class="dzo-readiness"><summary><span>Çevrimdışı açılış</span><span id="offline-ready-label" class="dzo-ready-label" aria-live="polite">Kontrol ediliyor</span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></summary><div class="dzo-readiness-content"><p id="offline-status" role="status" aria-live="polite">Çevrimdışı açılış durumu kontrol ediliyor.</p><button id="offline-prepare" type="button" class="dzo-secondary">Çevrimdışı açılışı hazırla</button></div></details>
         </div>
       </div>
     </section>
@@ -1069,12 +1143,11 @@
 
     <script>
         // Local, account-scoped ride tools. No journal entry is published automatically.
-        // Local, account-scoped ride tools. No journal entry is published automatically.
         window.DropZoneRideTools = (() => {
             const root = document.getElementById('ride-tools-modal');
             const el = id => document.getElementById(id);
             let config = null, uid = null, generation = 0, ready = false, loading = false, busy = false, activeTab = 'routes';
-            let routeIds = [], routes = [], journal = [], routeEditId = null, journalEditId = null, previewLine = null, returnFocus = null;
+            let routeIds = [], routes = [], journal = [], routeEditId = null, journalEditId = null, previewLine = null, previewMarkers = null, mapMode = null, returnFocus = null;
             const MAX_STOPS = 10, MAX_ROUTES = 30, MAX_ENTRIES = 300;
             const routeKey = () => `route:${uid || 'guest'}`;
             const journalKey = () => `journal:${uid}`;
@@ -1118,14 +1191,81 @@
                 if (!window.DropZoneStore || typeof window.DropZoneStore.set !== 'function') throw new Error('storage-unavailable');
                 await window.DropZoneStore.set(key, value);
             }
-            function clearPreview() { if (previewLine && config?.map) config.map.removeLayer(previewLine); previewLine = null; }
+            function clearPreview() {
+                if (previewLine && config?.map) config.map.removeLayer(previewLine);
+                if (previewMarkers && config?.map) config.map.removeLayer(previewMarkers);
+                previewLine = null; previewMarkers = null;
+            }
+            const reducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+            function setMapMode(value) {
+                if (mapMode === value) return;
+                mapMode = value; el('ride-map-toolbar').hidden = !value;
+                config?.onMapModeChange?.(value);
+            }
+            function stopMapMode() { setMapMode(null); clearPreview(); el('ride-map-message').textContent = ''; }
+            function mapMessage(message = '', error = false) {
+                el('ride-map-message').textContent = message; el('ride-map-message').dataset.error = String(error);
+            }
+            function renderMapState() {
+                if (!mapMode || !config?.map) return;
+                clearPreview();
+                const isRoute = mapMode !== 'journal', spots = routeIds.map(spotFor), usable = spots.filter(validCoords);
+                el('ride-map-title').textContent = mapMode === 'preview' ? 'Rota önizlemesi' : isRoute ? 'Haritada rota oluştur' : 'Günlük için spot seç';
+                el('ride-map-hint').textContent = mapMode === 'preview' ? `${routeIds.length} durak · Çizgiler kuş uçuşudur.` : isRoute ? routeIds.length >= MAX_STOPS ? '10 durak tamamlandı. Rotana dönerek kaydedebilirsin.' : `${routeIds.length ? 'Sıradaki' : 'İlk'} spotuna dokun · ${routeIds.length} / ${MAX_STOPS} durak` : 'Sürüş yaptığın spota dokun. Notların formda korunur.';
+                el('ride-map-return').lastChild.textContent = isRoute ? ' Rotaya dön' : ' Günlüğe dön';
+                el('ride-map-undo').hidden = mapMode !== 'route'; el('ride-map-undo').disabled = !routeIds.length;
+                const chips = el('ride-map-stops'); chips.replaceChildren();
+                if (!isRoute) return;
+                routeIds.forEach((id,index) => {
+                    const chip = node('li'); chip.append(node('span','',String(index+1)),node('strong','',spotFor(id)?.name || 'Eski spot')); chips.append(chip);
+                });
+                if (usable.length >= 2) previewLine = L.polyline(usable.map(s=>[s.coords.lat,s.coords.lng]),{color:'#bef264',weight:4,dashArray:'8 9',opacity:.95,interactive:false}).addTo(config.map);
+                previewMarkers = L.layerGroup().addTo(config.map);
+                spots.forEach((spot,index) => {
+                    if (!validCoords(spot)) return;
+                    const content = node('span',`dzt-route-number${index===0?' is-start':index===spots.length-1?' is-end':''}`,String(index+1));
+                    const icon = L.divIcon({html:content,className:'dzt-route-number-icon',iconSize:[34,34],iconAnchor:[17,17]});
+                    const marker = L.marker([spot.coords.lat,spot.coords.lng],{icon,zIndexOffset:2200,bubblingMouseEvents:false,title:`${index+1}. durak: ${spot.name || 'İsimsiz spot'}`,alt:`${index+1}. durak`});
+                    marker.on('click',()=>{if(mapMode==='route')chooseMapSpot(spot.id);});
+                    marker.addTo(previewMarkers);
+                });
+            }
+            function beginMapSelection(mode) {
+                if (busy || !config?.map || (mode==='journal' && !getUser())) return;
+                root.classList.add('hidden'); config.map.closePopup(); mapMessage(); setMapMode(mode); renderMapState();
+                el('ride-map-return').focus({preventScroll:true});
+                config.showToast?.(mode==='route'?'Rotanı çizmek için spotlara sırayla dokun.':'Günlüğe eklemek istediğin spota dokun.');
+            }
+            function returnFromMap(message = '') {
+                if (!mapMode) return;
+                const tab = mapMode==='journal'?'journal':'routes'; stopMapMode();
+                root.classList.remove('hidden'); setTab(tab); refresh(); status(message);
+                el(tab==='journal'?'ride-journal-spot':'ride-route-tab').focus({preventScroll:true});
+            }
+            function chooseMapSpot(id) {
+                if (!mapMode) return false;
+                if (mapMode==='preview') return true;
+                const spot=spotFor(id);
+                if (!spot || !validCoords(spot)) {mapMessage('Bu spotun konumu geçersiz.',true);return true;}
+                if (mapMode==='journal') {
+                    // Never reset the form here: date, notes, visibility and edit state belong to the draft.
+                    el('ride-journal-search').value=''; refreshSpotOptions(id); el('ride-journal-spot').value=id;
+                    returnFromMap(`${spot.name || 'Spot'} günlüğün için seçildi.`); el('ride-journal-tricks').focus({preventScroll:true}); return true;
+                }
+                if (routeIds.includes(id)) {mapMessage('Bu spot rotanda zaten var. Yeni bir spot seçebilirsin.',true);return true;}
+                if (routeIds.length>=MAX_STOPS) {mapMessage('Bir rotaya en fazla 10 durak eklenebilir.',true);return true;}
+                routeIds.push(id); renderRoute(); mapMessage(`${routeIds.length}. durak eklendi: ${spot.name || 'Spot'}`);
+                return true;
+            }
+            function isMapMode() { return !!mapMode; }
+            function isMapPicking() { return mapMode==='route' || mapMode==='journal'; }
             function resetJournalForm() {
-                journalEditId = null; el('ride-journal-form').reset(); el('ride-journal-date').value = today(); el('ride-journal-date').max = today();
+                journalEditId = null; el('ride-journal-form').reset(); el('ride-journal-search').value=''; el('ride-journal-date').value = today(); el('ride-journal-date').max = today();
                 el('ride-journal-form-title').textContent = 'Yeni sürüş kaydı'; el('ride-journal-save').textContent = 'Kaydı ekle'; el('ride-journal-cancel').hidden = true;
             }
             async function onAuthChange() {
                 const token = ++generation; uid = getUser()?.uid || null; ready = false; loading = true; busy = false;
-                routeIds = []; routes = []; journal = []; routeEditId = null; clearPreview();
+                routeIds = []; routes = []; journal = []; routeEditId = null; stopMapMode();
                 el('ride-route-name').value = ''; el('ride-route-search').value = ''; el('ride-journal-filter').value = ''; resetJournalForm(); refresh();
                 try {
                     const [savedRoutes, savedJournal] = await Promise.all([readStore(routeKey()), uid ? readStore(journalKey()) : Promise.resolve([])]);
@@ -1145,17 +1285,22 @@
                 if ([...select.options].some(option => option.value === old)) select.value = old;
             }
             function sortedSpots() { return getSpots().filter(s => validSpotId(s.id)).sort((a,b) => String(a.name || '').localeCompare(String(b.name || ''),'tr')); }
-            function refreshSpotOptions() {
+            function refreshSpotOptions(preferredJournal) {
                 const all = sortedSpots(); const search = el('ride-route-search').value.toLocaleLowerCase('tr-TR');
                 fillSelect('ride-route-spot', all.filter(spot => validCoords(spot) && `${spot.name || ''} ${spot.locationText || ''}`.toLocaleLowerCase('tr-TR').includes(search)).slice(0,100), 'Spot seç');
-                const currentJournal = el('ride-journal-spot').value;
-                fillSelect('ride-journal-spot', all, 'Spot seç');
+                const currentJournal = typeof preferredJournal==='string' ? preferredJournal : el('ride-journal-spot').value;
+                const journalSearch = el('ride-journal-search').value.toLocaleLowerCase('tr-TR');
+                const journalSpots = all.filter(spot => `${spot.name || ''} ${spot.locationText || ''}`.toLocaleLowerCase('tr-TR').includes(journalSearch)).slice(0,100);
+                // Preserve a selected spot even when it falls outside the bounded search results.
+                const selectedJournal = spotFor(currentJournal);
+                if (selectedJournal && !journalSpots.some(spot=>spot.id===currentJournal)) journalSpots.unshift(selectedJournal);
+                fillSelect('ride-journal-spot', journalSpots, 'Spot seç',currentJournal);
                 if (journalEditId && currentJournal && !spotFor(currentJournal)) {
                     const entry = journal.find(r => r.id === journalEditId);
                     if (entry) { el('ride-journal-spot').append(new Option(`${entry.spotName || 'Eski spot'} · artık haritada yok`, entry.spotId)); el('ride-journal-spot').value = entry.spotId; }
                 }
-                const distinct = new Map(all.map(s => [s.id,s]));
-                journal.forEach(entry => { if (!distinct.has(entry.spotId)) distinct.set(entry.spotId,{id:entry.spotId,name:entry.spotName || 'Eski spot'}); });
+                const distinct = new Map();
+                journal.forEach(entry => { if (!distinct.has(entry.spotId)) distinct.set(entry.spotId,spotFor(entry.spotId) || {id:entry.spotId,name:entry.spotName || 'Eski spot'}); });
                 fillSelect('ride-journal-filter',[...distinct.values()], 'Tüm spotlar');
             }
             function distanceMeters(a,b) {
@@ -1173,7 +1318,7 @@
                 return url.href;
             }
             function renderRoute() {
-                el('ride-route-count').textContent = `${routeIds.length} / ${MAX_STOPS} spot`;
+                el('ride-route-count').textContent = `${routeIds.length} / ${MAX_STOPS} durak`;
                 const list = el('ride-route-stops'); list.replaceChildren();
                 routeIds.forEach((id,index) => {
                     const spot = spotFor(id), item = node('li','dzt-stop');
@@ -1211,7 +1356,7 @@
                 el('ride-route-preview').disabled = busy || !complete;
                 el('ride-route-save').disabled = busy || !complete || !ready;
                 el('ride-route-save').textContent = routeEditId ? 'Güncelle' : 'Kaydet';
-                el('ride-route-add').disabled = busy || routeIds.length >= MAX_STOPS;
+                el('ride-route-add').disabled = busy || routeIds.length >= MAX_STOPS; el('ride-route-map-pick').disabled = busy;
                 el('ride-route-search').disabled = busy; el('ride-route-spot').disabled = busy; el('ride-route-name').disabled = busy;
                 const saved = el('ride-route-saved'); saved.replaceChildren();
                 routes.slice().sort((a,b) => b.updatedAt-a.updatedAt).forEach(route => {
@@ -1220,6 +1365,8 @@
                     item.append(info,button('Yükle','load-route',route.id),iconButton('fa-trash-can','Kaydedilen rotayı sil','delete-route',route.id)); saved.append(item);
                 });
                 if (!routes.length) saved.append(node('p','dzt-empty','Henüz kaydedilmiş rotan yok.'));
+                el('ride-route-saved-count').textContent=String(routes.length);
+                if (mapMode) renderMapState();
             }
             function renderJournal() {
                 const user = getUser(); el('ride-journal-auth').hidden = !!user; el('ride-journal-content').hidden = !user;
@@ -1243,7 +1390,7 @@
             }
             function refresh() { if (!config) return; refreshSpotOptions(); renderRoute(); renderJournal(); }
             function setTab(tab) {
-                activeTab = tab === 'journal' ? 'journal' : 'routes';
+                activeTab = tab === 'journal' ? 'journal' : 'routes'; el('ride-tools-title').textContent=activeTab==='journal'?'Sürüş günlüğüm':'Rotalarım';
                 el('ride-route-panel').hidden = activeTab !== 'routes'; el('ride-journal-panel').hidden = activeTab !== 'journal';
                 el('ride-route-tab').setAttribute('aria-selected',String(activeTab==='routes')); el('ride-journal-tab').setAttribute('aria-selected',String(activeTab==='journal'));
                 el('ride-route-tab').tabIndex = activeTab==='routes'?0:-1; el('ride-journal-tab').tabIndex = activeTab==='journal'?0:-1;
@@ -1251,6 +1398,7 @@
             async function open(tab='routes') {
                 if (!config) return;
                 await ensureAccount();
+                if (mapMode) stopMapMode();
                 if (root.classList.contains('hidden')) {
                     returnFocus = document.activeElement;
                     if (typeof window.closeModals === 'function') window.closeModals();
@@ -1260,7 +1408,7 @@
             }
             function close(options={}) {
                 const wasOpen = !root.classList.contains('hidden'); root.classList.add('hidden');
-                if (!options.keepPreview) clearPreview();
+                if (!options.keepPreview) stopMapMode();
                 if (wasOpen && returnFocus?.isConnected) returnFocus.focus();
             }
             function appendStop(id) {
@@ -1270,7 +1418,7 @@
                 routeIds.push(id); clearPreview(); status(); renderRoute();
             }
             async function addStop(id) { await open('routes'); appendStop(id); }
-            async function logSpot(id) { await open('journal'); if (getUser() && spotFor(id)) { resetJournalForm(); el('ride-journal-spot').value=id; el('ride-journal-tricks').focus(); } }
+            async function logSpot(id) { await open('journal'); if (getUser() && spotFor(id)) { resetJournalForm(); refreshSpotOptions(id); el('ride-journal-spot').value=id; el('ride-journal-tricks').focus(); } }
             async function saveRoute(event) {
                 event.preventDefault(); if (busy || !ready) return;
                 const name = el('ride-route-name').value.trim();
@@ -1278,7 +1426,7 @@
                 if (!routeEditId && routes.length >= MAX_ROUTES) { status('En fazla 30 rota saklanabilir. Önce eski bir rotayı kaldır.',true); return; }
                 const token = generation, key = routeKey(), record = {id:routeEditId || newId(),name,spotIds:[...routeIds],updatedAt:Date.now()};
                 const next = routeEditId ? routes.map(route=>route.id===routeEditId?record:route) : [...routes,record]; busy = true; renderRoute();
-                try { await writeStore(key,next); if(token===generation){routes=next;routeEditId=record.id;status('Rota bu cihaza kaydedildi.');} }
+                try { await writeStore(key,next); if(token===generation){routes=next;routeEditId=record.id;el('ride-route-library').open=true;status('Rota bu cihaza kaydedildi.');} }
                 catch { if(token===generation)status('Rota kaydedilemedi. Cihaz depolamasını kontrol edip yeniden dene.',true); }
                 finally { if(token===generation){busy=false;renderRoute();} }
             }
@@ -1307,7 +1455,7 @@
                 finally {if(token===generation){busy=false;refresh();}}
             }
             function editEntry(id) {
-                const entry=journal.find(record=>record.id===id);if(!entry)return;journalEditId=id;refreshSpotOptions();
+                const entry=journal.find(record=>record.id===id);if(!entry)return;journalEditId=id;el('ride-journal-search').value='';refreshSpotOptions(entry.spotId);
                 if(!spotFor(entry.spotId)){el('ride-journal-spot').append(new Option(entry.spotName || 'Eski spot',entry.spotId));}
                 el('ride-journal-spot').value=entry.spotId;el('ride-journal-date').value=entry.date;el('ride-journal-tricks').value=entry.tricks;el('ride-journal-notes').value=entry.notes;el('ride-journal-visibility').value=entry.visibility;
                 el('ride-journal-form-title').textContent='Sürüş kaydını düzenle';el('ride-journal-save').textContent='Değişiklikleri kaydet';el('ride-journal-cancel').hidden=false;
@@ -1315,9 +1463,10 @@
             }
             function preview() {
                 const spots=routeIds.map(spotFor);if(spots.length<2||!spots.every(validCoords)||!config.map)return;
-                clearPreview();previewLine=L.polyline(spots.map(s=>[s.coords.lat,s.coords.lng]),{color:'#bef264',weight:4,dashArray:'8 9',opacity:.9}).addTo(config.map);
-                config.map.fitBounds(previewLine.getBounds(),{padding:[35,35],maxZoom:16});close({keepPreview:true});
-                config.showToast?.('Duraklar düz çizgiyle gösteriliyor; yol rotası için Navigasyonda aç seçeneğini kullan.');
+                root.classList.add('hidden'); config.map.closePopup(); mapMessage(); setMapMode('preview'); renderMapState();
+                const toolbarHeight = el('ride-map-toolbar').getBoundingClientRect().height;
+                if(previewLine)config.map.fitBounds(previewLine.getBounds(),{paddingTopLeft:[50,115],paddingBottomRight:[75,toolbarHeight+55],maxZoom:16,animate:!reducedMotion()});
+                el('ride-map-return').focus({preventScroll:true});
             }
             function shareEntry(id) {
                 const entry=journal.find(record=>record.id===id);if(!entry||entry.visibility!=='shareable'||!getUser())return;
@@ -1331,7 +1480,18 @@
                 if(config)return;config=options;
                 el('ride-route-add-form').addEventListener('submit',event=>{event.preventDefault();if(!busy)appendStop(el('ride-route-spot').value);});
                 el('ride-route-save-form').addEventListener('submit',saveRoute);el('ride-journal-form').addEventListener('submit',saveJournal);
-                let searchTimer;el('ride-route-search').addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(refreshSpotOptions,160);});
+                let searchTimer;['ride-route-search','ride-journal-search'].forEach(id=>el(id).addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(refreshSpotOptions,160);}));
+                el('ride-map-toolbar').addEventListener('click',event=>{
+                    const action=event.target.closest('[data-ride-map-action]')?.dataset.rideMapAction;
+                    if(action==='return'||action==='exit')returnFromMap();
+                    if(action==='undo'&&mapMode==='route'&&routeIds.length){routeIds.pop();renderRoute();mapMessage('Son durak kaldırıldı.');}
+                });
+                document.addEventListener('keydown',event=>{
+                    if(!mapMode || event.key!=='Escape' || event.defaultPrevented) return;
+                    const otherDialog=[...document.querySelectorAll('[role=dialog],.modal-overlay')].some(dialog=>dialog!==root&&dialog.getClientRects().length>0);
+                    if(otherDialog)return;
+                    event.preventDefault();event.stopPropagation();returnFromMap();
+                });
                 el('ride-journal-filter').addEventListener('change',renderJournal);
                 el('ride-route-navigate').addEventListener('click',event=>{if(event.currentTarget.getAttribute('aria-disabled')==='true')event.preventDefault();});
                 root.addEventListener('click',event=>{
@@ -1340,6 +1500,8 @@
                     if(action==='close')close();
                     if(action==='routes'||action==='journal'){setTab(action);status();}
                     if(action==='preview')preview();
+                    if(action==='pick-route')beginMapSelection('route');
+                    if(action==='pick-journal')beginMapSelection('journal');
                     if(action==='cancel-edit'){resetJournalForm();status();}
                     if(busy)return;
                     if(action==='up'||action==='down'){const index=routeIds.indexOf(id),other=index+(action==='up'?-1:1);if(index>=0&&other>=0&&other<routeIds.length){[routeIds[index],routeIds[other]]=[routeIds[other],routeIds[index]];clearPreview();renderRoute();}}
@@ -1355,12 +1517,12 @@
                     if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close();return;}
                     if(event.target.matches('[role=tab]')&&['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){event.preventDefault();setTab(event.key==='Home'?'routes':event.key==='End'?'journal':activeTab==='routes'?'journal':'routes');el(activeTab==='routes'?'ride-route-tab':'ride-journal-tab').focus();}
                     if(event.key!=='Tab')return;
-                    const focusable=[...root.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled)')].filter(element=>element.tabIndex>=0&&element.getClientRects().length&&element.getAttribute('aria-disabled')!=='true');
+                    const focusable=[...root.querySelectorAll('button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled),textarea:not(:disabled),summary')].filter(element=>element.tabIndex>=0&&element.getClientRects().length&&element.getAttribute('aria-disabled')!=='true');
                     const first=focusable[0],last=focusable.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
                 });
                 onAuthChange();
             }
-            return {initialize,refresh,open,close,addStop,logSpot,onAuthChange};
+            return {initialize,refresh,open,close,addStop,logSpot,onAuthChange,chooseMapSpot,isMapMode,isMapPicking};
         })();
 
         window.DropZoneOffline = (() => {
@@ -1432,14 +1594,17 @@
             }
             function renderPacks() {
                 const list=document.getElementById('offline-pack-list');list.replaceChildren();
-                if(!packs.length)list.append(element('p','dzo-muted','Henüz paket kaydetmedin.'));
+                document.getElementById('offline-pack-total').textContent=`${packs.length} / ${MAX_PACKS}`;
+                if(!packs.length)list.append(element('p','dzo-muted','İndirdiğin spotlar burada görünür.'));
                 packs.forEach(pack=>{
                     const row=element('article','dzo-pack'),content=element('div','dzo-pack-content');
                     const sizeKey=`${pack.id}:${pack.savedAt}`;
                     if(!sizeCache.has(sizeKey))sizeCache.set(sizeKey,Math.ceil(new TextEncoder().encode(JSON.stringify(pack)).byteLength/1024));
                     const kb=sizeCache.get(sizeKey);
                     content.append(element('strong','',pack.name),element('small','',`${pack.spots.length} spot · ${kb} KB · ${new Date(pack.savedAt).toLocaleString('tr-TR')}`));
-                    const actions=element('div','dzo-pack-actions');actions.append(button('Aç','view',pack.id),button('Sil','delete',pack.id));row.append(content,actions);list.append(row);
+                    const actions=element('div','dzo-pack-actions'),openButton=button('Haritada aç','use',pack.id),viewButton=button('Spotlar','view',pack.id),deleteButton=button('Sil','delete',pack.id);
+                    openButton.className='dzo-primary';openButton.setAttribute('aria-label',`${pack.name} paketini haritada aç`);viewButton.setAttribute('aria-label',`${pack.name} paketindeki spotları göster`);deleteButton.setAttribute('aria-label',`${pack.name} paketini cihazdan sil`);
+                    actions.append(openButton,viewButton,deleteButton);row.append(content,actions);list.append(row);
                 });
                 renderDetail();updateCandidates();
             }
@@ -1455,7 +1620,8 @@
                 document.getElementById('offline-pack-more').hidden=visibleCount>=pack.spots.length;
             }
             function renderReadiness() {
-                const message=document.getElementById('offline-status'), prepareButton=document.getElementById('offline-prepare');
+                const message=document.getElementById('offline-status'), prepareButton=document.getElementById('offline-prepare'), label=document.getElementById('offline-ready-label');
+                label.dataset.ready=String(lastStatus.ready);label.textContent=busy?'Hazırlanıyor…':lastStatus.ready?'Hazır':!supported()?'Desteklenmiyor':!navigator.onLine?'Çevrimdışı':'Hazırlık gerekli';
                 if(!supported()){message.textContent='Bu tarayıcı veya bağlantı çevrimdışı açılışı desteklemiyor. HTTPS ya da localhost üzerinden kullan.';prepareButton.disabled=true;return;}
                 if(lastStatus.ready)message.textContent=`Uygulama çevrimdışı açılmaya hazır. Hazırlanma: ${new Date(lastStatus.preparedAt).toLocaleString('tr-TR')}.`;
                 else if(!navigator.onLine)message.textContent='Çevrimdışısın. Hazırlığı tamamlamak için internete bağlan; kaydedilmiş paketlerini aşağıdan açabilirsin.';
@@ -1540,7 +1706,8 @@
                     const action=event.target.closest('[data-offline-action]');if(!action)return;
                     if(action.dataset.offlineAction==='close')close();
                     const pack=packs.find(p=>p.id===action.dataset.packId);
-                    if(action.dataset.offlineAction==='view'&&pack){selectedId=pack.id;visibleCount=20;renderDetail();document.getElementById('offline-pack-detail').scrollIntoView({block:'nearest'});}
+                    if(action.dataset.offlineAction==='view'&&pack){selectedId=pack.id;visibleCount=20;renderDetail();document.getElementById('offline-pack-detail').scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
+                    if(action.dataset.offlineAction==='use'&&pack)await usePack(pack);
                     if(action.dataset.offlineAction==='spot'&&pack)usePack(pack,action.dataset.spotId);
                     if(action.dataset.offlineAction==='delete'&&pack){
                         if(busy)return;busy=true;
@@ -1554,7 +1721,7 @@
                 root().addEventListener('keydown',event=>{
                     if(event.key==='Escape'){event.preventDefault();close();return;}
                     if(event.key!=='Tab')return;
-                    const items=[...root().querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled)')].filter(item=>item.getClientRects().length);
+                    const items=[...root().querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled),summary')].filter(item=>item.getClientRects().length);
                     const first=items[0],last=items.at(-1);
                     if(event.shiftKey&&(document.activeElement===first||!items.includes(document.activeElement))){event.preventDefault();last?.focus();}
                     else if(!event.shiftKey&&(document.activeElement===last||!items.includes(document.activeElement))){event.preventDefault();first?.focus();}
@@ -1903,7 +2070,8 @@
             return { t: 'Bilinmiyor', i: 'fa-cloud' };
         };
 
-        const map = L.map('map', { zoomControl: false, closePopupOnClick: false }).setView([38.4237, 27.1428], 6); 
+        const mapMotionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const map = L.map('map', { zoomControl: false, closePopupOnClick: false, zoomAnimation: mapMotionAllowed, fadeAnimation: mapMotionAllowed, markerZoomAnimation: mapMotionAllowed }).setView([38.4237, 27.1428], 6);
         L.control.zoom({ position: 'topright' }).addTo(map);
         
         map.on('dragstart', () => { map.closePopup(); });
@@ -1934,6 +2102,7 @@
         };
 
         let markersLayer = L.markerClusterGroup({
+            animate: mapMotionAllowed,
             chunkedLoading: true,
             maxClusterRadius: 40,
             iconCreateFunction: function (cluster) {
@@ -1948,7 +2117,7 @@
         map.addLayer(markersLayer);
 
         window.locateMe = () => {
-            if(userLocation) map.flyTo([userLocation.lat, userLocation.lng], 15, {animate: true, duration: 1});
+            if(userLocation) map.flyTo([userLocation.lat, userLocation.lng], 15, {animate: !window.matchMedia('(prefers-reduced-motion: reduce)').matches, duration: 1});
             else window.showToast("GPS konumunuz henüz bulunamadı veya izin vermediniz.", "error");
         };
 
@@ -1970,6 +2139,7 @@
         };
 
         map.on('click', (e) => {
+            if (window.DropZoneRideTools?.isMapMode()) return;
             if (sidebarEl.classList.contains('open')) {
                 window.toggleSidebar();
                 return;
@@ -1987,6 +2157,7 @@
         });
 
         window.openManualAddSpotModal = () => {
+            dzCloseMapSelection();
             if (!currentUser) { window.showToast("Spot eklemek için giriş yapmalısınız.", "error"); return; }
             document.getElementById('spot-lat').value = '';
             document.getElementById('spot-lng').value = '';
@@ -2033,12 +2204,13 @@
             const target = event.target.closest('[data-search-spot]');
             const spot = target && spotsData.find(s => s.id === target.dataset.searchSpot);
             if (spot && Number.isFinite(spot.coords?.lat) && Number.isFinite(spot.coords?.lng)) {
-                window.flyToSpot(spot.coords.lat, spot.coords.lng); window.openSpotDetail(spot.id); window.clearSearch();
+                if (!window.DropZoneRideTools?.chooseMapSpot(spot.id)) { window.flyToSpot(spot.coords.lat, spot.coords.lng); window.openSpotDetail(spot.id); }
+                window.clearSearch();
             }
         });
         map.getContainer().addEventListener('click', event => {
             const target = event.target.closest('[data-detail-spot]');
-            if (target) window.openSpotDetail(target.dataset.detailSpot);
+            if (target && !window.DropZoneRideTools?.chooseMapSpot(target.dataset.detailSpot)) window.openSpotDetail(target.dataset.detailSpot);
         });
 
         window.clearSearch = () => {
@@ -2117,13 +2289,16 @@
         window.loginWithGoogle = async () => { try { await signInWithPopup(auth, provider); window.showToast("Giriş yapıldı."); } catch(e){ window.showToast("Giriş Hatası.", "error"); } };
         window.logout = async () => { await signOut(auth); window.showToast("Çıkış yapıldı."); };
 
-        window.openSettingsModal = () => document.getElementById('settings-modal').classList.remove('hidden');
+        function dzCloseMapSelection() { if (window.DropZoneRideTools?.isMapMode()) window.DropZoneRideTools.close(); }
+        window.openSettingsModal = () => { dzCloseMapSelection(); document.getElementById('settings-modal').classList.remove('hidden'); };
         window.openFavoritesModal = () => {
+            dzCloseMapSelection();
             if(!currentUser) { window.showToast("Favoriler için giriş yapmalısınız.", "error"); return; }
             window.renderFavorites('all');
             document.getElementById('favorites-modal').classList.remove('hidden');
         };
         window.openProfileModal = () => {
+            dzCloseMapSelection();
             if(!currentUser) return;
             const profilePhoto = isValidUrl(currentUser.photoURL) ? currentUser.photoURL : 'https://via.placeholder.com/150';
             document.getElementById('profile-img-preview').src = profilePhoto;
@@ -2163,7 +2338,8 @@
             if(initialLoadDone) { listContainer.innerHTML = ''; }
             markersLayer.clearLayers();
 
-            let filteredSpots = (activeFilter === 'all' ? spotsData : spotsData.filter(s => s.category === activeFilter)).filter(dzMatchesFeatures);
+            const pickingSpot = window.DropZoneRideTools?.isMapPicking();
+            let filteredSpots = spotsData.filter(spot => pickingSpot || ((activeFilter === 'all' || spot.category === activeFilter) && dzMatchesFeatures(spot)));
             
             filteredSpots.forEach(s => s.distance = getDistance(userLocation, s.coords));
             filteredSpots.sort((a, b) => {
@@ -2206,7 +2382,12 @@
                 `;
 
                 const marker = L.marker([pt.lat, pt.lng], { icon: createCustomMarker(spot, hasReport) });
-                marker.bindPopup(popupContent);
+                if (!window.DropZoneRideTools?.isMapMode()) marker.bindPopup(popupContent);
+                marker.on('add', () => {
+                    const icon = marker.getElement();
+                    if (icon) { icon.setAttribute('data-spot-id', spot.id); icon.setAttribute('aria-label', String(spot.name || 'Spot')); }
+                });
+                marker.on('click', () => { if (window.DropZoneRideTools?.chooseMapSpot(spot.id)) marker.closePopup(); });
                 markersLayer.addLayer(marker);
 
                 if(initialLoadDone) {
@@ -2226,7 +2407,7 @@
                             </div>
                         </div>
                     `;
-                    el.addEventListener('click', () => window.flyToSpot(pt.lat, pt.lng));
+                    el.addEventListener('click', () => { if (!window.DropZoneRideTools?.chooseMapSpot(spot.id)) window.flyToSpot(pt.lat, pt.lng); });
                     listContainer.appendChild(el);
                 }
             });
@@ -2234,7 +2415,7 @@
 
         window.flyToSpot = (lat, lng) => {
             if(window.innerWidth < 768) sidebarEl.classList.remove('open'); 
-            map.flyTo([lat, lng], 18, { animate: true, duration: 1.5 });
+            map.flyTo([lat, lng], 18, { animate: !window.matchMedia('(prefers-reduced-motion: reduce)').matches, duration: 1.1 });
         };
 
         window.renderFavorites = (filter) => {
@@ -2349,6 +2530,7 @@
         };
 
         window.openAdminReportsModal = () => {
+            dzCloseMapSelection();
             if(!isAdmin) return;
             const list = document.getElementById('admin-reports-list');
             list.innerHTML = '';
@@ -2495,6 +2677,7 @@
         window.prevPhoto = () => { currentPhotoIndex = (currentPhotoIndex - 1 + currentPhotos.length) % currentPhotos.length; renderCarousel(); };
 
         window.openSpotDetail = (id) => {
+            dzCloseMapSelection();
             currentDetailSpotId = id; const spot = spotsData.find(s => s.id === id); if(!spot) return;
 
             document.getElementById('detail-name').innerText = spot.name || "";
@@ -2778,10 +2961,12 @@
         const communityLikes = new Map();
         const communityBusy = new Set();
         let communityHead = [], communityOlder = [], communityPendingHead = null;
-        let communityCursor = null, communityMore = false, communityLoading = false;
+        let communityCursor = null, communityMore = false, communityLoading = false, communityPageRevision = 0;
+        let communitySort = 'popular';
         let communityFeedUnsubscribe = null, communityInboxUnsubscribe = null, communityUserUnsubscribe = null;
         let communityPinned = null, communityPinnedUnsubscribe = null;
         const communityOverrides = new Map();
+        const communityDepartedChecks = new Set();
         let communityCommentsUnsubscribe = null, communityCommentView = null;
         let communityGeneration = 0, communityAuthGeneration = 0, communityCommentsGeneration = 0;
         let communityUid = null, communitySelectedSpot = '', communityReturnFocus = null;
@@ -2795,7 +2980,7 @@
         const communityIsOpen = () => !communityModal.classList.contains('hidden');
         const communityError = error => {
             if (error?.code === 'permission-denied') return 'İşleme izin verilmedi. Oturumunu ve topluluk erişim kurallarını kontrol et; art arda işlemlerde 5 saniye bekle.';
-            if (error?.code === 'failed-precondition') return 'Bu sorgu için Firestore dizini eksik. Topluluk kurulumundaki dizini etkinleştir.';
+            if (error?.code === 'failed-precondition') return 'Paylaşımlar şu anda yüklenemiyor. Lütfen daha sonra tekrar dene.';
             if (error?.code === 'unavailable') return 'Bağlantı kurulamadı. İnternet bağlantını kontrol edip yeniden dene.';
             if (error?.message === 'rate-limit') return 'Çok hızlı ilerliyorsun. Yeni bir işlem için 5 saniye bekle.';
             if (error?.message === 'post-missing') return 'Bu paylaşım artık mevcut değil.';
@@ -3043,12 +3228,18 @@
             finally { communityEndAction(success); }
         });
         function communityQuery(cursor) {
-            const clauses = [];
+            const clauses = [where('deleted', '==', false)];
             if (communitySelectedSpot) clauses.push(where('spotId', '==', communitySelectedSpot));
+            if (communitySort === 'popular') clauses.push(orderBy('likeCount', 'desc'));
             clauses.push(orderBy('createdAt', 'desc'));
             if (cursor) clauses.push(startAfter(cursor));
             clauses.push(limit(COMMUNITY_PAGE_SIZE));
             return query(collection(db, 'communityPosts'), ...clauses);
+        }
+        function communityRankKey(snapshot) {
+            if (!snapshot) return '';
+            const data = snapshot.data();
+            return `${snapshot.id}:${communitySort === 'popular' ? Number(data.likeCount) || 0 : ''}:${communityDate(data.createdAt)}`;
         }
         function communityCloseComments() {
             communityCommentsGeneration++;
@@ -3056,15 +3247,44 @@
             if (communityCommentView) { communityCommentView.comments.hidden = true; communityCommentView.commentButton.setAttribute('aria-expanded', 'false'); }
             communityCommentView = null;
         }
+        function communityValidateDepartedHead(fresh) {
+            const present = new Set(fresh.map(snapshot => snapshot.id));
+            const generation = communityGeneration, revision = communityPageRevision;
+            // A limited query cannot distinguish deletion from a still-valid row moving to page 2.
+            // Check each departing original head row once per pending cycle, at most 20 reads.
+            for (const previous of communityHead) {
+                const id = previous.id;
+                if (present.has(id) || communityDepartedChecks.has(id) || communityDepartedChecks.size >= COMMUNITY_PAGE_SIZE) continue;
+                communityDepartedChecks.add(id);
+                getDoc(communityPostRef(id)).then(snapshot => {
+                    if (generation !== communityGeneration || revision !== communityPageRevision || !communityPendingHead || !communityIsOpen()) return;
+                    // A newer live snapshot has already confirmed a row returning to the head.
+                    if (communityPendingHead.some(row => row.id === id)) return;
+                    if (!snapshot.exists() || snapshot.data().deleted) {
+                        communityHead = communityHead.filter(row => row.id !== id);
+                        communityOlder = communityOlder.filter(row => row.id !== id);
+                        communityOverrides.delete(id); communityLikes.delete(id);
+                        if (communityPinned?.id === id) { communityPinnedUnsubscribe?.(); communityPinnedUnsubscribe = null; communityPinned = null; }
+                    } else {
+                        communityOverrides.delete(id);
+                        communityHead = communityHead.map(row => row.id === id ? snapshot : row);
+                        communityOlder = communityOlder.map(row => row.id === id ? snapshot : row);
+                    }
+                    communityRenderFeed();
+                }).catch(error => {
+                    if (generation === communityGeneration && revision === communityPageRevision && communityPendingHead && communityIsOpen()) communityStatus('community-feed-status', communityError(error), true);
+                });
+            }
+        }
         function communityStopFeed() {
             communityGeneration++;
             if (communityFeedUnsubscribe) communityFeedUnsubscribe(); communityFeedUnsubscribe = null;
             communityPinnedUnsubscribe?.(); communityPinnedUnsubscribe = null; communityPinned = null;
-            communityCloseComments(); communityLoading = false;
+            communityCloseComments(); communityLoading = false; communityDepartedChecks.clear();
         }
         function communityStartFeed() {
             communityStopFeed();
-            communityHead = []; communityOlder = []; communityPendingHead = null; communityCursor = null; communityMore = false;
+            communityHead = []; communityOlder = []; communityPendingHead = null; communityCursor = null; communityMore = false; communityPageRevision++;
             for(const id of communityViews.keys())communityExtras.removePost(id);communityViews.clear(); communityOverrides.clear(); communityLikes.clear(); communityFeed.replaceChildren();
             document.getElementById('community-new-posts').hidden = true;
             document.getElementById('community-load-more').hidden = true;
@@ -3076,26 +3296,40 @@
                 document.getElementById('community-feed-status').dataset.loading = 'false';
                 const fresh = snapshot.docs;
                 fresh.forEach(d => communityOverrides.delete(d.id));
-                const oldIds = new Set(communityHead.map(d => d.id));
-                const hasNew = communityHead.length && fresh.some(d => !oldIds.has(d.id));
-                if (hasNew && communityScroll.scrollTop > 250) {
+                const orderChanged = communityHead.length && (communityHead.length !== fresh.length || fresh.some((d,index) => communityHead[index]?.id !== d.id));
+                const boundaryChanged = communityHead.length && communityRankKey(communityHead.at(-1)) !== communityRankKey(fresh.at(-1));
+                const needsRefresh = orderChanged || boundaryChanged || !!communityPendingHead;
+                if (needsRefresh && communityScroll.scrollTop > 250) {
                     communityPendingHead = fresh; document.getElementById('community-new-posts').hidden = false;
                     const updates = new Map(fresh.map(d => [d.id,d]));
                     communityHead = communityHead.map(d => updates.get(d.id) || d);
+                    communityOlder = communityOlder.map(d => updates.get(d.id) || d);
+                    communityValidateDepartedHead(fresh);
                 } else {
-                    if (hasNew) { communityOlder = []; communityCursor = null; }
-                    communityHead = fresh; communityPendingHead = null;
+                    // Ranking uses mutable counters: a changed boundary invalidates older-page cursors.
+                    if (needsRefresh) { communityOlder = []; communityCursor = null; communityPageRevision++; }
+                    communityHead = fresh; communityPendingHead = null; communityDepartedChecks.clear();
                     document.getElementById('community-new-posts').hidden = true;
                     if (!communityOlder.length) { communityCursor = fresh.at(-1) || null; communityMore = fresh.length === COMMUNITY_PAGE_SIZE; }
                 }
                 communityRenderFeed();
             }, error => {
-                if (generation === communityGeneration) { document.getElementById('community-feed-status').dataset.loading = 'false'; communityStatus('community-feed-status', communityError(error), true); }
+                if (generation === communityGeneration) { document.getElementById('community-feed-status').dataset.loading = 'false'; console.warn('DropZone feed query failed', error); communityStatus('community-feed-status', communityError(error), true); }
             });
         }
         function communityAllDocs() {
             const records = new Map(); [...(communityPinned ? [communityPinned] : []), ...communityHead, ...communityOlder].forEach(d => { if (!records.has(d.id)) records.set(d.id, d); });
-            return [...records.values()].sort((a,b) => a.id === communityPinned?.id ? -1 : b.id === communityPinned?.id ? 1 : communityDate(b.data().createdAt) - communityDate(a.data().createdAt)).slice(0, COMMUNITY_MAX_LOADED);
+            const stableOrder = communityPendingHead ? new Map([...communityHead,...communityOlder].map((d,index) => [d.id,index])) : null;
+            return [...records.values()].sort((a,b) => {
+                // A shared-link target stays visible; ordinary feed rows follow the selected server order.
+                if (a.id === b.id) return 0;
+                if (a.id === communityPinned?.id) return -1;
+                if (b.id === communityPinned?.id) return 1;
+                if (stableOrder) return (stableOrder.get(a.id) ?? COMMUNITY_MAX_LOADED) - (stableOrder.get(b.id) ?? COMMUNITY_MAX_LOADED);
+                const first = communityOverrides.get(a.id) || a.data(), second = communityOverrides.get(b.id) || b.data();
+                const likes = communitySort === 'popular' ? Math.max(0,Number(second.likeCount)||0) - Math.max(0,Number(first.likeCount)||0) : 0;
+                return likes || communityDate(second.createdAt) - communityDate(first.createdAt) || (a.id < b.id ? 1 : -1);
+            }).slice(0, COMMUNITY_MAX_LOADED);
         }
         function communityRenderFeed() {
             const docs = communityAllDocs(); const visible = docs.filter(d => {const data=communityOverrides.get(d.id)||d.data();return !data.deleted&&communityExtras.matchesSearch({...data,id:d.id});});
@@ -3114,19 +3348,19 @@
             communityExtras.updateSearchScope(docs.length,visible.length,communityMore&&docs.length<COMMUNITY_MAX_LOADED);
             if(communityExtras.getSearchQuery()&&!visible.length)communityStatus('community-feed-status','Yüklenen paylaşımlarda sonuç bulunamadı.');
             const more = document.getElementById('community-load-more'); more.hidden = !communityMore || docs.length >= COMMUNITY_MAX_LOADED;
-            more.disabled = communityLoading;
-            if (docs.length >= COMMUNITY_MAX_LOADED) communityStatus('community-feed-status', 'Son 100 paylaşım yüklendi. Daha odaklı bir akış için spot filtresini kullan.');
+            more.disabled = communityLoading || !!communityPendingHead;
+            if (docs.length >= COMMUNITY_MAX_LOADED) communityStatus('community-feed-status', 'Bu akıştan 100 paylaşım yüklendi. Daha odaklı bir akış için spot filtresini kullan.');
         }
         document.getElementById('community-load-more').addEventListener('click', async () => {
-            if (communityLoading || !communityMore || !communityCursor) return;
-            const generation = communityGeneration; communityLoading = true; communityRenderFeed();
+            if (communityLoading || communityPendingHead || !communityMore || !communityCursor) return;
+            const generation = communityGeneration, revision = communityPageRevision; communityLoading = true; communityRenderFeed();
             try {
                 const snapshot = await getDocs(communityQuery(communityCursor));
-                if (generation !== communityGeneration) return;
+                if (generation !== communityGeneration || revision !== communityPageRevision) return;
                 communityOlder.push(...snapshot.docs); communityCursor = snapshot.docs.at(-1) || communityCursor;
                 communityMore = snapshot.docs.length === COMMUNITY_PAGE_SIZE; communityRenderFeed();
             } catch (error) { if (generation === communityGeneration) { communityStatus('community-feed-status', communityError(error), true); } }
-            finally { if (generation === communityGeneration) { communityLoading = false; document.getElementById('community-load-more').disabled = false; } }
+            finally { if (generation === communityGeneration) { communityLoading = false; document.getElementById('community-load-more').disabled = !!communityPendingHead; } }
         });
         function communityCreatePost(data) {
             const article = communityElement('article', 'dz-post'); article.dataset.postId = data.id;
@@ -3211,7 +3445,7 @@
                 });
                 active = result.active; success = true;
                 if (active && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) view.like.querySelector('i').animate([{transform:'scale(1)'},{transform:'scale(1.35)',offset:.45},{transform:'scale(1)'}], {duration:280,easing:'ease-out'});
-                if (auth.currentUser?.uid === user.uid) { communityLikes.set(postId,active); communityOverrides.set(postId,result.post); communityUpdatePost(view,{...result.post,id:postId}); }
+                if (auth.currentUser?.uid === user.uid) { communityLikes.set(postId,active); communityOverrides.set(postId,result.post); communityRenderFeed(); }
             } catch (error) { window.showToast(communityError(error),'error'); }
             finally { communityBusy.delete(`like:${postId}`); view.like.disabled = false; communityEndAction(success,active); }
         }
@@ -3305,6 +3539,7 @@
             finally { communityBusy.delete(`comment:${postId}`); view.submit.disabled=!auth.currentUser || !view.input.value.trim(); communityEndAction(success); }
         }
         window.openCommunity = async postId => {
+            dzCloseMapSelection();
             if (!communityIsOpen()) {
                 communityReturnFocus = document.activeElement;
                 document.getElementById('notifications-modal').classList.add('hidden');
@@ -3337,7 +3572,7 @@
         }
         function communityAcceptNew() {
             if (!communityPendingHead) return;
-            communityCloseComments(); communityHead = communityPendingHead; communityPendingHead=null; communityOlder=[];
+            communityCloseComments(); communityHead = communityPendingHead; communityPendingHead=null; communityOlder=[]; communityPageRevision++; communityDepartedChecks.clear();
             communityCursor=communityHead.at(-1)||null;communityMore=communityHead.length===20;
             document.getElementById('community-new-posts').hidden=true;communityRenderFeed();communityScroll.scrollTop=0;
         }
@@ -3359,6 +3594,10 @@
             if (action === 'filter') { const panel=document.getElementById('community-filter-panel');panel.hidden=!panel.hidden;document.getElementById('community-tab-spot').setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)document.getElementById('community-filter-spot').focus(); }
             if (action === 'refresh') { communityStartFeed(); communityScroll.scrollTop=0; }
             if (action === 'new-posts') communityAcceptNew();
+        });
+        document.getElementById('community-sort').addEventListener('change', event => {
+            communitySort = event.target.value === 'newest' ? 'newest' : 'popular';
+            communityStartFeed(); communityScroll.scrollTop = 0;
         });
         document.getElementById('community-filter-spot').addEventListener('change', event => {
             communitySelectedSpot = event.target.value;
@@ -3422,6 +3661,7 @@
             }
         }
         function openCommunityInbox() {
+            dzCloseMapSelection();
             if(!auth.currentUser){window.showToast('Bildirimler için giriş yapmalısın.','error');return;}
             communityRenderInbox();document.getElementById('notifications-modal').classList.remove('hidden');document.querySelector('#notifications-modal button').focus();communityMarkInboxRead();
         }
@@ -3562,7 +3802,7 @@
         });
 
         function dzRefreshTools() {
-            if(!document.getElementById('ride-tools-modal').classList.contains('hidden'))window.DropZoneRideTools.refresh();
+            if(!document.getElementById('ride-tools-modal').classList.contains('hidden') || window.DropZoneRideTools.isMapMode())window.DropZoneRideTools.refresh();
             if(!document.getElementById('offline-modal').hidden)window.DropZoneOffline.refresh();
         }
         function dzRenderOfflineBanner(pack) {
@@ -3581,7 +3821,7 @@
             dzUsingOfflinePack=true;spotsData=pack.spots;initialLoadDone=true;dzRenderOfflineBanner(pack);renderSpotsToDOM();if(communityIsOpen()){communityFillSpots();communityRenderFeed();}dzRefreshTools();
             if(spotId){window.closeModals();window.openSpotDetail(spotId);}
         }
-        window.DropZoneRideTools.initialize({getSpots:()=>spotsData,getUser:()=>auth.currentUser,map,showToast:window.showToast,shareEntry:async(text,spotId)=>{
+        window.DropZoneRideTools.initialize({getSpots:()=>spotsData,getUser:()=>auth.currentUser,map,showToast:window.showToast,onMapModeChange:mode=>{sidebarEl.classList.remove('open');if(mode==='preview')map.removeLayer(markersLayer);else if(!map.hasLayer(markersLayer))map.addLayer(markersLayer);renderSpotsToDOM();},shareEntry:async(text,spotId)=>{
             const sharingUid=auth.currentUser?.uid;if(!sharingUid)return;
             window.closeModals();await window.openCommunity();if(auth.currentUser?.uid!==sharingUid)return;
             const fill=()=>{if(auth.currentUser?.uid!==sharingUid)return;communityExtras.resetComposer();communityText.value=text.slice(0,1000);communityFillSpots();communitySpot.value=spotId;communityUpdateComposer();communityFitTextarea();communitySaveDraft();communityScroll.scrollTop=0;communityText.focus();};

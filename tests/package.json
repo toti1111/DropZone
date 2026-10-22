@@ -6,7 +6,7 @@
   "scripts": {
     "build:css": "tailwindcss -i tailwind.input.css -c tailwind.config.cjs -o artifacts/tailwind.css --minify",
     "pretest:ui": "node -e \"require('node:fs').mkdirSync('artifacts',{recursive:true})\" && npm run build:css",
-    "test:ui": "node community.browser.test.cjs && node community-extra.test.cjs && node community-widths.test.cjs && node community-boundaries.test.cjs && node legacy.browser.test.cjs && node community-composer.test.cjs && node new-features.browser.test.cjs",
+    "test:ui": "node community.browser.test.cjs && node community-extra.test.cjs && node community-widths.test.cjs && node community-boundaries.test.cjs && node legacy.browser.test.cjs && node community-composer.test.cjs && node new-features.browser.test.cjs && node map-tools.browser.test.cjs",
     "test:rules": "firebase emulators:exec --only firestore --project demo-dropzone --config firebase.json \"node --test --test-concurrency=1 community.rules.test.mjs legacy.rules.test.mjs next.rules.test.mjs\"",
     "test:offline": "node offline.browser.test.cjs"
   },

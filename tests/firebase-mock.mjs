@@ -2,7 +2,7 @@ const state = globalThis.__dzMock ||= {data:new Map(), listeners:new Set(), user
 const clone=x=>x===undefined?undefined:structuredClone(x);
 export class Timestamp { constructor(seconds,nanoseconds=0){this.seconds=seconds;this.nanoseconds=nanoseconds;} static fromMillis(value){const seconds=Math.floor(value/1000);return new Timestamp(seconds,Math.floor((value-seconds*1000)*1e6));} static now(){return Timestamp.fromMillis(Date.now());} toMillis(){return this.seconds*1000+Math.floor(this.nanoseconds/1e6);} toDate(){return new Date(this.toMillis());} }
 const hydrate=x=>{if(x&&typeof x==='object'){if(typeof x.seconds==='number')Object.setPrototypeOf(x,Timestamp.prototype);else for(const k of Object.keys(x))x[k]=hydrate(x[k]);}return x};
-const snap=(path)=>({id:path.split('/').at(-1),ref:{path},exists:()=>state.data.has(path),data:()=>hydrate(clone(state.data.get(path)))});
+const snap=(path)=>{const exists=state.data.has(path),value=clone(state.data.get(path));return{id:path.split('/').at(-1),ref:{path},exists:()=>exists,data:()=>hydrate(clone(value))}};
 const ref=(base,...parts)=>{const path=[typeof base==='string'?base:base?.path,...parts].filter(Boolean).join('/');return{path,id:path.split('/').at(-1)}};
 export const initializeApp=()=>({});
 export const getFirestore=()=>({path:''});
@@ -14,7 +14,17 @@ export const limit=(n)=>({op:'limit',n});
 export const startAfter=(snapshot)=>({op:'startAfter',snapshot});
 export const documentId=()=> '__name__';
 export const query=(base,...clauses)=>({...base,clauses});
-function rows(q){let result=[...state.data.keys()].filter(p=>p.startsWith(q.path+'/')&&p.split('/').length===q.path.split('/').length+1).map(snap);for(const c of q.clauses||[]){if(c.op==='where')result=result.filter(s=>s.data()[c.field]===c.value);if(c.op==='orderBy')result.sort((a,b)=>{let x=c.field==='__name__'?a.id:a.data()[c.field],y=c.field==='__name__'?b.id:b.data()[c.field];x=typeof x?.seconds==='number'?x.seconds*1000:x;y=typeof y?.seconds==='number'?y.seconds*1000:y;return ((x>y)-(x<y))*(c.direction==='desc'?-1:1)});if(c.op==='startAfter'){const i=result.findIndex(s=>s.id===c.snapshot.id);if(i>=0)result=result.slice(i+1)}if(c.op==='limit')result=result.slice(0,c.n)}return result}
+function rows(q){
+ const clauses=q.clauses||[],orders=clauses.filter(c=>c.op==='orderBy');
+ const ordering=[...orders];if(!ordering.some(c=>c.field==='__name__'))ordering.push({field:'__name__',direction:orders.at(-1)?.direction||'asc'});
+ const value=(snapshot,field)=>{let result=field==='__name__'?snapshot.id:snapshot.data()?.[field];return typeof result?.seconds==='number'?result.seconds*1000+(result.nanoseconds||0)/1e6:result};
+ const compare=(a,b)=>{for(const order of ordering){const x=value(a,order.field),y=value(b,order.field);const difference=((x>y)-(x<y))*(order.direction==='desc'?-1:1);if(difference)return difference}return 0};
+ let result=[...state.data.keys()].filter(p=>p.startsWith(q.path+'/')&&p.split('/').length===q.path.split('/').length+1).map(snap);
+ for(const clause of clauses.filter(c=>c.op==='where'))result=result.filter(snapshot=>snapshot.data()?.[clause.field]===clause.value);
+ result=result.filter(snapshot=>orders.every(order=>value(snapshot,order.field)!==undefined)).sort(compare);
+ const cursor=clauses.find(c=>c.op==='startAfter');if(cursor)result=result.filter(snapshot=>compare(snapshot,cursor.snapshot)>0);
+ const cap=clauses.find(c=>c.op==='limit');return cap?result.slice(0,cap.n):result;
+}
 function snapshot(q){if(q.type==='doc')return snap(q.path);let docs=rows(q);return{docs,size:docs.length,empty:docs.length===0,forEach:cb=>docs.forEach(cb),docChanges:()=>docs.map(doc=>({type:'added',doc}))}}
 function emit(){queueMicrotask(()=>{for(const entry of [...state.listeners])entry.cb(snapshot(entry.q))})}
 function transformed(value,old){if(value?.__op==='timestamp')return{seconds:Math.floor(Date.now()/1000),nanoseconds:0};if(value?.__op==='increment')return(old||0)+value.value;if(value?.__op==='union')return[...new Set([...(old||[]),...value.values])];if(value?.__op==='remove')return(old||[]).filter(x=>!value.values.includes(x));return clone(value)}
